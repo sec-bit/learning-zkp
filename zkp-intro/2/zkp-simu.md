@@ -1,8 +1,8 @@
-# 理解「模拟」=> 理解「零知识」
+# 理解「模拟」
 
 *探索零知识证明系列（二）*
 
->I know that I know nothing  —— 苏格拉底
+> I know that I know nothing  —— 苏格拉底
 
 
 相信很多人都听说过零知识证明，但是只有极少数人听说过模拟，然而模拟是理解零知识的关键。
@@ -121,7 +121,7 @@ OK，理解完「不可区分性」，我们再回到「零知识」，如何证
 
 + 第一步：Alice 把地图染色答案做一次完全置换，然后将所有顶点盖上纸片，交给 Bob
 + 第二步：Bob 随机挑选一条边
-+ 第三步： Alice 打开指定边的两端顶点的纸片，Bob检验两个顶点的颜色是否相同，如果相同则通过，如果不同则失败
++ 第三步： Alice 打开指定边的两端顶点的纸片，Bob检验两个顶点的颜色是否相同，如果不同则通过，如果相同则失败
 + 回到第一步，重复 `n` 遍
 
 我们接下来就来证明上述这个交互是零知识的，这里先假设验证者 Bob 是诚实的，这有助于大家理解这个证明过程。然后我们再讨论，如果 Bob 不诚实的证明方法。
@@ -227,7 +227,7 @@ Bob 这时候无法感知到时间已经倒退回第一步了，对他来说，�
 
 然而有一天，一个囚徒偶然挣脱锁链，他回头看到了火。但是他从小到大仅能看到暗淡的影子，他第一次看到了明亮的火光。看到了道具和木偶，假如有人告诉他，这些道具和木偶才是实物，他一定会嗤之以鼻，会坚持认为影子才是真实的。
 
-柏拉图假设说，如果把一个囚徒强制拖出洞穴，到外面去看到真实的世界， 一开始囚徒会不适应真实世界的光亮而感到刺目眩晕，他会因此而愤怒。 但是当他慢慢适应了这个世界，看到太阳，树木，河流，看到星空，他逐渐明白，这个世界比洞穴中那个世界更为优越高级。他再也不想回到黑暗的洞穴生活中了。
+柏拉图假设说，如果这个囚徒强制拖出洞穴，到外面去看到真实的世界， 一开始囚徒会不适应真实世界的光亮而感到刺目眩晕，他会因此而愤怒。 但是当他慢慢适应了这个世界，看到太阳，树木，河流，看到星空，他逐渐明白，这个世界比洞穴中那个世界更为优越高级。他再也不想回到黑暗的洞穴生活中了。
 
 过了一段时间，他对洞穴中的囚徒心生怜悯，于是想去把他们都带出来。但是当他再次返回洞穴中，他因为已经适应了外面明亮的世界，回到洞穴中反而看不清楚。被锁的囚徒们反而认为他的视力受损，胡言乱语，是个疯子，最后当他想尽办法把这群囚徒带出洞穴时，被囚徒们联手杀死。
 
@@ -243,6 +243,8 @@ Bob 这时候无法感知到时间已经倒退回第一步了，对他来说，�
 
 问题来了，Alice 没有超能力，并不能直接证明 Alice 真的有答案。万一这个交互协议并不能保证 Alice 一定有知识呢？「零知识」保护了 Alice 的利益，谁来保证 Bob 的利益呢？这个问题留给下一篇。
 
+**致谢**: 本文受密码学教授 Matthew Green 发表在2014年与2017年的两篇个人博客文章[10-11]启发。
+
 ### 参考文献
 
 + [1] 初识「零知识」与「证明」. 安比实验室. 2019.
@@ -254,5 +256,7 @@ Bob 这时候无法感知到时间已经倒退回第一步了，对他来说，�
 + [7] Rackoff, Charles, and Daniel R. Simon. "Non-interactive zero-knowledge proof of knowledge and chosen ciphertext attack." Annual International Cryptology Conference. Springer, Berlin, Heidelberg, 1991.
 + [8] Goldreich, Oded, Silvio Micali, and Avi Wigderson. "Proofs that yield nothing but their validity or all languages in NP have zero-knowledge proof systems." Journal of the ACM (JACM) 38.3 (1991): 690-728.
 + [9] zkPoD: 区块链，零知识证明与形式化验证，实现无中介、零信任的公平交易. 安比实验室. 2019.
++ [10] Matthew Green. Zero Knowledge Proofs: An illustrated prime. 2014. https://blog.cryptographyengineering.com/2014/11/27/zero-knowledge-proofs-illustrated-primer/
++ [11] Matthew Green. Zero Knowledge Proofs: An illustrated primer, Part 2. 2017. https://blog.cryptographyengineering.com/2017/01/21/zero-knowledge-proofs-an-illustrated-primer-part-2/
 
 
