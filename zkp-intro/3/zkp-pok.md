@@ -7,10 +7,11 @@
 
 导言：有些理论非常有趣，零知识证明便是其中之一，摸索了许久，想写点什么，与大家一起讨论。本文是『探索零知识证明』系列的第三篇。全文约 8,000 字，少量数学公式。
 
+本文将在 [Github](https://github.com/sec-bit/learning-zkp/)   进行更新与修正。
+
 [系列一：初始「零知识」与「证明」](https://github.com/sec-bit/learning-zkp/blob/master/zkp-intro/1/zkp-back.md)
 
 [系列二：理解「模拟」](https://github.com/sec-bit/learning-zkp/blob/master/zkp-intro/2/zkp-simu.md)
-
 
 ## 「零知识」vs. 「可靠性」
 
@@ -319,7 +320,6 @@ a = (k * s - c)/e
 
 > If you would be a real seeker after truth, it is necessary that at least once in your life you doubt, as far as possible, all things.  如果你是一个真正的真理探求者，在你人生中至少要有一次，尽可能地质疑所有的事情。
 >     —— 笛卡尔
-
 
 *致谢：特别感谢 Shengchao Ding, Jie Zhang，Yu Chen 以及安比实验室小伙伴们(p0n1, even, aphasiayc, Vawheter, yghu, mr)的建议和指正。*
 

@@ -13,6 +13,8 @@
 
 本文约八千字，略微烧脑。
 
+本文将在 [Github](https://github.com/sec-bit/learning-zkp/) 进行更新与修正。
+
 [系列一：初识「零知识」与「证明」](https://github.com/sec-bit/learning-zkp/blob/master/zkp-intro/1/zkp-back.md)
 
 ## 安全的定义与不可区分性

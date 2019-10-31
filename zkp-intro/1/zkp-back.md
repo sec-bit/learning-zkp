@@ -14,7 +14,7 @@
 
 提醒：文章内容难免有不准确或不严谨的描述，还请各位专业人士拨冗指正。
 
-本文将在 [Github]() 进行更新。
+本文将在 [Github](https://github.com/sec-bit/learning-zkp/) 进行更新与修正。
 
 ## "证明" 的前世今生
 
