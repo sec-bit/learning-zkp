@@ -2,16 +2,15 @@
 
 *探索零知识证明系列（三）*
 
-导言：有些理论非常有趣，零知识证明便是其中之一，摸索了许久，想写点什么，与大家一起讨论。本文是『探索零知识证明』系列的第三篇。全文约 8,000 字，少量数学公式。
-
-[（一）初始「零知识」与「证明」](https://github.com/sec-bit/learning-zkp/blob/master/zkp-intro/1/zkp-back.md)
-
-[（二）理解「模拟」](https://github.com/sec-bit/learning-zkp/blob/master/zkp-intro/2/zkp-simu.md)
-
-
-
 > And what, Socrates, is the food of the soul? Surely, I said, knowledge is the food of the soul.  苏格拉底，什么是灵魂的食物？我说过，当然是知识。 
 > —— 柏拉图
+
+导言：有些理论非常有趣，零知识证明便是其中之一，摸索了许久，想写点什么，与大家一起讨论。本文是『探索零知识证明』系列的第三篇。全文约 8,000 字，少量数学公式。
+
+[系列一：初始「零知识」与「证明」](https://github.com/sec-bit/learning-zkp/blob/master/zkp-intro/1/zkp-back.md)
+
+[系列二：理解「模拟」](https://github.com/sec-bit/learning-zkp/blob/master/zkp-intro/2/zkp-simu.md)
+
 
 ## 「零知识」vs. 「可靠性」
 
