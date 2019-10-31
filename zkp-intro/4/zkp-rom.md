@@ -256,7 +256,7 @@ Arthur 是一个不耐烦的国王，他随身携带一个硬币，而 Merlin是
 
 这与我们在[『系列一』](https://github.com/sec-bit/learning-zkp/blob/master/zkp-intro/1/zkp-back.md)中提到的交互式证明系统（Interactive Proof System，简称 `IP`）有些神似，但又不同。`IP` 由 Goldwasser，Micali 与 Rackoff（简称GMR）在 1985 年正式提出，它的证明能力覆盖很大一类的计算复杂性问题。而不同的地方在于：在 `IP` 的定义中，证明者 Prover 和 验证者 Verifier 都是可以抛硬币的图灵机，Verifier 可以偷偷抛硬币，并对 Prover 隐藏；而在 Arthur-Merlin 游戏中，国王只能抛硬币，不仅如此，而且抛硬币的结果总会被 Merlin 知道。
 
-通过 Fiat-Shamir 变换得到 NIZK 在安全协议中屡见不鲜，比如大家可能耳熟能详的 Bulletproofs（子弹证明），此外还有一些不那么出名的通用零知识证明方案，比如 Hyrax，Ligero，Supersonic等（我们后续会抽丝剥茧，逐一解读）。
+通过 Fiat-Shamir 变换得到 NIZK 在安全协议中屡见不鲜，比如大家可能耳熟能详的 Bulletproofs（子弹证明），此外还有一些不那么出名的通用零知识证明方案，比如 Hyrax，Ligero，Supersonic，Libra 等（我们后续会抽丝剥茧，逐一解读）。
 
 但是，Fiat-Shamir 变换只能在「随机预言模型」下证明安全，而用 Hash 函数实现随机预言的过程是否安全是缺少安全性证明的。不幸的是，这个变换过程并**不能保证变换前可靠的协议在变换后仍然可靠**，存在反例[12]。
 
