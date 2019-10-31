@@ -132,21 +132,21 @@ m = "白日依山尽，黄河入海流"
 c = Hash(m, R)
 ```
 
-这里正是利用了我们前面讲过的 Hash 函数的单向性，保证了攻击者不能随意伪造签名。
+这里为了保证攻击者不能随意伪造签名，正是利用了离散对数难题（DLP）与 Hash 函数满足抗第二原象（Secondary Preimage Resistance ）这个假设。
 
-*注：这里严格点讲，为了保证数字签名的不可伪造性，需要证明 Schnorr 协议满足「Simulation Soundness」这个更强的性质。这点请参考文献[5]*
+*注：这里严格点讲，为了保证数字签名的不可伪造性，需要证明 Schnorr 协议满足「Simulation Soundness」这个更强的性质。这点请参考文献[2]*
 
 ![](img/schnorr-sig.png)
 
 上图就是大家所熟知的数字签名方案 —— Schnorr 签名方案[1]。在这里还有一个优化，Alice 发给 Bob 的内容不是 `(R, z)` 而是 `(c, z)`，这是因为 `R` 可以通过 `c`, `z` 计算出来。
 
-*注：为什么说这是一个「优化」呢？目前针对椭圆曲线的攻击方法有 Shanks 算法、Lambda 算法 还有 Pollard's rho 算法， 请大家记住他们的算法复杂度大约都是 $O(\sqrt{n})$[6]，`n` 是有限域大小的位数。假设我们采用了非常接近 `2^256` 的有限域，也就是说 `z` 是 256bit，那么椭圆曲线群的大小也差不多要接近 256bit，这样一来，把 `2^256` 开平方根后就是 `2^128`，所以说 256bit 椭圆曲线群的安全性只有 128bit。那么，挑战数  `c` 也只需要 128bit 就足够了。这样 Alice 发送 `c` 要比发送 `R` 要更节省空间，而后者至少需要 256bit。`c` 和 `z`两个数值加起来总共 384bit。相比现在流行的 ECDSA 签名方案来说，可以节省`1/4` 的宝贵空间。现在比特币开发团队已经准备将 ECDSA 签名方案改为一种类 Schnorr 协议的签名方案——muSig[2]，可以实现更灵活地支持多签和聚合。*
+*注：为什么说这是一个「优化」呢？目前针对椭圆曲线的攻击方法有 Shanks 算法、Lambda 算法 还有 Pollard's rho 算法， 请大家记住他们的算法复杂度大约都是 $O(\sqrt{n})$[3]，`n` 是有限域大小的位数。假设我们采用了非常接近 `2^256` 的有限域，也就是说 `z` 是 256bit，那么椭圆曲线群的大小也差不多要接近 256bit，这样一来，把 `2^256` 开平方根后就是 `2^128`，所以说 256bit 椭圆曲线群的安全性只有 128bit。那么，挑战数  `c` 也只需要 128bit 就足够了。这样 Alice 发送 `c` 要比发送 `R` 要更节省空间，而后者至少需要 256bit。`c` 和 `z`两个数值加起来总共 384bit。相比现在流行的 ECDSA 签名方案来说，可以节省`1/4` 的宝贵空间。现在比特币开发团队已经准备将 ECDSA 签名方案改为一种类 Schnorr 协议的签名方案——muSig[4]，可以实现更灵活地支持多签和聚合。*
 
-而采用 Hash 函数的方法来把一个交互式的证明系统变成非交互式的方法被称为 Fiat-Shamir 变换[3]，它由密码学老前辈 Amos Fiat 和 Adi Shamir 两人在 1986 年提出。
+而采用 Hash 函数的方法来把一个交互式的证明系统变成非交互式的方法被称为 Fiat-Shamir 变换[5]，它由密码学老前辈 Amos Fiat 和 Adi Shamir 两人在 1986 年提出。
 
 ## 重建信任 —— 随机预言精灵
 
-前文提到，失去了挑战，似乎失去了证明的「信任根基」。而在 Schnorr 签名方案中，Hash 函数担负起了「挑战者」的角色，这个角色有一个非常学术的名字：「随机预言机」（Random Oracle）。
+前文提到，失去了挑战，似乎失去了证明的「信任根基」。而在 Schnorr 签名方案中，Hash 函数担负起了「挑战者」的角色，这个角色有一个非常学术的名字：「随机预言机」（Random Oracle）[6]。
 
 可是这里为何用 Hash？实际上当 Alice 要产生公共随机数时，需要一个叫做「随机预言机」的玩意儿，这是什么？
 
@@ -234,7 +234,7 @@ sk = (z1 - z2)/(c1 - c2)
 
 ## Fiat-Shamir 变换 —— 从 Public-Coin 到 NIZK
 
-不仅仅对于 Schnorr 协议，对于任意的 「Public-Coin 协议」，都可以用 Fiat-Shamir 变换来把整个协议「压缩」成一步交互，也就是一个非交互式的证明系统，这个变换技巧来自于 Amos Fiat 与 Adi Shamir 两人的论文『How to Prove Yourself: Practical Solutions to Identification and Signature Problems.』，发表在 1986 年的 Crypto 会议上。
+不仅仅对于 Schnorr 协议，对于任意的 「Public-Coin 协议」，都可以用 Fiat-Shamir 变换来把整个协议「压缩」成一步交互，也就是一个非交互式的证明系统，这个变换技巧最早来自于 Amos Fiat 与 Adi Shamir 两人的论文『How to Prove Yourself: Practical Solutions to Identification and Signature Problems.』，发表在 1986 年的 Crypto 会议上[5]。也有一说，这个技巧来源于 Manuel Blum[6].
 
 重复一遍，在 Public-coin 协议中，验证者 Bob 只做一类事情，就是产生一个随机数，然后挑战 Alice 。通过 Fiat-Shamir 变换，可以把 Bob 每一次的「挑战行为」用一次「随机预言」来代替。
 
@@ -252,13 +252,13 @@ Public-Coin 协议还有一个好听的名字， 「Arthur-Merlin 游戏」 …�
 
 看上图，左边的“白袍”就是 Merlin（魔法师梅林），中间拿剑的帅哥就是 King Arthur（亚瑟王），两个角色来源于中世纪欧洲传说——亚瑟王的圆桌骑士。
 
-Arthur 是一个不耐烦的国王，他随身携带一个硬币，而 Merlin是一个有着无限制计算能力的神奇魔法师，然后魔法师想说服国王相信某个「论断」为真，于是魔法师会和国王进行到对话，但是由于国王比较懒，他每次只会抛一个硬币，然后「挑战」魔法师，而魔法师需要及时应对，而且需要让国王在 k 轮之后能够相信自己的论断。由于 Merlin 有魔法，所以亚瑟王抛的硬币都能被 Merlin 看到。
+Arthur 是一个不耐烦的国王，他随身携带一个硬币，而 Merlin是一个有着无限制计算能力的神奇魔法师，然后魔法师想说服国王相信某个「论断」为真，于是魔法师会和国王进行到对话，但是由于国王比较懒，他每次只会抛一个硬币，然后「挑战」魔法师，而魔法师需要及时应对，而且需要让国王在 k 轮之后能够相信自己的论断。由于 Merlin 有魔法，所以亚瑟王抛的硬币都能被 Merlin 看到[7]。
 
 这与我们在[『系列一』](https://github.com/sec-bit/learning-zkp/blob/master/zkp-intro/1/zkp-back.md)中提到的交互式证明系统（Interactive Proof System，简称 `IP`）有些神似，但又不同。`IP` 由 Goldwasser，Micali 与 Rackoff（简称GMR）在 1985 年正式提出，它的证明能力覆盖很大一类的计算复杂性问题。而不同的地方在于：在 `IP` 的定义中，证明者 Prover 和 验证者 Verifier 都是可以抛硬币的图灵机，Verifier 可以偷偷抛硬币，并对 Prover 隐藏；而在 Arthur-Merlin 游戏中，国王只能抛硬币，不仅如此，而且抛硬币的结果总会被 Merlin 知道。
 
-通过 Fiat-Shamir 变换得到 NIZK 在安全协议中屡见不鲜，比如大家可能耳熟能详的 Bulletproofs（子弹证明），此外还有一些不那么出名的通用零知识证明方案，比如 Hyrax，Ligero，Supersonic，Libra 等（我们后续会抽丝剥茧，逐一解读）。
+但是，Fiat-Shamir 变换只能在「随机预言模型」下证明安全，而用 Hash 函数实现随机预言的过程是否安全是缺少安全性证明的。不仅如此，「随机预言模型」下安全的协议可能是有不安全的，已经有人找到了一些反例[8]；更不幸的是，S. Goldwasser 与 Y. Tauman 在 2003 年证明了 Fiat-Shamir 变换本身也是**存在安全反例**的[9]。但是这并不意味着 Fiat-Shamir 变换不能用，只是在使用过程中要非常小心，不能盲目套用。
 
-但是，Fiat-Shamir 变换只能在「随机预言模型」下证明安全，而用 Hash 函数实现随机预言的过程是否安全是缺少安全性证明的。不幸的是，这个变换过程并**不能保证变换前可靠的协议在变换后仍然可靠**，存在反例[12]。
+尽管如此，人们无法抵挡 Fiat-Shamir 变换的诱惑，其使用极其广泛。值得一提的是，最热的通用非交互零知识证明 zkSNARK 的各种方案中，Fiat-Shamir 变换比比皆是。比如大家可能耳熟能详的 Bulletproofs（子弹证明），此外还有一些暂时还不那么有名的通用零知识证明方案，比如 Hyrax，Ligero，Supersonic，Libra 等（我们后续会抽丝剥茧，逐一解读）。
 
 
 ## 小心：Fiat-Shamir 变换中的安全隐患
@@ -267,19 +267,19 @@ Arthur 是一个不耐烦的国王，他随身携带一个硬币，而 Merlin是
 
 比如在 `A, Hash(A), B, Hash(B)` 中，第二个 Hash 函数就漏掉了参数A，正确的做法应该是`A, Hash(A), B, Hash(A,B) `。这一类的做法会引入严重的安全漏洞，比如在瑞士的电子投票系统 SwissPost-Scytl 中，就在 Fiat-Shamir 变换的实现代码中多次漏掉了本来应该存在的参数，导致了攻击者不仅可以随意作废选票，还可以任意伪造选票，达到舞弊的目的[10]。因此在工程实现中，请务必注意。
 
-细心读者也许会回看一下 Schnorr 签名，大家会发现 Schnorr 签名中的 Hash 算法似乎也漏掉了一个参数 `PK`，并不是严格的 Fiat-Shamir 变换，这被称为 Weak Fiat-Shamir 变换[9]，不过这个特例并没有安全问题[4]，请未成年人不要随意模仿。
+细心读者也许会回看一下 Schnorr 签名，大家会发现 Schnorr 签名中的 Hash 算法似乎也漏掉了一个参数 `PK`，并不是严格的 Fiat-Shamir 变换，这被称为 Weak Fiat-Shamir 变换[11]，不过这个特例并没有安全问题[3]，请未成年人不要随意模仿。
 
-最近一些学者开始在标准模型下研究如何严格证明 Fiat-Shamir 变换的安全性，目前要么引入额外的安全假设，要么针对某个特定协议进行证明，但似乎进展并不大。
+最近一些学者开始在标准模型下研究如何严格证明 Fiat-Shamir 变换的安全性，目前要么引入额外的强安全假设，要么针对某个特定协议进行证明，但似乎进展并不大。
 
 ## 交互的威力
 
-话说在1985年，当 GMR 三人的论文历经多次被拒之后终于被 STOC’85 接受，另一篇类似的工作也同时被 STOC'85 接受，这就是来自于匈牙利罗兰大学的 László Babai，与来自以色列理工的 Shlomo Moran 两人撰写的论文『Arthur-Merlin Games: A Randomized Proof System, and a Hierarchy of Complexity Classes』，引入了 Public-coin 交互式协议（顾名思义，Verifier 只公开抛硬币）。
+话说在1985年，当 GMR 三人的论文历经多次被拒之后终于被 STOC’85 接受，另一篇类似的工作也同时被 STOC'85 接受，这就是来自于匈牙利罗兰大学的 László Babai，与来自以色列理工的 Shlomo Moran 两人撰写的论文『Arthur-Merlin Games: A Randomized Proof System, and a Hierarchy of Complexity Classes』[7]，引入了 Public-coin 交互式协议（顾名思义，Verifier 只公开抛硬币）。
 
 国王 Arthur 的方法很简单，通过反复地「随机」挑战来检验 Merlin 的论断，这符合我们前面讲述过的直觉：采用随机挑战来构建信任的「根基」。Babai 在论文中证明了一个有趣的结论：`AM[k]=AM[2]`，其中 `k` 表示交互的次数，交互多次产生的效果居然和交互两次等价。所谓交互两次是指：Arthur 发一个挑战数，然后 Merlin 回应。
 
 *注：还有一类的问题属于 `MA`，这一类问题的交互顺序与 `AM`不同，`MA`中是 Merlin 先给出证明，然后 Arthur 抛硬币检验。已证明：MA 能处理的问题是 AM 的子集。*
 
-不仅如此，Babai 还大胆猜测： `AM[poly]` 与 `IP` 是等价的。这是一个神奇的论断：国王很懒，他只需要通过抛多项式次硬币，就能成功挑战魔法师，而这种方式的表达能力居然完全等价于 GMR 描述的交互式证明系统 `IP`。果不其然，在 STOC'86 会议上，来自 S. Goldwasser 与 M. Sipser 的论文证明了这一点，`AM[poly] == IP`。
+不仅如此，Babai 还大胆猜测： `AM[poly]` 与 `IP` 是等价的。这是一个神奇的论断：国王很懒，他只需要通过抛多项式次硬币，就能成功挑战魔法师，而这种方式的表达能力居然完全等价于 GMR 描述的交互式证明系统 `IP`。果不其然，在 STOC'86 会议上，来自 S. Goldwasser 与 M. Sipser 的论文证明了这一点，`AM[poly] == IP`[12]。
 
 ![](img/am-ip.png)
 
@@ -293,9 +293,9 @@ Arthur 是一个不耐烦的国王，他随身携带一个硬币，而 Merlin是
 
 它解释了「有效证明」这个概念的计算理论特征，并且解释了「交互式证明系统」这个概念所能涵盖的计算能力。
 
-*注：NP 类 是 PSPACE 类的子集，前者大家比较熟悉，后者关联游戏或者下棋中的制胜策略[8]。*
+*注：NP 类 是 PSPACE 类的子集，前者大家比较熟悉，后者关联游戏或者下棋中的制胜策略[13]。*
 
-而 L. Babai 于是写了一篇文章，名为「Email and the unexpected power of interaction」（电子邮件与交互的始料未及的威力）[11]，详细阐述了这一整个月在「邮件交互」中精彩纷呈的学术竞赛，以及关于「交互证明」的来龙去脉。
+而 L. Babai 于是写了一篇文章，名为「Email and the unexpected power of interaction」（电子邮件与交互的始料未及的威力）[14]，详细阐述了这一整个月在「邮件交互」中精彩纷呈的学术竞赛，以及关于「交互证明」的来龙去脉。
 
 ## 公共参考串 —— 另一种「信任根基」
 
@@ -317,22 +317,38 @@ NIZK 散发着无穷魅力，让我不时惊叹，在过去三十多年里，先
 
 *致谢：特别感谢丁晟超，刘巍然，陈宇的专业建议和指正，感谢安比实验室小伙伴们(p0n1, even, aphasiayc, Vawheter, yghu, mr) 的修改建议。
 
-*致谢：自Nisan起密码学研究竞赛轶事参考自邓老师的文章[13]。*
+*致谢：自Nisan发起的密码学研究轶事参考自邓老师的文章[15]。*
 
 ### 参考文献
 
 - [1] Schnorr, Claus-Peter. "Efficient signature generation by smart cards." Journal of cryptology 4.3 (1991): 161-174.
-- [2] Maxwell, Gregory, Andrew Poelstra, Yannick Seurin, and Pieter Wuille. "Simple schnorr multi-signatures with applications to bitcoin." *Designs, Codes and Cryptography* 87, no. 9 (2019): 2139-2164.
-- [3] Fiat, Amos, and Adi Shamir. "How to prove yourself: Practical solutions to identification and signature problems." Conference on the Theory and Application of Cryptographic Techniques. Springer, Berlin, Heidelberg, 1986.
-- [4] Pointcheval, David, and Jacques Stern. "Security arguments for digital signatures and blind signatures." *Journal of cryptology* 13.3 (2000): 361-396.
-- [5] Paillier, Pascal, and Damien Vergnaud. "Discrete-log-based signatures may not be equivalent to discrete log." *International Conference on the Theory and Application of Cryptology and Information Security*. Springer, Berlin, Heidelberg, 2005.
-- [6] Canetti, Ran, Oded Goldreich, and Shai Halevi. "The random oracle methodology, revisited." Journal of the ACM (JACM)51.4 (2004): 557-594.
-- [7] László Babai, and Shlomo Moran. "Arthur-Merlin games: a randomized proof system, and a hierarchy of complexity classes." Journal of Computer and System Sciences 36.2 (1988): 254-276.
-- [8] Papadimitriou, Christos H. "Games against nature." *Journal of Computer and System Sciences* 31.2 (1985): 288-301.
-- [9] Bernhard, David, Olivier Pereira, and Bogdan Warinschi. "How not to prove yourself: Pitfalls of the fiat-shamir heuristic and applications to helios." *International Conference on the Theory and Application of Cryptology and Information Security*. Springer, Berlin, Heidelberg, 2012.
+
+- [2] Paillier, Pascal, and Damien Vergnaud. "Discrete-log-based signatures may not be equivalent to discrete log." *International Conference on the Theory and Application of Cryptology and Information Security*. Springer, Berlin, Heidelberg, 2005.
+
+- [3] Pointcheval, David, and Jacques Stern. "Security arguments for digital signatures and blind signatures." *Journal of cryptology* 13.3 (2000): 361-396.
+
+- [4] Maxwell, Gregory, Andrew Poelstra, Yannick Seurin, and Pieter Wuille. "Simple schnorr multi-signatures with applications to bitcoin." *Designs, Codes and Cryptography* 87, no. 9 (2019): 2139-2164.
+
+- [5] Fiat, Amos, and Adi Shamir. "How to prove yourself: Practical solutions to identification and signature problems." Conference on the Theory and Application of Cryptographic Techniques. Springer, Berlin, Heidelberg, 1986.
+
+- [6] Bellare, Mihir, and Phillip Rogaway. "Random Oracles Are Practical: a Paradigm for Designing Efficient Protocols." *Proc. of the 1st CCS* (1995): 62-73.
+
+- [7] László Babai, and Shlomo Moran. "Arthur-Merlin games: a randomized proof system, and a hierarchy of complexity classes." Journal of Computer and System Sciences 36.2 (1988): 254-276.m
+
+- [8] Canetti, Ran, Oded Goldreich, and Shai Halevi. "The random oracle methodology, revisited." Journal of the ACM (JACM)51.4 (2004): 557-594.
+
+- [9] Shafi Goldwasser, and Yael Tauman . "On the (in) security of the Fiat-Shamir paradigm." *44th Annual IEEE Symposium on Foundations of Computer Science, 2003. Proceedings.*. IEEE, 2003.
+
 - [10]Lewis, Sarah Jamie, Olivier Pereira, and Vanessa Teague. "Addendum to how not to prove your election outcome: The use of nonadaptive zero knowledge proofs in the ScytlSwissPost Internet voting system, and its implica tions for castasintended verifi cation." *Univ. Melbourne, Parkville, Australia* (2019).
-- [11] Babai, László. "E-mail and the unexpected power of interaction." *Proceedings Fifth Annual Structure in Complexity Theory Conference*. IEEE, 1990.
-- [12] Shafi Goldwasser, and Yael Tauman . "On the (in) security of the Fiat-Shamir paradigm." *44th Annual IEEE Symposium on Foundations of Computer Science, 2003. Proceedings.*. IEEE, 2003.
-- [13] Yi Deng. "零知识证明：一个略显严肃的科普." https://zhuanlan.zhihu.com/p/29491567
+
+- [11] Bernhard, David, Olivier Pereira, and Bogdan Warinschi. "How not to prove yourself: Pitfalls of the fiat-shamir heuristic and applications to helios." *International Conference on the Theory and Application of Cryptology and Information Security*. Springer, Berlin, Heidelberg, 2012.
+
+- [12] Goldwasser, Shafi, and Michael Sipser. "Private coins versus public coins in interactive proof systems." *Proceedings of the eighteenth annual ACM symposium on Theory of computing*. ACM, 1986.
+
+- [13] Papadimitriou, Christos H. "Games against nature." *Journal of Computer and System Sciences* 31.2 (1985): 288-301.
+
+- [14] Babai, László. "E-mail and the unexpected power of interaction." *Proceedings Fifth Annual Structure in Complexity Theory Conference*. IEEE, 1990.
+
+- [15] Yi Deng. "零知识证明：一个略显严肃的科普." https://zhuanlan.zhihu.com/p/29491567
 
   
