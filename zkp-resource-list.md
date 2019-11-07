@@ -9,7 +9,7 @@
 *由于整理时间有限和笔者自身知识的局限性，文章存在不足之处，欢迎纠正、补充和探讨。*
 
 
-## 1. 故事中零知识证明
+## 1. 故事中的零知识证明
 
 初次接触零知识证明的小伙伴一定会问，究竟什么是零知识证明呢？它到底在做什么？
 
@@ -68,6 +68,8 @@
   这同样是一篇讲故事的文章，哈哈~
 
   这篇文章讲述了一个糖果和百万富翁的故事（Candy bars and millionaires），文章同样篇幅较短，内容理解起来难度较小。
+  
+  原文链接：https://medium.com/hackernoon/eli5-zero-knowledge-proof-78a276db9eff
 
 兴许是因为如何解释零知识证明的问题并不简单，所以绝不部分入门级的科普文章都是从讲故事开始的。
 
@@ -77,7 +79,7 @@
 
 零知识证明技术涉及的知识点繁多，性质也各不相同。了解了什么是零知识证明以后，就需要对零知识证明更深刻的理解，推荐以下几篇零知识证明系列科普文。
 
-* **「推荐文章六」零知识证明: 抛砖引玉 **
+* **「推荐文章六」零知识证明: 抛砖引玉**
 
   推荐值：❤️❤️❤️❤️
 
@@ -91,13 +93,17 @@
 
     原文链接：https://blog.cryptographyengineering.com/2014/11/27/zero-knowledge-proofs-illustrated-primer/
 
-    来自 ETHFANS 的中文翻译版本：https://ethfans.org/posts/zero-knowledge-proofs-illustrated-primer
+    中文翻译版本：https://ethfans.org/posts/zero-knowledge-proofs-illustrated-primer
 
   * [零知识证明：抛砖引玉，Part-2](https://blog.cryptographyengineering.com/2017/01/21/zero-knowledge-proofs-an-illustrated-primer-part-2/)
 
     这篇文章在第一篇的基础上，进一步对零知识证明的三个性质：可靠性，完整性和零知识，展开介绍。另外还结合 Schnorr 协议介绍了交互式和非交互式的概念。
+    
+    原文链接：https://blog.cryptographyengineering.com/2017/01/21/zero-knowledge-proofs-an-illustrated-primer-part-2/
+    
+    中文翻译版本：https://ethfans.org/posts/zero-knowledge-proofs-an-illustrated-primer-part-2
 
-* **「推荐文章七」安比实验室零知识证明介绍系列文章 **
+* **「推荐文章七」安比实验室零知识证明介绍系列文章**
 
   推荐值：❤️❤️❤️❤️❤️
 
@@ -492,11 +498,21 @@
 
   原文链接：https://www.benthamsgaze.org/2016/10/25/how-to-do-zero-knowledge-from-discrete-logs-in-under-7kb/
 
+
+
+
+
 * **「推荐文章三十四」[zkSNARK 合约「输入假名」漏洞致众多混币项目爆雷](https://sec-bit.github.io/blog/page/2/)**
+
+  推荐值：❤️❤️❤️
+
+  难度值：⭐️⭐️⭐️
 
   这篇文章的作者是安比实验室 p0n1，文章介绍了大量零知识证明项目由于错误地使用了某个 zkSNARKs 合约库，引入「输入假名 (Input Aliasing) 」漏洞，可导致伪造证明、双花、重放等攻击行为发生，且攻击成本极低。
 
   原文链接：https://sec-bit.github.io/blog/page/2/
+
+  
 
 * **「推荐文章三十五」[硬核！360高级安全专家彭峙酿以Zcash为例，谈零知识性证明的安全和隐私问题](https://zhuanlan.zhihu.com/p/87690026)**
 
