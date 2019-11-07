@@ -15,7 +15,7 @@
 
 推荐几篇适合小白的文章：
 
-1. **「推荐文章一」[一个数独引发的惨案：零知识证明（Zero-Knowledge Proof）](https://medium.com/qed-it/the-incredible-machine-4d1270d7363a)**
+* **「推荐文章一」[一个数独引发的惨案：零知识证明（Zero-Knowledge Proof）](https://medium.com/qed-it/the-incredible-machine-4d1270d7363a)**
 
    推荐值：❤️❤️❤️❤️❤️
 
@@ -29,7 +29,7 @@
 
    另外这篇文章中引用了两篇介绍零知识证明的论文，也值得看一看。
 
-2. **「推荐文章二」[How to explain zero-knowledge protocols to your children](http://pages.cs.wisc.edu/~mkowalcz/628.pdf)**
+* **「推荐文章二」[How to explain zero-knowledge protocols to your children](http://pages.cs.wisc.edu/~mkowalcz/628.pdf)**
 
    推荐值：❤️❤️❤️
 
@@ -39,7 +39,7 @@
 
    原文链接：http://pages.cs.wisc.edu/~mkowalcz/628.pdf
 
-3. **「推荐文章三」[Cryptographic and Physical Zero-Knowledge Proof Systems for Solutions of Sudoku Puzzles](http://www.wisdom.weizmann.ac.il/~naor/PAPERS/sudoku.pdf)**
+* **「推荐文章三」[Cryptographic and Physical Zero-Knowledge Proof Systems for Solutions of Sudoku Puzzles](http://www.wisdom.weizmann.ac.il/~naor/PAPERS/sudoku.pdf)**
 
    推荐值：❤️❤️❤️
 
@@ -226,7 +226,7 @@
 
     原文链接：https://medium.com/@VitalikButerin/zk-snarks-under-the-hood-b33151a013f6
 
-* **「推荐文章十四」[zcash 官方科普文](https://z.cash/technology/zksnarks/) **
+* **「推荐文章十四」[zcash 官方科普文](https://z.cash/technology/zksnarks/)**
 
   推荐值：❤️❤️❤️❤️
 
@@ -576,11 +576,11 @@
 
 难度值：⭐️⭐️⭐️⭐️⭐️
 
-1. 1985 年，零知识证明技术首次被提出 
+* 1985 年，零知识证明技术首次被提出 
 
    原文链接：[The Knowledge Complexity of Interactive Proof Systems](https://epubs.siam.org/doi/10.1137/0218012)
 
-2. BulletProof
+* BulletProof
 
    1. [Gro09 ](https://link.springer.com/chapter/10.1007/978-3-642-03356-8_12)提出了一种证明“向量内积”的方法：
 
@@ -594,7 +594,7 @@
 
       原文链接：https://eprint.iacr.org/2017/1066
 
-3. zkSNARKs with trusted setup
+* zkSNARKs with trusted setup
 
    1. [Groth10](https://link.springer.com/chapter/10.1007/978-3-642-17373-8_19) 引入了preprocessing的步骤，通过可信第三方生成Common Reference String来实现无交互证明:
 
@@ -610,31 +610,31 @@
 
       原文链接：https://eprint.iacr.org/2016/260
 
-4. [Ligero: Lightweight Sublinear Arguments Without a Trusted Setup](https://acmccs.github.io/papers/p2087-amesA.pdf):
+* [Ligero: Lightweight Sublinear Arguments Without a Trusted Setup](https://acmccs.github.io/papers/p2087-amesA.pdf):
 
    原文链接：https://acmccs.github.io/papers/p2087-amesA.pdf
 
-5. PLONK:
+* PLONK:
 
    原文链接：https://eprint.iacr.org/2019/953
 
-6. Marlin
+* Marlin
 
    原文链接：https://eprint.iacr.org/2019/1047.pdf
 
-7. Sonic
+* Sonic
 
    原文链接：https://eprint.iacr.org/2019/099
 
-8. Libra
+* Libra
 
    原文链接：https://eprint.iacr.org/2019/317
 
-9. Hyrax
+* Hyrax
 
    原文链接：https://eprint.iacr.org/2017/1132.pdf
 
-10. zk-STARKs
+* zk-STARKs
 
     原文链接：https://eprint.iacr.org/2018/046
 
@@ -673,7 +673,7 @@
   链接：https://www.benthamsgaze.org
 
 
-参考文献
+## 参考文献
 
 [1] https://isi.jhu.edu/~mgreen/
 
