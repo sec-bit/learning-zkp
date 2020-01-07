@@ -92,7 +92,7 @@ Wait ……，协议交互不是只有两方吗？ Alice 和 Bob，哪来第三�
 
 我们再看一下老朋友——Schnorr 协议，它是一个三步协议：第一步，Alice 发送一个承诺，然后第二步 Bob 发送随机数挑战，第三步，Alice 回应挑战。
 
-![](img/schnorr.png)
+![](https://github.com/sec-bit/learning-zkp/blob/master/zkp-intro/4/img/schnorr.png)
 
 我们来看，如何把一个三步的 Schnorr 协议变成一步。
 
@@ -313,7 +313,7 @@ NIZK 散发着无穷魅力，让我不时惊叹，在过去三十多年里，先
 
 
 
-*致谢：特别感谢丁晟超，刘巍然，陈宇的专业建议和指正，感谢安比实验室小伙伴们(p0n1, even, aphasiayc, Vawheter, yghu, mr) 的修改建议。
+*致谢：特别感谢丁晟超，刘巍然，陈宇的专业建议和指正，感谢安比实验室小伙伴们(p0n1, even, aphasiayc, Vawheter, yghu, mr) 的修改建议。*
 
 *致谢：自Nisan发起的密码学研究轶事参考自邓老师的文章[15]。*
 
