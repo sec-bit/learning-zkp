@@ -163,7 +163,7 @@ Jens Groth 在 2010 年基于 KEA（Knowledge of Exponent Assumption） 假设�
 
 - 第一步：
   - Alice 随机选择一个「置换」，`Perm(.)`，并且通过`C`构造一个哈密尔顿环路子图 `C'=Perm(C)`；
-  - 然后 Alice 加密 `C'`的每一个单元，把解密后的结果发送给 Bob。
+  - 然后 Alice 加密 `C'`的每一个单元，把加密后的结果发送给 Bob。
 
 - 第二步：Bob 随机选择 `b in {0, 1}`进行挑战
 
