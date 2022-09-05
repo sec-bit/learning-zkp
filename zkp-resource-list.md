@@ -39,6 +39,8 @@
 
    原文链接：http://pages.cs.wisc.edu/~mkowalcz/628.pdf
 
+   中文翻译：https://blog.dreamerryao.wiki/archives/%E8%AF%91howtoexplainzero-knowledgeprotocolstoyourchildren
+
 * **「推荐文章三」[Cryptographic and Physical Zero-Knowledge Proof Systems for Solutions of Sudoku Puzzles](http://www.wisdom.weizmann.ac.il/~naor/PAPERS/sudoku.pdf)**
 
    推荐值：❤️❤️❤️
