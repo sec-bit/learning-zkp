@@ -331,7 +331,7 @@ a = (k * s - c)/e
 + [4] Damgård, Ivan. "On Σ-protocols." *Lecture Notes, University of Aarhus, Department for Computer Science* (2002).
 + [5] Schnorr, Claus-Peter. "Efficient signature generation by smart cards." *Journal of cryptology* 4.3 (1991): 161-174.
 + [6] Brown, Daniel RL. "Generic groups, collision resistance, and ECDSA." *Designs, Codes and Cryptography* 35.1 (2005): 119-152.
-+ [7] 笛卡儿, 徐陶. 第一哲学沉思集. 九州出版社; 2008.
++ [7] 笛卡尔, 徐陶. 第一哲学沉思集. 九州出版社; 2008.
 + [8] Bostrom, Nick. "Are we living in a computer simulation?." The Philosophical Quarterly 53.211 (2003): 243-255.
 + [9] Nick Statt. "Comma.ai founder George Hotz wants to free humanity from the AI simulation". Mar 9, 2019. https://www.theverge.com/2019/3/9/18258030/george-hotz-ai-simulation-jailbreaking-reality-sxsw-2019
 + [10] doing@知乎. "如果世界是虚拟的，有哪些实例可以证明？". 2017. https://www.zhihu.com/question/34642204/answer/156671701
