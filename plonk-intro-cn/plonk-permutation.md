@@ -94,7 +94,7 @@ $$
 于是，表格的三列编码后的多项式也将满足下面三个约束。第一个是初始值为 $1$：
 
 $$
-L_0(r(X)-1)=0, \qquad \forall X\in H 
+L_0(X)\cdot(r(X)-1)=0, \qquad \forall X\in H 
 $$
 
 第二个约束为递归的乘法关系：
@@ -106,7 +106,7 @@ $$
 第三个约束最后结果 $r_{n-1}=p$：
 
 $$
-L_{n-1}(r(X)-p)=0, \qquad \forall X\in H
+L_{n-1}(X)\cdot(r(X)-p)=0, \qquad \forall X\in H
 $$
 
 我们可以用一个小技巧来简化上面的三个约束。我们把计算连乘的表格添加一行，令 $q_{n-1}=1/p$（注意： $p$ 为 $\vec{q}$ 向量的连乘积）
@@ -124,7 +124,7 @@ q_{n-1}=\frac{1}{p} & r_{n-1} & 1 \\
 \end{array}
 $$
 
-这样一来，$r_n=r_0=1$ 。最右列恰好是 $\vec{r}$ 的循环移位。并且上面表格的每一行都满足「乘法关系」！于是，我们可以用下面的多项式约束来表示递归的连乘：
+这样一来， $r_n=r_0=1$ 。最右列恰好是 $\vec{r}$ 的循环移位。并且上面表格的每一行都满足「乘法关系」！于是，我们可以用下面的多项式约束来表示递归的连乘：
 
 $$
 q(X)\cdot r(X)=r(\omega\cdot X), \qquad \forall X\in H
@@ -133,7 +133,7 @@ $$
 接下来，Verifier 可以挑战下面的多项式等式：
 
 $$
-L_0(r(X)-1)+\alpha\cdot(q(X)\cdot r(X)-r(\omega\cdot X))=h(X)\cdot z_H(X)
+L_0(X)\cdot(r(X)-1)+\alpha\cdot(q(X)\cdot r(X)-r(\omega\cdot X))=h(X)\cdot z_H(X)
 $$
 
 其中 $\alpha$ 是用来聚合多个多项式约束的随机挑战数。其中 $h(X)$ 为商多项式， $z_H(X)=(X-1)(X-\omega)\cdots(X-\omega^{n-1})$。

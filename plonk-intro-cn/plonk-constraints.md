@@ -21,6 +21,7 @@ A = \prod(a'_i + \gamma),\qquad B = \prod(b'_i + \gamma)
 $$
 
 第三步是让 Prover 证明 $A/B=1$，即
+
 $$
 \prod_i\frac{(a'_i + \gamma)}{(b_i'+\gamma)} = 1
 $$
@@ -117,7 +118,7 @@ $$
 
 又因为拷贝约束要求置换后的向量与原始向量相等，因此 $w_a=w'_a$， $w_b=w_b'$， $w_c=w_c'$。
 
-如果我们用多项式对 $\vec{w}_a,\vec{w}_b,\vec{w}_c,\vec{id}_a,\vec{id}_b,\vec{id}_c,\sigma_a, \sigma_b, \sigma_c$ 编码，得到 $w_a(X),w_b(X), w_c(X), id_a(X),id_b(X),id_c(X),\sigma_a(X),\sigma_b(X),\sigma_c(X)$，于是 $f(X)$ ，$g(X)$ 满足下面的约束关系：
+如果我们用多项式对 $\vec{w}_a,\vec{w}_b,\vec{w}_c,\vec{id}_a,\vec{id}_b,\vec{id}_c,\sigma_a, \sigma_b, \sigma_c$ 编码，得到 $w_a(X),w_b(X), w_c(X), id_a(X),id_b(X),id_c(X),\sigma_a(X),\sigma_b(X),\sigma_c(X)$，于是 $f(X)$， $g(X)$ 满足下面的约束关系：
 
 $$
 \begin{split}
@@ -302,8 +303,8 @@ $$
 其中商多项式 $t(X)=\frac{h(X)}{z_H(X)}$ ；
 
 第六步：Verifier 发送随机挑战数 $\zeta$，查询上述的所有 Oracle，得到
-- $\bar{w}_a=w_a(\zeta)$, $\bar{w}_b=w_b(\zeta)$， $\bar{w}_c=w_c(\zeta)$
-- $\bar{q}_L=q_L(\zeta)$，$\bar{q}_R=q_R(\zeta)$， $\bar{q}_M=q_M(\zeta)$，  $\bar{q}_O=q_O(\zeta)$, $\bar{q}_C=q_C(\zeta)$
+- $\bar{w}_a=w_a(\zeta)$， $\bar{w}_b=w_b(\zeta)$， $\bar{w}_c=w_c(\zeta)$
+- $\bar{q}_L=q_L(\zeta)$， $\bar{q}_R=q_R(\zeta)$， $\bar{q}_M=q_M(\zeta)$，  $\bar{q}_O=q_O(\zeta)$， $\bar{q}_C=q_C(\zeta)$
 - $\bar{\sigma}_a=\sigma_a(\zeta)$， $\bar{\sigma}_b=\sigma_b(\zeta)$， $\bar{\sigma}_c=\sigma_c(\zeta)$
 - $\bar{z}\_{(\omega\cdot\zeta)}=z(\omega\cdot\zeta)$， $\bar{z}_{(\zeta)}=z(\zeta)$
 - $\bar{t}=t(\zeta)$

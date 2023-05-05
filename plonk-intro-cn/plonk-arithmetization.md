@@ -413,7 +413,7 @@ $$
 如果要证明 $a_1=a_2=a_3$，那么只需要证明：
 
 $$
-A' =  (b_1, b_2, \underline{a_4}, b_3, \underline{a_1}, b_2, \underline{a_2}) \overset{?}{=} A
+A' =  (b_1, b_2, \underline{a_3}, b_3, \underline{a_1}, b_2, \underline{a_2}) \overset{?}{=} A
 $$
 
 在经过置换的向量 $A'$ 中， $a_1, a_2, a_3$ 依次右移交换，即 $a_1$ 放到了原来 $a_2$ 的位置，而 $a_2$ 放到了 $a_3$ 的位置， $a_3$ 则放到了 $a_1$ 的位置。
