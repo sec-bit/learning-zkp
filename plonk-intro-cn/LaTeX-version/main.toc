@@ -1,0 +1,8 @@
+\contentsline {section}{\numberline {0.1}理解 PLONK（一）：Plonkish Arithmetization}{3}{section.0.1}%
+\contentsline {subsection}{\numberline {0.1.1}算术电路与 R1CS 算术化}{3}{subsection.0.1.1}%
+\contentsline {subsubsection}{多个乘法门}{7}{figure.caption.2}%
+\contentsline {subsubsection}{优缺点}{8}{figure.caption.2}%
+\contentsline {subsection}{\numberline {0.1.2}Plonkish 算术门}{9}{subsection.0.1.2}%
+\contentsline {subsection}{\numberline {0.1.3}复制约束}{10}{subsection.0.1.3}%
+\contentsline {subsection}{\numberline {0.1.4}再比较}{13}{subsection.0.1.4}%
+\contentsline {subsection}{\numberline {0.1.5}电路验证协议框架}{13}{subsection.0.1.5}%
