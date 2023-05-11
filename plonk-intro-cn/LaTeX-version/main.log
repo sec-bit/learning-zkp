@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.3.31)  10 MAY 2023 15:41
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.3.31)  11 MAY 2023 21:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1482,44 +1482,44 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 ]
 Package minitoc Info: I0024
 (minitoc)             PREPARING MINITOCS FROM main.toc on input line 214.
+Package minitoc Info: I0033
+(minitoc)             Writing main.mtc1.
+\openout3 = `main.mtc1'.
 
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {0.1}理解 PLONK（一）：Plonkish Arithmetization}{\reset@font\mtcSfont 3}{section.0.1}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {0.1.1}算术电路与 R1CS 算术化}{\reset@font\mtcSSfont 3}{subsection.0.1.1}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode 多个乘法门}{\reset@font\mtcSSSfont 7}{figure.caption.2}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode 优缺点}{\reset@font\mtcSSSfont 8}{figure.caption.2}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {0.1.2}Plonkish 算术门}{\reset@font\mtcSSfont 9}{subsection.0.1.2}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {0.1.3}复制约束}{\reset@font\mtcSSfont 10}{subsection.0.1.3}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {0.1.4}再比较}{\reset@font\mtcSSfont 13}{subsection.0.1.4}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {0.1.5}电路验证协议框架}{\reset@font\mtcSSfont 13}{subsection.0.1.5}}
-[2
+ [2
 
 ] (./main.toc)
 \tf@toc=\write10
 \openout10 = `main.toc'.
 
- (./chapter/plonk-arithmetization.tex
+ (./chapter/01-plonk-arithmetization.tex [3] [4
+
+]
+Chapter 1.
 File: img/img20230414162317.png Graphic file (type bmp)
 <img/img20230414162317.png>
 
-Overfull \hbox (112.81387pt too wide) in paragraph at lines 26--27
+Overfull \hbox (112.81387pt too wide) in paragraph at lines 25--26
  [][] 
  []
 
-[3] [4]
 File: img/img20230414162845.png Graphic file (type bmp)
 <img/img20230414162845.png>
 
-Underfull \vbox (badness 3503) has occurred while \output is active []
+Underfull \vbox (badness 1769) has occurred while \output is active []
 
- [5]
+ [5] [6] [7]
 File: img/img20230423133455.png Graphic file (type bmp)
 <img/img20230423133455.png>
 
-Overfull \hbox (500.07802pt too wide) in paragraph at lines 127--128
+Overfull \hbox (500.07802pt too wide) in paragraph at lines 126--127
 [][] 
  []
 
-[6]
+
+Underfull \vbox (badness 7064) has occurred while \output is active []
+
+ [8]
 
 Package fontspec Warning: Font "STFangsong" does not contain requested Script
 (fontspec)                "CJK".
@@ -1548,28 +1548,31 @@ Package fontspec Info: Font family 'STFangsong(0)' created for font
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
 
-Overfull \hbox (1.7014pt too wide) in paragraph at lines 148--152
+Overfull \hbox (1.7014pt too wide) in paragraph at lines 147--151
 []\TU/LXGWWenKaiMono(0)/m/n/10.95 然 后 我 们 需 要 为 每 一 个 乘 法 门 的 中 间 值 引 线 也 给 出 变 量 名：|  比 如 四 个 输 入 变 量 被 记 为 $\OML/cmm/m/it/10.95 x[]; x[]; x[]; x[]$\TU/LXGWWenKaiMono(0)/m/n/10.95 ，|
  []
 
-[7]
+[9] [10]
 File: img/img20230414202348.png Graphic file (type bmp)
 <img/img20230414202348.png>
- [8] [9]
+
+Underfull \vbox (badness 2564) has occurred while \output is active []
+
+ [11]
 File: img/img20230414205219.png Graphic file (type bmp)
 <img/img20230414205219.png>
 
-Overfull \hbox (973.8469pt too wide) in paragraph at lines 433--434
+Overfull \hbox (973.8469pt too wide) in paragraph at lines 432--433
 [][] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [10]
+ [12]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [11] [12] [13]) [14]
+ [13] [14] [15]) [16]
 
 LaTeX Warning: Empty bibliography on input line 289.
 
@@ -1599,18 +1602,18 @@ This document will not have a glossary.
 
 (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 01C5A621D7E55E3D5DDC2B7ABF8D0569;846.
+(rerunfilecheck)             Checksum: 5F3722AB83110D043A638557FE5B225E;914.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 39655 strings out of 476683
- 799276 string characters out of 5804047
+ 39618 strings out of 476683
+ 796129 string characters out of 5804047
  1867018 words of memory out of 5000000
- 59067 multiletter control sequences out of 15000+600000
+ 59027 multiletter control sequences out of 15000+600000
  525284 words of font info for 120 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  96i,12n,97p,2292b,852s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (14 pages).
+Output written on main.pdf (16 pages).

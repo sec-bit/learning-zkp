@@ -1,6 +1,5 @@
+\chapter{Plonkish Arithmetization}\label{ux7406ux89e3-plonkux4e00plonkish-arithmetization}
 
-\section{理解 PLONK（一）：Plonkish
-Arithmetization}\label{ux7406ux89e3-plonkux4e00plonkish-arithmetization}
 
 算术化是指把计算转换成数学对象，然后进行零知识证明。 Plonkish 算术化是
 Plonk 证明系统特有的算术化方法，在 Plonkish
@@ -14,7 +13,7 @@ Plonk
 编码。
 
 \hypertarget{ux7b97ux672fux7535ux8defux4e0e-r1cs-ux7b97ux672fux5316}{%
-\subsection{算术电路与 R1CS
+\section{算术电路与 R1CS
 算术化}\label{ux7b97ux672fux7535ux8defux4e0e-r1cs-ux7b97ux672fux5316}}
 
 一个算术电路包含若干个乘法门与加法门。每一个门都有「两个输入」引脚和一个「输出」引脚，任何一个输出引脚可以被接驳到多个门的输入引脚上。
@@ -130,7 +129,7 @@ NP-Complete 问题，也是一个 NP 困难问题。
 三个向量之间的内积关系来表示运算，而需要构造「三个矩阵」的运算关系。
 
 \hypertarget{ux591aux4e2aux4e58ux6cd5ux95e8}{%
-\subsubsection{多个乘法门}\label{ux591aux4e2aux4e58ux6cd5ux95e8}}
+\subsection{多个乘法门}\label{ux591aux4e2aux4e58ux6cd5ux95e8}}
 
 比如下图所示电路，有两个乘法门，他们的左右输入都涉及到变量。
 
@@ -250,7 +249,7 @@ x_5 \\
 的变量，这是为了处理加法门中的常量输入。
 
 \hypertarget{ux4f18ux7f3aux70b9}{%
-\subsubsection{优缺点}\label{ux4f18ux7f3aux70b9}}
+\subsection{优缺点}\label{ux4f18ux7f3aux70b9}}
 
 由于 R1CS 编码以乘法门为中心，于是电路中的加法门并不会增加 \(U, V, W\)
 矩阵的行数，因而对 Prover 的性能影响不大。R1CS
@@ -265,7 +264,7 @@ Proving 性能。但 Plonk
 方案逐步成为许多应用的首选方案，其编码方式也有了一个专门的名词：Plonkish。
 
 \hypertarget{plonkish-ux7b97ux672fux95e8}{%
-\subsection{Plonkish 算术门}\label{plonkish-ux7b97ux672fux95e8}}
+\section{Plonkish 算术门}\label{plonkish-ux7b97ux672fux95e8}}
 
 回看下例子电路，我们把三个门全都编号，
 \(\texttt{1},\texttt{2},\texttt{3}\)，同时把加法门的输出值也标记为变量
@@ -426,7 +425,7 @@ Verifier 保密， \(Q\) 矩阵代表了一个实现双方约定共识的电路�
 不过仅仅有 \(Q\) 矩阵是不足以精确描述上面的例子电路。
 
 \hypertarget{ux590dux5236ux7ea6ux675f}{%
-\subsection{复制约束}\label{ux590dux5236ux7ea6ux675f}}
+\section{复制约束}\label{ux590dux5236ux7ea6ux675f}}
 
 比较下面两个电路，它们的 \(Q\) 矩阵完全相同，但它们却完全不同。
 
@@ -515,7 +514,7 @@ i & \sigma_a & \sigma_b & \sigma_c  \\
 \]
 
 \hypertarget{ux518dux6bd4ux8f83}{%
-\subsection{再比较}\label{ux518dux6bd4ux8f83}}
+\section{再比较}\label{ux518dux6bd4ux8f83}}
 
 R1CS 的 \((U,V,W)\)
 表格的宽度与引线的数量有关，行数跟乘法门数量有关。这个构造相当于把算术电路看成是仅有乘法门构成，但每个门有多个输入引脚（最多为所有引线的数量）。而
@@ -535,7 +534,7 @@ can be reduced to a permutation check.
 的矩阵。但这个让步会带来更多的算术化灵活度。
 
 \hypertarget{ux7535ux8defux9a8cux8bc1ux534fux8baeux6846ux67b6}{%
-\subsection{电路验证协议框架}\label{ux7535ux8defux9a8cux8bc1ux534fux8baeux6846ux67b6}}
+\section{电路验证协议框架}\label{ux7535ux8defux9a8cux8bc1ux534fux8baeux6846ux67b6}}
 
 有了电路空白结构的描述和赋值，我们可以大致描述下 Plonk 的协议框架。
 
