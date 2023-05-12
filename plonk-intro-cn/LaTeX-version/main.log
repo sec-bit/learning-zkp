@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.3.31)  11 MAY 2023 21:09
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.3.31)  12 MAY 2023 14:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -244,6 +244,17 @@ Package: ulem 2019/11/18
 \l__xeCJK_fntef_box=\box59
 \l__xeCJK_under_symbol_box=\box60
 \c__xeCJK_filll_skip=\skip61
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/footmisc/footmisc.sty
+Package: footmisc 2022/03/08 v6.0d a miscellany of footnote facilities
+\FN@temptoken=\toks17
+\footnotemargin=\dimen179
+\@outputbox@depth=\dimen180
+Package footmisc Info: Declaring symbol style bringhurst on input line 695.
+Package footmisc Info: Declaring symbol style chicago on input line 703.
+Package footmisc Info: Declaring symbol style wiley on input line 712.
+Package footmisc Info: Declaring symbol style lamport-robust on input line 723.
+Package footmisc Info: Declaring symbol style lamport* on input line 743.
+Package footmisc Info: Declaring symbol style lamport*-robust on input line 764.
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2022/04/08 v2.17n AMS math features
 \@mathmargin=\skip62
@@ -253,11 +264,11 @@ For additional information on amsmath, use the `?' option.
 Package: amstext 2021/08/26 v2.01 AMS text
  (/usr/local/texlive/2023/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks17
-\ex@=\dimen179
+\@emptytoks=\toks18
+\ex@=\dimen181
 )) (/usr/local/texlive/2023/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen180
+\pmbraise@=\dimen182
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 2022/04/08 v2.04 operator names
 )
@@ -278,7 +289,7 @@ LaTeX Info: Redefining \big on input line 722.
 LaTeX Info: Redefining \Big on input line 723.
 LaTeX Info: Redefining \bigg on input line 724.
 LaTeX Info: Redefining \Bigg on input line 725.
-\big@size=\dimen181
+\big@size=\dimen183
 LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
 \macc@depth=\count295
@@ -291,34 +302,34 @@ LaTeX Info: Redefining \Relbar on input line 971.
 \dotsspace@=\muskip17
 \c@parentequation=\count297
 \dspbrk@lvl=\count298
-\tag@help=\toks18
+\tag@help=\toks19
 \row@=\count299
 \column@=\count300
 \maxfields@=\count301
-\andhelp@=\toks19
-\eqnshift@=\dimen182
-\alignsep@=\dimen183
-\tagshift@=\dimen184
-\tagwidth@=\dimen185
-\totwidth@=\dimen186
-\lineht@=\dimen187
-\@envbody=\toks20
+\andhelp@=\toks20
+\eqnshift@=\dimen184
+\alignsep@=\dimen185
+\tagshift@=\dimen186
+\tagwidth@=\dimen187
+\totwidth@=\dimen188
+\lineht@=\dimen189
+\@envbody=\toks21
 \multlinegap=\skip63
 \multlinetaggap=\skip64
-\mathdisplay@stack=\toks21
+\mathdisplay@stack=\toks22
 LaTeX Info: Redefining \[ on input line 2953.
 LaTeX Info: Redefining \] on input line 2954.
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/amscls/amsthm.sty
 Package: amsthm 2020/05/29 v2.20.6
-\thm@style=\toks22
-\thm@bodyfont=\toks23
-\thm@headfont=\toks24
-\thm@notefont=\toks25
-\thm@headpunct=\toks26
+\thm@style=\toks23
+\thm@bodyfont=\toks24
+\thm@headfont=\toks25
+\thm@notefont=\toks26
+\thm@headpunct=\toks27
 \thm@preskip=\skip65
 \thm@postskip=\skip66
 \thm@headsep=\skip67
-\dth@everypar=\toks27
+\dth@everypar=\toks28
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/amssymb.sty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
  (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/amsfonts.sty
@@ -339,7 +350,7 @@ Package: epsfig 2017/06/25 v1.7b (e)psfig emulation (SPQR)
 Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
  (/usr/local/texlive/2023/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
-\KV@toks@=\toks28
+\KV@toks@=\toks29
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
  (/usr/local/texlive/2023/texmf-dist/tex/latex/graphics/trig.sty
@@ -351,30 +362,30 @@ Package graphics Info: Driver file: xetex.def on input line 107.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/graphics-def/xetex.def
 File: xetex.def 2022/09/22 v5.0n Graphics/color driver for xetex
 ))
-\Gin@req@height=\dimen188
-\Gin@req@width=\dimen189
+\Gin@req@height=\dimen190
+\Gin@req@width=\dimen191
 )
-\epsfxsize=\dimen190
-\epsfysize=\dimen191
+\epsfxsize=\dimen192
+\epsfysize=\dimen193
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/tools/tabularx.sty
 Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
  (/usr/local/texlive/2023/texmf-dist/tex/latex/tools/array.sty
 Package: array 2022/09/04 v2.5g Tabular extension package (FMi)
-\col@sep=\dimen192
+\col@sep=\dimen194
 \ar@mcellbox=\box63
-\extrarowheight=\dimen193
-\NC@list=\toks29
+\extrarowheight=\dimen195
+\NC@list=\toks30
 \extratabsurround=\skip68
 \backup@length=\skip69
 \ar@cellbox=\box64
 )
-\TX@col@width=\dimen194
-\TX@old@table=\dimen195
-\TX@old@col=\dimen196
-\TX@target=\dimen197
-\TX@delta=\dimen198
+\TX@col@width=\dimen196
+\TX@old@table=\dimen197
+\TX@old@col=\dimen198
+\TX@target=\dimen199
+\TX@delta=\dimen256
 \TX@cols=\count302
-\TX@ftn=\toks30
+\TX@ftn=\toks31
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/blkarray/blkarray.sty
 Package: blkarray 2015/02/27 v0.07 Block array (dpc)
 \c@BAenumi=\count303
@@ -382,13 +393,13 @@ Package: blkarray 2015/02/27 v0.07 Block array (dpc)
 \BA@block@cnt=\count305
 \BA@final@box=\box65
 \BA@first@box=\box66
-\BA@colsep=\dimen199
-\BA@ftn=\toks31
-\BAextrarowheight=\dimen256
-\BAextraheightafterhline=\dimen257
-\BAarrayrulewidth=\dimen258
-\BAdoublerulesep=\dimen259
-\BAfootskip=\dimen260
+\BA@colsep=\dimen257
+\BA@ftn=\toks32
+\BAextrarowheight=\dimen258
+\BAextraheightafterhline=\dimen259
+\BAarrayrulewidth=\dimen260
+\BAdoublerulesep=\dimen261
+\BAfootskip=\dimen262
 \BA@dashbox=\box67
 \BA@ddashbox=\box68
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/carlisle/slashed.sty
@@ -402,16 +413,16 @@ Package color Info: Driver file: xetex.def on input line 149.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/usr/local/texlive/2023/texmf-dist/tex/latex/listings/listings.sty
 \lst@mode=\count306
 \lst@gtempboxa=\box69
-\lst@token=\toks32
+\lst@token=\toks33
 \lst@length=\count307
-\lst@currlwidth=\dimen261
+\lst@currlwidth=\dimen263
 \lst@column=\count308
 \lst@pos=\count309
-\lst@lostspace=\dimen262
-\lst@width=\dimen263
+\lst@lostspace=\dimen264
+\lst@width=\dimen265
 \lst@newlines=\count310
 \lst@lineno=\count311
-\lst@maxwidth=\dimen264
+\lst@maxwidth=\dimen266
  (/usr/local/texlive/2023/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
 \c@lstnumber=\count312
@@ -429,14 +440,14 @@ Package: xeCJK-listings 2022/08/05 v3.9.1 xeCJK patch file for listings
 Package: caption 2023/03/12 v3.6j Customizing captions (AR)
  (/usr/local/texlive/2023/texmf-dist/tex/latex/caption/caption3.sty
 Package: caption3 2023/03/12 v2.4 caption3 kernel (AR)
-\caption@tempdima=\dimen265
-\captionmargin=\dimen266
-\caption@leftmargin=\dimen267
-\caption@rightmargin=\dimen268
-\caption@width=\dimen269
-\caption@indent=\dimen270
-\caption@parindent=\dimen271
-\caption@hangindent=\dimen272
+\caption@tempdima=\dimen267
+\captionmargin=\dimen268
+\caption@leftmargin=\dimen269
+\caption@rightmargin=\dimen270
+\caption@width=\dimen271
+\caption@indent=\dimen272
+\caption@parindent=\dimen273
+\caption@hangindent=\dimen274
 Package caption Info: Standard document class detected.
 )
 \c@caption@flags=\count316
@@ -470,7 +481,7 @@ Package minitoc Info: I0023
 (minitoc)             part level macros available.
 Package minitoc Info: I0003
 (minitoc)             chapter level macros available.
-\mtc@toks=\toks33
+\mtc@toks=\toks34
 \mtc@strutbox=\box71
 \mtc@hstrutbox=\box72
 Package minitoc Info: I0002
@@ -505,21 +516,21 @@ File: english.mld 2006/01/13
 Package: multicol 2021/11/30 v1.9d multicolumn formatting (FMi)
 \c@tracingmulticols=\count328
 \mult@box=\box73
-\multicol@leftmargin=\dimen273
+\multicol@leftmargin=\dimen275
 \c@unbalance=\count329
 \c@collectmore=\count330
 \doublecol@number=\count331
 \multicoltolerance=\count332
 \multicolpretolerance=\count333
-\full@width=\dimen274
-\page@free=\dimen275
-\premulticols=\dimen276
-\postmulticols=\dimen277
+\full@width=\dimen276
+\page@free=\dimen277
+\premulticols=\dimen278
+\postmulticols=\dimen279
 \multicolsep=\skip73
 \multicolbaselineskip=\skip74
 \partial@page=\box74
 \last@line=\box75
-\maxbalancingoverflow=\dimen278
+\maxbalancingoverflow=\dimen280
 \mult@rightbox=\box76
 \mult@grightbox=\box77
 \mult@firstbox=\box78
@@ -563,9 +574,9 @@ Package: multicol 2021/11/30 v1.9d multicolumn formatting (FMi)
 \c@minrows=\count334
 \c@columnbadness=\count335
 \c@finalcolumnbadness=\count336
-\last@try=\dimen279
-\multicolovershoot=\dimen280
-\multicolundershoot=\dimen281
+\last@try=\dimen281
+\multicolovershoot=\dimen282
+\multicolundershoot=\dimen283
 \mult@nat@firstbox=\box116
 \colbreak@box=\box117
 \mc@col@check@num=\count337
@@ -584,8 +595,8 @@ Package: imakeidx 2016/10/15 v1.3e Package for typesetting indices in a synchron
  (/usr/local/texlive/2023/texmf-dist/tex/latex/xkeyval/xkeyval.sty
 Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
  (/usr/local/texlive/2023/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/usr/local/texlive/2023/texmf-dist/tex/generic/xkeyval/xkvutils.tex
-\XKV@toks=\toks34
-\XKV@tempa@toks=\toks35
+\XKV@toks=\toks35
+\XKV@tempa@toks=\toks36
 )
 \XKV@depth=\count338
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
@@ -630,7 +641,7 @@ Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 ))
 \c@section@level=\count339
 )
-\@linkdim=\dimen282
+\@linkdim=\dimen284
 \Hy@linkcounter=\count340
 \Hy@pagecounter=\count341
  (/usr/local/texlive/2023/texmf-dist/tex/latex/hyperref/pd1enc.def
@@ -658,15 +669,15 @@ Package hyperref Info: Bookmarks ON on input line 4425.
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4763.
-\XeTeXLinkMargin=\dimen283
+\XeTeXLinkMargin=\dimen285
  (/usr/local/texlive/2023/texmf-dist/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
  (/usr/local/texlive/2023/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
 ))
 \Fld@menulength=\count344
-\Field@Width=\dimen284
-\Fld@charsize=\dimen285
+\Field@Width=\dimen286
+\Fld@charsize=\dimen287
 Package hyperref Info: Hyper figures OFF on input line 6042.
 Package hyperref Info: Link nesting OFF on input line 6047.
 Package hyperref Info: Hyper index ON on input line 6050.
@@ -732,8 +743,8 @@ Package caption Info: New subtype `subtable' on input line 239.
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/enumitem/enumitem.sty
 Package: enumitem 2019/06/20 v3.9 Customized lists
 \labelindent=\skip76
-\enit@outerparindent=\dimen286
-\enit@toks=\toks36
+\enit@outerparindent=\dimen288
+\enit@toks=\toks37
 \enit@inbox=\box119
 \enit@count@id=\count354
 \enitdp@description=\count355
@@ -743,8 +754,8 @@ Package: mathtools 2022/06/29 v1.29 mathematical typesetting tools
 Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
 \calc@Acount=\count356
 \calc@Bcount=\count357
-\calc@Adimen=\dimen287
-\calc@Bdimen=\dimen288
+\calc@Adimen=\dimen289
+\calc@Bdimen=\dimen290
 \calc@Askip=\skip77
 \calc@Bskip=\skip78
 LaTeX Info: Redefining \setlength on input line 80.
@@ -755,16 +766,16 @@ LaTeX Info: Redefining \addtolength on input line 81.
 Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
 )
 \g_MT_multlinerow_int=\count359
-\l_MT_multwidth_dim=\dimen289
+\l_MT_multwidth_dim=\dimen291
 \origjot=\skip80
-\l_MT_shortvdotswithinadjustabove_dim=\dimen290
-\l_MT_shortvdotswithinadjustbelow_dim=\dimen291
-\l_MT_above_intertext_sep=\dimen292
-\l_MT_below_intertext_sep=\dimen293
-\l_MT_above_shortintertext_sep=\dimen294
-\l_MT_below_shortintertext_sep=\dimen295
+\l_MT_shortvdotswithinadjustabove_dim=\dimen292
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen293
+\l_MT_above_intertext_sep=\dimen294
+\l_MT_below_intertext_sep=\dimen295
+\l_MT_above_shortintertext_sep=\dimen296
+\l_MT_below_shortintertext_sep=\dimen297
 \xmathstrut@box=\box120
-\xmathstrut@dim=\dimen296
+\xmathstrut@dim=\dimen298
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/physics/physics.sty
 Package: physics 
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
@@ -793,12 +804,12 @@ Package: relsize 2013/03/29 ver 4.1
 \skiplength=\skip87
 \algomargin=\skip88
 \skipalgocfslide=\skip89
-\algowidth=\dimen297
-\inoutsize=\dimen298
-\inoutindent=\dimen299
-\interspacetitleruled=\dimen300
-\interspacealgoruled=\dimen301
-\interspacetitleboxruled=\dimen302
+\algowidth=\dimen299
+\inoutsize=\dimen300
+\inoutindent=\dimen301
+\interspacetitleruled=\dimen302
+\interspacealgoruled=\dimen303
+\interspacetitleboxruled=\dimen304
 \algocf@ruledwidth=\skip90
 \algocf@inoutbox=\box121
 \algocf@inputbox=\box122
@@ -837,24 +848,24 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@cnth=\count365
 \Gm@cntv=\count366
 \c@Gm@tempcnt=\count367
-\Gm@bindingoffset=\dimen303
-\Gm@wd@mp=\dimen304
-\Gm@odd@mp=\dimen305
-\Gm@even@mp=\dimen306
-\Gm@layoutwidth=\dimen307
-\Gm@layoutheight=\dimen308
-\Gm@layouthoffset=\dimen309
-\Gm@layoutvoffset=\dimen310
-\Gm@dimlist=\toks37
+\Gm@bindingoffset=\dimen305
+\Gm@wd@mp=\dimen306
+\Gm@odd@mp=\dimen307
+\Gm@even@mp=\dimen308
+\Gm@layoutwidth=\dimen309
+\Gm@layoutheight=\dimen310
+\Gm@layouthoffset=\dimen311
+\Gm@layoutvoffset=\dimen312
+\Gm@dimlist=\toks38
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/thmtools/thmtools.sty
 Package: thmtools 2023/02/17 v0.75
-\thmt@toks=\toks38
+\thmt@toks=\toks39
 \c@thmt@dummyctr=\count368
  (/usr/local/texlive/2023/texmf-dist/tex/latex/thmtools/thm-patch.sty
 Package: thm-patch 2023/02/17 v0.75
  (/usr/local/texlive/2023/texmf-dist/tex/latex/thmtools/parseargs.sty
 Package: parseargs 2023/02/17 v0.75
-\@parsespec=\toks39
+\@parsespec=\toks40
 )) (/usr/local/texlive/2023/texmf-dist/tex/latex/thmtools/thm-kv.sty
 Package: thm-kv 2023/02/17 v0.75
 Package thm-kv Info: Theorem names will be uppercased on input line 42.
@@ -869,7 +880,7 @@ Package: thm-listof 2023/02/17 v0.75
 Package: thm-restate 2023/02/17 v0.75
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/thmtools/thm-amsthm.sty
 Package: thm-amsthm 2023/02/17 v0.75
-\thmt@style@headstyle=\toks40
+\thmt@style@headstyle=\toks41
 ))
 \c@theorem=\count369
 \c@axiom=\count370
@@ -905,12 +916,12 @@ Package: titlesec 2021/07/05 v2.14 Sectioning titles
 \ttl@box=\box129
 \beforetitleunit=\skip104
 \aftertitleunit=\skip105
-\ttl@plus=\dimen311
-\ttl@minus=\dimen312
-\ttl@toksa=\toks41
-\titlewidth=\dimen313
-\titlewidthlast=\dimen314
-\titlewidthfirst=\dimen315
+\ttl@plus=\dimen313
+\ttl@minus=\dimen314
+\ttl@toksa=\toks42
+\titlewidth=\dimen315
+\titlewidthlast=\dimen316
+\titlewidthfirst=\dimen317
 )
 \c@ttlp@side=\count386
 \ttlp@side=\count387
@@ -1154,8 +1165,8 @@ Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
 Package: glossaries 2022/11/03 v4.52 (NLCT)
  (/usr/local/texlive/2023/texmf-dist/tex/latex/mfirstuc/mfirstuc.sty
 Package: mfirstuc 2022/10/14 v2.08 (NLCT)
-\@glsmfirst=\toks42
-\@glsmrest=\toks43
+\@glsmfirst=\toks43
+\@glsmrest=\toks44
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/xfor/xfor.sty
 Package: xfor 2009/02/05 v1.05 (NLCT)
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/datatool/datatool-base.sty
@@ -1201,7 +1212,7 @@ Package: fp-upn 1996/10/21
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/fp/fp-eval.sty
 Package: fp-eval 1995/04/03
 )))
-\@dtl@toks=\toks44
+\@dtl@toks=\toks45
 \@dtl@tmpcount=\count527
 \dtl@tmplength=\skip137
 \dtl@sortresult=\count528
@@ -1212,12 +1223,12 @@ Package: fp-eval 1995/04/03
 \@dtl@foreach@level=\count533
 )
 \gls@level=\count534
-\@gls@tmpb=\toks45
+\@gls@tmpb=\toks46
 \gls@tmplen=\skip138
-\glskeylisttok=\toks46
-\glslabeltok=\toks47
-\glsshorttok=\toks48
-\glslongtok=\toks49
+\glskeylisttok=\toks47
+\glslabeltok=\toks48
+\glsshorttok=\toks49
+\glslongtok=\toks50
  (/usr/local/texlive/2023/texmf-dist/tex/latex/glossaries/styles/glossary-hypernav.sty
 Package: glossary-hypernav 2022/11/03 v4.52 (NLCT)
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/glossaries/styles/glossary-list.sty
@@ -1232,7 +1243,7 @@ Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
 \LTpre=\skip142
 \LTpost=\skip143
 \LTchunksize=\count535
-\LTcapwidth=\dimen316
+\LTcapwidth=\dimen318
 \LT@head=\box130
 \LT@firsthead=\box131
 \LT@foot=\box132
@@ -1242,7 +1253,7 @@ Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
 \LT@rows=\count537
 \c@LT@tables=\count538
 \c@LT@chunks=\count539
-\LT@p@ftn=\toks50
+\LT@p@ftn=\toks51
 )
 \glsdescwidth=\skip144
 \glspagelistwidth=\skip145
@@ -1251,19 +1262,19 @@ Package: glossary-super 2022/11/03 v4.52 (NLCT)
  (/usr/local/texlive/2023/texmf-dist/tex/latex/supertabular/supertabular.sty
 Package: supertabular 2020/02/02 v4.1g the supertabular environment
 \c@tracingst=\count540
-\ST@wd=\dimen317
+\ST@wd=\dimen319
 \ST@rightskip=\skip146
 \ST@leftskip=\skip147
 \ST@parfillskip=\skip148
-\ST@pageleft=\dimen318
-\ST@headht=\dimen319
-\ST@tailht=\dimen320
-\ST@pagesofar=\dimen321
-\ST@pboxht=\dimen322
-\ST@lineht=\dimen323
-\ST@prevht=\dimen324
-\ST@toadd=\dimen325
-\ST@dimen=\dimen326
+\ST@pageleft=\dimen320
+\ST@headht=\dimen321
+\ST@tailht=\dimen322
+\ST@pagesofar=\dimen323
+\ST@pboxht=\dimen324
+\ST@lineht=\dimen325
+\ST@prevht=\dimen326
+\ST@toadd=\dimen327
+\ST@dimen=\dimen328
 \ST@pbox=\box135
 )) (/usr/local/texlive/2023/texmf-dist/tex/latex/glossaries/styles/glossary-tree.sty
 Package: glossary-tree 2022/11/03 v4.52 (NLCT)
@@ -1363,8 +1374,8 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 \c@lstlisting=\count543
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: changepage package is loaded.
-\caption@adjustwidth@hsize=\dimen327
-\caption@adjustwidth@linewidth=\dimen328
+\caption@adjustwidth@hsize=\dimen329
+\caption@adjustwidth@linewidth=\dimen330
 Package caption Info: hyperref package is loaded.
 Package caption Info: longtable package is loaded.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/caption/ltcaption.sty
@@ -1458,13 +1469,12 @@ Package biblatex Info: Automatic encoding selection.
 \openout5 = `main.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'main.bbl' not found.
-
-No file main.bbl.
+Package biblatex Info: ... file 'main.bbl' found.
+ (./main.bbl)
 Package biblatex Info: Reference section=0 on input line 203.
 Package biblatex Info: Reference segment=0 on input line 203.
 LaTeX Font Info:    Trying to load font information for U+msa on input line 209.
-(/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 LaTeX Font Info:    Trying to load font information for U+msb on input line 209.
@@ -1486,40 +1496,54 @@ Package minitoc Info: I0033
 (minitoc)             Writing main.mtc1.
 \openout3 = `main.mtc1'.
 
+Package minitoc Info: I0033
+(minitoc)             Writing main.mtc2.
+\openout3 = `main.mtc2'.
+
+Package minitoc Info: I0033
+(minitoc)             Writing main.mtc3.
+\openout3 = `main.mtc3'.
+
+Package minitoc Info: I0033
+(minitoc)             Writing main.mtc4.
+\openout3 = `main.mtc4'.
+
+Package minitoc Info: I0033
+(minitoc)             Writing main.mtc5.
+\openout3 = `main.mtc5'.
+
+Package minitoc Info: I0033
+(minitoc)             Writing main.mtc6.
+\openout3 = `main.mtc6'.
+
+Package minitoc Info: I0033
+(minitoc)             Writing main.mtc7.
+\openout3 = `main.mtc7'.
+
  [2
 
-] (./main.toc)
+] (./main.toc [3])
 \tf@toc=\write10
 \openout10 = `main.toc'.
 
- (./chapter/01-plonk-arithmetization.tex [3] [4
-
-]
+ (./chapter/01-plonk-arithmetization.tex [4]
 Chapter 1.
 File: img/img20230414162317.png Graphic file (type bmp)
 <img/img20230414162317.png>
+[5
 
-Overfull \hbox (112.81387pt too wide) in paragraph at lines 25--26
- [][] 
- []
-
+]
 File: img/img20230414162845.png Graphic file (type bmp)
 <img/img20230414162845.png>
-
-Underfull \vbox (badness 1769) has occurred while \output is active []
-
- [5] [6] [7]
+ [6]
 File: img/img20230423133455.png Graphic file (type bmp)
 <img/img20230423133455.png>
 
-Overfull \hbox (500.07802pt too wide) in paragraph at lines 126--127
+Overfull \hbox (19.28293pt too wide) in paragraph at lines 124--125
 [][] 
  []
 
-
-Underfull \vbox (badness 7064) has occurred while \output is active []
-
- [8]
+[7]
 
 Package fontspec Warning: Font "STFangsong" does not contain requested Script
 (fontspec)                "CJK".
@@ -1548,37 +1572,60 @@ Package fontspec Info: Font family 'STFangsong(0)' created for font
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
 
-Overfull \hbox (1.7014pt too wide) in paragraph at lines 147--151
+Overfull \hbox (1.7014pt too wide) in paragraph at lines 145--149
 []\TU/LXGWWenKaiMono(0)/m/n/10.95 然 后 我 们 需 要 为 每 一 个 乘 法 门 的 中 间 值 引 线 也 给 出 变 量 名：|  比 如 四 个 输 入 变 量 被 记 为 $\OML/cmm/m/it/10.95 x[]; x[]; x[]; x[]$\TU/LXGWWenKaiMono(0)/m/n/10.95 ，|
  []
 
-[9] [10]
+[8]
+File: img/img20230414202348.png Graphic file (type bmp)
+<img/img20230414202348.png>
+ [9] [10]
+File: img/img20230414205219.png Graphic file (type bmp)
+<img/img20230414205219.png>
+ [11] [12] [13] [14]) (./chapter/02-plonk-lagrange-basis.tex [15] [16
+
+]
+Chapter 2.
+[17] [18] [19] [20] [21]) (./chapter/03-plonk-permutation.tex [22]
+Chapter 3.
+[23
+
+] [24] [25] [26] [27] [28]) (./chapter/04-plonk-constraints.tex [29] [30]
+Chapter 4.
+[31
+
+] [32]
+Overfull \hbox (159.59464pt too wide) in paragraph at lines 149--154
+[]\TU/LXGWWenKaiMono(0)/m/n/10.95 如 果 我 们 用 多 项 式 对 $[]\OML/cmm/m/it/10.95 ; []; []; [][]; [][]; [][]; ^^[[]; ^^[[]; ^^[[]$ \TU/LXGWWenKaiMono(0)/m/n/10.95 编 码，|  得 到 $\OML/cmm/m/it/10.95 w[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 X\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; w[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 X\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; w[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 X\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; id[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 X\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; id[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 X\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; id[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 X\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; ^^[[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 X\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; ^^[[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 X\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; ^^[[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 X\OT1/cmr/m/n/10.95 )$\TU/LXGWWenKaiMono(0)/m/n/10.95 ，|
+ []
+
+[33] [34]
 File: img/img20230414202348.png Graphic file (type bmp)
 <img/img20230414202348.png>
 
-Underfull \vbox (badness 2564) has occurred while \output is active []
-
- [11]
-File: img/img20230414205219.png Graphic file (type bmp)
-<img/img20230414205219.png>
-
-Overfull \hbox (973.8469pt too wide) in paragraph at lines 432--433
-[][] 
- []
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [12]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+ [35] [36] [37]) (./chapter/05-plonk-polycom.tex [38]
+Chapter 5.
+[39
 
- [13] [14] [15]) [16]
+] [40] [41] [42] [43] [44]) (./chapter/06-plonk-randomizing.tex [45] [46]
+Chapter 6.
+[47
 
-LaTeX Warning: Empty bibliography on input line 289.
+] [48] [49]
+Underfull \vbox (badness 2790) has occurred while \output is active []
 
+ [50] [51] [52]) [53] [54
+
+] [55
+
+] [56
+
+]
 runsystem(makeindex -s index.ist main.idx)...executed safely (allowed).
 
-(./main.ind)
+ (./main.ind)
 Package minitoc Info: I0009
 (minitoc)             Listing minitoc auxiliary files. 
 (minitoc)             Creating the main.maf file.
@@ -1601,19 +1648,28 @@ Package glossaries Warning: No \printglossary or \printglossaries found.
 This document will not have a glossary.
 
 (./main.aux)
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 5F3722AB83110D043A638557FE5B225E;914.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: F8BB72B3BA2D648C3F966C41CBBA52A7;5063
+(rerunfilecheck)             After:  77B2DA3C966D76F12BCED54B937FCA6F;5063.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 39618 strings out of 476683
- 796129 string characters out of 5804047
+ 40266 strings out of 476683
+ 813640 string characters out of 5804047
  1867018 words of memory out of 5000000
- 59027 multiletter control sequences out of 15000+600000
- 525284 words of font info for 120 fonts, out of 8000000 for 9000
+ 59610 multiletter control sequences out of 15000+600000
+ 535584 words of font info for 171 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 96i,12n,97p,2292b,852s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 96i,19n,97p,2292b,4764s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (16 pages).
+Output written on main.pdf (56 pages).
