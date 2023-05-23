@@ -257,16 +257,17 @@ $$
 
 ## 完整的置换协议
 
-公共输入：置换关系 $\sigma$；
+公共输入：置换关系 $\sigma$
 
-秘密输入：两个向量 $\vec{a}$ 与 $\vec{b}$ ；
+秘密输入：两个向量 $\vec{a}$ 与 $\vec{b}$
 
-预处理：Prover 和 Verifier 构造 $id(X)$ 与 $\sigma(X)$，
-第一步：Prover 构造并发送 $[a(X)]$ 与 $[b(X)]$，
+预处理：Prover 和 Verifier 构造 $id(X)$ 与 $\sigma(X)$
 
-第二步：Verifier 发送挑战数 $\beta$ 与 $\gamma$，
+第一步：Prover 构造并发送 $[a(X)]$ 与 $[b(X)]$
 
-第三步：Prover 构造辅助向量 $\vec{z}$，
+第二步：Verifier 发送挑战数 $\beta$ 与 $\gamma$
+
+第三步：Prover 构造辅助向量 $\vec{z}$
 
 $$
 \begin{split}
@@ -275,9 +276,9 @@ z_{i+1} &= z_i\cdot \frac{a_i+\beta\cdot i + \gamma}{b_i+\beta\cdot \sigma(i) + 
 \end{split}
 $$
 
-构造多项式 $z(X)$ 并发送 $[z(X)]$；
+构造多项式 $z(X)$ 并发送 $[z(X)]$
 
-第四步：Verifier 发送挑战数 $\alpha$；
+第四步：Verifier 发送挑战数 $\alpha$
 
 第五步：Prover 构造 $f(X)$ 与 $q(X)$，并发送 $[q(X)]$
 
@@ -289,7 +290,9 @@ $$
 q(X) = \frac{f(X)}{z_H(X)}
 $$
 
-第四步：Verifier 向 $[a(X)],[b(X)],[z(X)]$ 查询 发送 $\zeta$，得到 $a(\zeta)$， $b(\zeta)$， $z(\zeta)$， $id(\zeta)$ 与 $\sigma(\omega\cdot \zeta)$， $q(\zeta)$，计算 $z_H(\zeta)$， $L_0(\zeta)$， $\sigma(\zeta)$ 与 $id(\zeta)$；
+第六步：Verifier 向 $[a(X)]$, $[b(X)]$, $[z(X)]$, $[q(X)]$ 查询 
+
+发送 $\zeta$，得到 $a(\zeta)$, $b(\zeta)$, $z(\zeta)$ 与 $z(\omega\cdot \zeta)$, $q(\zeta)$。Verifier 自行计算 $z_H(\zeta)$, $L_0(\zeta)$, $\sigma(\zeta)$ 与 $id(\zeta)$
 
 验证步：Verifier 验证
 
