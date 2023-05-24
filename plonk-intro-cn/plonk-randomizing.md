@@ -151,7 +151,7 @@ $$
 z_{N-1} = z_{N-2}\cdot \frac{f_{N-2}}{g_{N-2}}
 $$
 
-那么 $z_{N-1}$ 的概率分布与$\rho_1$ 相同。这样我们通过把 Witness Table 的最后两行用来填入随机数 $\rho_1$，并且设置一个 Copy Constraint 来随机化 $z_{N-1}$。如果要再引入一个随机数 $\rho_2$，一种方法是我们再征用 Witness table 的两行， $i=N-4, N-3$，可以让 $z_{N-4}$ 随机化。或者我们节省下空间，利用 $w_{b,N-3}$ 与 $w_{b,N-2}$ 来构造一个随机数 $\rho_2$ 的 Copy Constraint。同理，我们可以再用两行 $i=N-4, N-3$ 来引入 $\rho_3$。
+那么 $z_{N-1}$ 的概率分布与 $\rho_1$ 相同。这样我们通过把 Witness Table 的最后两行用来填入随机数 $\rho_1$，并且设置一个 Copy Constraint 来随机化 $z_{N-1}$。如果要再引入一个随机数 $\rho_2$，一种方法是我们再征用 Witness table 的两行， $i=N-4, N-3$，可以让 $z_{N-4}$ 随机化。或者我们节省下空间，利用 $w_{b,N-3}$ 与 $w_{b,N-2}$ 来构造一个随机数 $\rho_2$ 的 Copy Constraint。同理，我们可以再用两行 $i=N-4, N-3$ 来引入 $\rho_3$。
 这样，我们总共征用了四行，引入了三个随机数 $\rho_1,\rho_2,\rho_3$：
 
 $$
@@ -245,8 +245,7 @@ $$
 C_f = \sum_{i=0}^{n-1}f_i\cdot [\chi^i]_1 + \sum\_{i=0}^{n-1}r_i\cdot[\rho\chi^i]_1 = [f(\chi)+\rho\cdot r(\chi)]_1
 $$
 
-如果我们要在 $X=\zeta$ 处打开一个多项式承诺，先计算 $y=f(\zeta)$，还要计算
-盲化多项式 $r(X)$ 在 $X=\zeta$ 的求值，$y'=r(\zeta)$，然后产生这两个多项式的求值证明：
+如果我们要在 $X=\zeta$ 处打开一个多项式承诺，先计算 $y=f(\zeta)$，还要计算盲化多项式 $r(X)$ 在 $X=\zeta$ 的求值， $y'=r(\zeta)$，然后产生这两个多项式的求值证明：
 
 $$
 q(X) = f(X) + \rho\cdot r(X) = \frac{f(X)-f(\zeta)}{X-\zeta} + \rho\cdot \frac{r(X)-r(\zeta)}{X-\zeta}
