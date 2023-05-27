@@ -6,7 +6,10 @@
 - [（二）拉格朗日插值](plonk-lagrange-basis.md)
 - [（三）置换证明](plonk-permutation.md)
 - [（四）算术约束与拷贝约束](plonk-constraints.md)
-- [（五）算术约束与拷贝约束](plonk-constraints.md)
+- [（五）多项式承诺](plonk-polycom.md)
+- [（六）实现零知识](plonk-randomizing.md)
+- [（七）查表约束](plonk-lookup.md)
+
 
 **感谢**：内容源于 Antalpha-Hackhouse@ChiangMai 的讨论，还有 [@Antalpha-Labs](https://github.com/Antalpha-Labs/zkp-co-learn) 共学课程讨论。
 
