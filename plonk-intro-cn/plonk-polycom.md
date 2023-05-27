@@ -89,7 +89,7 @@ $$
 而 Prover 则可以提供 $q(X)$ 多项式的承诺，记为 $C_q$，作为 $f(\zeta)=y$ 的证明，Verifier 可以检查 $[q(\chi)]$ 是否满足整除性来验证证明。因为如果 $f(\zeta)\neq y$，那么 $g(X)$ 则无法被 $(X-\zeta)$ 整除，即使 Prover 提供的承诺将无法通过整除性检查：
 
 $$
-(f(X)-y)\cdot 1 \overset{?}{=} q(X) \cdot (X-x)
+(f(X)-y)\cdot 1 \overset{?}{=} q(X) \cdot (X-\zeta)
 $$
 
 承诺 $C_{f(X)}$ 是群 $\mathbb{G}_1$ 上的一个元素，通过承诺的加法同态映射关系，以及双线性映射关系 $e\in \mathbb{G}_1\times\mathbb{G}_2\to \mathbb{G}_T$，Verifier 可以在 $\mathbb{G}_T$ 上验证整除性关系：
@@ -105,7 +105,7 @@ f(X) + \zeta\cdot q(X) - y =  q(X)\cdot X
 $$
 
 $$
-e(C\_{f(X)} + \zeta\cdot C\_{q(X)} -y, [1]_2)\overset{?}{=} e(C\_{q(X)}, [\chi]_2)
+e(C\_{f(X)} + \zeta\cdot C\_{q(X)} -y\cdot[1]_1,\ [1]_2)\overset{?}{=} e(C\_{q(X)},\  [\chi]_2)
 $$
 
 ## 同点 Open 的证明聚合
