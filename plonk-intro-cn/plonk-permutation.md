@@ -207,10 +207,10 @@ $$
 \begin{array}{|c|c | c|c|}
 a_i & {i} & b_i & \sigma({i}) \\
 \hline
-a_0 & 0 & b_0=a_1 & 1 \\
-a_1 & 1 & b_1=a_0 & 0 \\
-a_2 & 2 & b_2=a_3 & 3 \\
-a_3 & 3 & b_3=a_2 & 2 \\
+a_0 & 0 & b_0=a_0 & 1 \\
+a_1 & 1 & b_1=a_1 & 0 \\
+a_2 & 2 & b_2=a_2 & 3 \\
+a_3 & 3 & b_3=a_3 & 2 \\
 \vdots & \vdots & \vdots & \vdots \\
 a_n & n & b_n=a_{n-1} & n-1 \\
 a_{n-1} & n-1 & b_{n-1}=a_{n} & n \\
@@ -225,11 +225,11 @@ $$
 \begin{array}{|c|c|}
 a'_i=(a_i, i) & b'_i=({b}_i, \sigma(i)) \\
 \hline
-(a_0, 0) & (b_0=a_1, 1) \\
-(a_1, 1) & (b_1=a_0, 0) \\
+(a_0, 0) & (b_0=a_0, 1) \\
+(a_1, 1) & (b_1=a_1, 0) \\
 \vdots & \vdots \\
-(a\_{n-1}, n-1) & (b\_{n-1}=a\_{n}, n) \\
-(a\_n, n) & (b\_n=a\_{n-1}, n-1) \\
+(a\_{n-1}, n-1) & (b\_{n-1}=a_{n-1}, n) \\
+(a\_n, n) & (b\_n=a_{n}, n-1) \\
 \end{array}
 $$
 
@@ -259,11 +259,11 @@ $$
 
 公共输入：置换关系 $\sigma$
 
-秘密输入：两个向量 $\vec{a}$ 与 $\vec{b}$ 
+秘密输入：向量 $\vec{a}$  
 
 预处理：Prover 和 Verifier 构造 $[id(X)]$ 与 $[\sigma(X)]$
 
-第一步：Prover 构造并发送 $[a(X)]$ 与 $[b(X)]$
+第一步：Prover 构造并发送 $[a(X)]$
 
 第二步：Verifier 发送挑战数 $\beta$ 与 $\gamma$
 
@@ -272,7 +272,7 @@ $$
 $$
 \begin{split}
 z_0 &= 1 \\
-z_{i+1} &= z_i\cdot \frac{a_i+\beta\cdot i + \gamma}{b_i+\beta\cdot \sigma(i) + \gamma}
+z_{i+1} &= z_i\cdot \frac{a_i+\beta\cdot i + \gamma}{a_i+\beta\cdot \sigma(i) + \gamma}
 \end{split}
 $$
 
@@ -281,19 +281,19 @@ $$
 第五步：Prover 构造 $f(X)$ 与 $q(X)$，并发送 $[q(X)]$
 
 $$
-f(X)= L_0(X)(z(X)-1) + \alpha\cdot (z(\omega\cdot X)(b(X)+\beta\cdot\sigma(X)+\gamma)-z(X)(a(X)+\beta\cdot id(X)+\gamma)) 
+f(X)= L_0(X)(z(X)-1) + \alpha\cdot (z(\omega\cdot X)(a(X)+\beta\cdot\sigma(X)+\gamma)-z(X)(a(X)+\beta\cdot id(X)+\gamma)) 
 $$
 
 $$
 q(X) = \frac{f(X)}{z_H(X)}
 $$
 
-第六步：Verifier 向 $[a(X)],[b(X)],[q(X)]$ 查询这三个多项式在 $X=\zeta$ 处的取值 ，得到 $a(\zeta)$， $b(\zeta)$， $q(\zeta)$；向 $[z(X)]$ 查询 $X=\zeta, X=\omega\cdot\zeta$ 两个位置处的取值，即 $z(\zeta), z(\omega\cdot\zeta)$；向  $[\sigma(X)]$ 与 $[id(X)]$ 这两个多项式发送求值查询 $X=\zeta$ ，得到  $id(\zeta)$ 与 $\sigma(\zeta)$；Verifier 自行计算 $z_H(\zeta)$， $L_0(\zeta)$
+第六步：Verifier 向 $[a(X)],[q(X)]$ 查询这三个多项式在 $X=\zeta$ 处的取值 ，得到 $a(\zeta)$， $q(\zeta)$；向 $[z(X)]$ 查询 $X=\zeta, X=\omega\cdot\zeta$ 两个位置处的取值，即 $z(\zeta), z(\omega\cdot\zeta)$；向  $[\sigma(X)]$ 与 $[id(X)]$ 这两个多项式发送求值查询 $X=\zeta$ ，得到  $id(\zeta)$ 与 $\sigma(\zeta)$；Verifier 自行计算 $z_H(\zeta)$， $L_0(\zeta)$
 
 验证步：Verifier 验证
 
 $$
-L_0(\zeta)(z(\zeta)-1) + \alpha\cdot (z(\omega\cdot \zeta)(b(\zeta)+\beta\cdot\sigma(\zeta)+\gamma)-z(\zeta)(a(\zeta)+\beta\cdot id(\zeta)+\gamma)) \overset{?}{=} q(\zeta)z_H(\zeta)
+L_0(\zeta)(z(\zeta)-1) + \alpha\cdot (z(\omega\cdot \zeta)(a(\zeta)+\beta\cdot\sigma(\zeta)+\gamma)-z(\zeta)(a(\zeta)+\beta\cdot id(\zeta)+\gamma)) \overset{?}{=} q(\zeta)z_H(\zeta)
 $$
 
 协议完毕。
