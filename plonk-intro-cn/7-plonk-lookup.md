@@ -205,7 +205,7 @@ $$
 \begin{split}
 &\prod_i{(1+\beta)(f_i+\gamma)(t_i+\beta\cdot t_{i+1}+(1+\beta)\gamma)} \\
 =&\prod_i
-{(s_i+\beta\cdot s_{i+1}+\gamma)}
+{(s_i+\beta\cdot s_{i+1}+(1+\beta)\gamma)}
 \end{split}
 $$
 
