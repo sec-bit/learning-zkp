@@ -273,7 +273,7 @@ $$
 $$
 \small
 \begin{split}
-(X-\omega^{N-1})\cdot z(X)\cdot\Big((1+\beta)(f(X)+\beta)\Big)\cdot\Big(t(X)+\beta\cdot t(\omega\cdot X)+\gamma(1+\beta)\Big) \qquad \\
+(X-\omega^{N-1})\cdot z(X)\cdot\Big((1+\beta)(f(X)+\gamma)\Big)\cdot\Big(t(X)+\beta\cdot t(\omega\cdot X)+\gamma(1+\beta)\Big) \qquad \\
 -(X-\omega^{N-1})\cdot z(\omega\cdot X)\cdot\Big(s^{lo}(X)+\beta\cdot s^{lo}(\omega\cdot X)+\gamma(1+\beta)\Big)\cdot\Big(s^{hi}(X)+\beta\cdot s^{hi}(\omega\cdot X)+\gamma(1+\beta)\Big) = 0
 \end{split}
 $$
