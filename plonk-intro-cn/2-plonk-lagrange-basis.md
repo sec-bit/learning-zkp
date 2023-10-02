@@ -169,7 +169,7 @@ $$
 f(X)=a_0\cdot L_0(X)+a_1\cdot L_1(X)+a_2\cdot L_2(X)+ \cdots + a_{N-1}\cdot L_{N-1}(X)
 $$
 
-我们可以用多项式在 $H$ 上的值 $(a_0,a_1,a_2,\ldots,a_{N-1})$ 来表示 $f(X)$。这被称为 多项式的求值形式（Evaluation Form），区别于系数形式（Coefficient Form）。
+我们可以用多项式在 $H$ 上的值 $(a_0,a_1,a_2,\ldots,a_{N-1})$ 来表示 $f(X)$。这被称为多项式的求值形式（Evaluation Form），区别于系数形式（Coefficient Form）。
 
 两种形式可以在 $H$ 上可以通过 (Inverse) Fast Fourier Transform 算法来回转换，计算复杂度为 $O(N\log{N})$。
 
