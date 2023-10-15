@@ -122,8 +122,8 @@ $$
 
 $$
 \begin{split}
-f(X)&=\Big(w_a(X)+\beta\cdot S_{id_a}(X)+\gamma\Big)\Big(w_b(X)+\beta\cdot S_{id_b}(X)+\gamma\Big)\Big(w_c(X)+\beta\cdot S_{id_c}(X)+\gamma\Big)\\
-g(X)&=\Big(w_a(X)+\beta\cdot S_{\sigma_a}(X)+\gamma\Big)\Big(w_b(X)+\beta\cdot S_{\sigma_b}(X)+\gamma\Big)\Big(w_c(X)+\beta\cdot S_{\sigma_c}(X)+\gamma\Big)\\
+f(X)&=\Big(w_a(X)+\beta\cdot {id_a}(X)+\gamma\Big)\Big(w_b(X)+\beta\cdot {id_b}(X)+\gamma\Big)\Big(w_c(X)+\beta\cdot {id_c}(X)+\gamma\Big)\\
+g(X)&=\Big(w_a(X)+\beta\cdot {\sigma_a}(X)+\gamma\Big)\Big(w_b(X)+\beta\cdot {\sigma_b}(X)+\gamma\Big)\Big(w_c(X)+\beta\cdot {\sigma_c}(X)+\gamma\Big)\\
 \end{split}
 $$
 
