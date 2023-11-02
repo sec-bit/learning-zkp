@@ -122,8 +122,8 @@ $$
 
 $$
 \begin{split}
-f(X)&=\Big(w_a(X)+\beta\cdot S_{id_a}(X)+\gamma\Big)\Big(w_b(X)+\beta\cdot S_{id_b}(X)+\gamma\Big)\Big(w_c(X)+\beta\cdot S_{id_c}(X)+\gamma\Big)\\
-g(X)&=\Big(w_a(X)+\beta\cdot S_{\sigma_a}(X)+\gamma\Big)\Big(w_b(X)+\beta\cdot S_{\sigma_b}(X)+\gamma\Big)\Big(w_c(X)+\beta\cdot S_{\sigma_c}(X)+\gamma\Big)\\
+f(X)&=\Big(w_a(X)+\beta\cdot {id_a}(X)+\gamma\Big)\Big(w_b(X)+\beta\cdot {id_b}(X)+\gamma\Big)\Big(w_c(X)+\beta\cdot {id_c}(X)+\gamma\Big)\\
+g(X)&=\Big(w_a(X)+\beta\cdot {\sigma_a}(X)+\gamma\Big)\Big(w_b(X)+\beta\cdot {\sigma_b}(X)+\gamma\Big)\Big(w_c(X)+\beta\cdot {\sigma_c}(X)+\gamma\Big)\\
 \end{split}
 $$
 
@@ -235,7 +235,7 @@ $$
 
 ## 位置向量的优化
 
-我们上面在构造三个 $\sigma$ 向量时，直接采用的自然数 $(0,1,2,\cdots)$，这样在协议开始前，Verifier 需要构造 3 个多项式 $S_{id_a}(X),S_{id_b}(X),S_{id_c}(X)$，并且在协议最后一步查询 Oracle，获得三个多项式在挑战点 $X=\zeta$ 处的取值  $(S_{id_a}(\zeta),S_{id_b}(\zeta),S_{id_c}(\zeta))$ 。
+我们上面在构造三个 $\sigma$ 向量时，直接采用的自然数 $(0,1,2,\cdots)$，这样在协议开始前，Verifier 需要构造 3 个多项式 ${id_a}(X),{id_b}(X),{id_c}(X)$，并且在协议最后一步查询 Oracle，获得三个多项式在挑战点 $X=\zeta$ 处的取值  $({id_a}(\zeta),{id_b}(\zeta),{id_c}(\zeta))$ 。
 
 思考一下， $\sigma$ 向量只需要用一些互不相等的值来标记置换即可，不一定要采用递增的自然数。如果我们采用 $H=(1,\omega,\omega^2,\cdots)$ 的话，那么多项式 ${id_a}(X)$ 会被大大简化：
 
