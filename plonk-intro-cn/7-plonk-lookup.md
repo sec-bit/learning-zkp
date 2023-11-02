@@ -98,7 +98,7 @@ $$
 z(X)=L_0(X) + \sum_{i=1}^{N-1}\Big(L_{i}(X)\cdot \prod_{j=0}^{i-1}\frac{(f_i+\gamma_1)(t_i+\gamma_2)}{(f'_i+\gamma_1)(t'_i+\gamma_2)}\Big)
 $$
 
-第四步：Verififer 发送挑战数 $\alpha$
+第四步：Verifier 发送挑战数 $\alpha$
 
 第五步：Prover 计算并发送商多项式 $[q(X)]$
 
