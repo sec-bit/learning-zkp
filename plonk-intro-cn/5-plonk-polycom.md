@@ -176,7 +176,7 @@ $$
 
 第一轮：Verifier 提出挑战数 $\nu$
 
-第二轮：Prover 计算 $q(X)=f_1(X)+\nu\cdot f_2(X)$，并发送  $\pi=[q(\chi)]_1$
+第二轮：Prover 计算 $q(X)=q_1(X)+\nu\cdot q_2(X)$，并发送  $\pi=[q(\chi)]_1$
 
 第三轮：Verifier 计算 $C_g=C_{f_1} + \nu\cdot C_{f_2}$， $y_g = y_1 + \nu\cdot y_2$
 
