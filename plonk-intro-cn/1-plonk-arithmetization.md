@@ -277,7 +277,7 @@ $$
 \begin{array}{c}
 x_6 \\
 x_1 \\
-x_5\\
+x_3\\
 \end{array}
 \right]
 +
