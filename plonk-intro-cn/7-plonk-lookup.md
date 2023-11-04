@@ -263,7 +263,7 @@ $$
 $$
 \begin{split}
 L_0(X)\cdot(z(X)-1) & = 0 \\
-L_{N-1}(X)\cdot(s^{lo}(X)-s^{hi}(X)) & = 0 \\
+L_{N-1}(X)\cdot(s^{lo}(X)-s^{hi}(\omega\cdot X)) & = 0 \\
 L_{N-1}(X)\cdot(z(X)-1) & = 0\\
 \end{split}
 $$
