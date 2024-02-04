@@ -16,4 +16,13 @@
 **其他贡献者**：
 - [even](https://github.com/10to4)
 - [@luckyyang](https://github.com/luckyyang)
+- [@kurtpan666](https://github.com/kurtpan666)
 - [@Chris-Howard](https://www.github.com/Chris-Howard)
+- [@cyl19970726](https://github.com/cyl19970726)
+- [@amimibear](https://github.com/amimibear)
+- [@spartucus](https://github.com/spartucus)
+- [@GopherJ](https://github.com/GopherJ)
+- [@dajuguan](https://github.com/dajuguan)
+- [@Howard-Hu](https://github.com/Howard-Hu)
+- and many many other people, thank you!
+
