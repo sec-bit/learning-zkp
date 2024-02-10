@@ -1,0 +1,111 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{anyt/global//global/global}
+    \entry{Marlin}{inproceedings}{}
+      \name{author}{6}{}{%
+        {{hash=dfbdc8dc8205deeb7a8fbc765799dd0b}{%
+           family={Chiesa},
+           familyi={C\bibinitperiod},
+           given={Alessandro},
+           giveni={A\bibinitperiod}}}%
+        {{hash=9ee06ae292a39ca1bafe80836e3b0c51}{%
+           family={Hu},
+           familyi={H\bibinitperiod},
+           given={Yuncong},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=dc4e6e0ef26dafc646ac4b6db8636b1d}{%
+           family={Maller},
+           familyi={M\bibinitperiod},
+           given={Mary},
+           giveni={M\bibinitperiod}}}%
+        {{hash=7a31ae48766fecee5a26de15205949fc}{%
+           family={Mishra},
+           familyi={M\bibinitperiod},
+           given={Pratyush},
+           giveni={P\bibinitperiod}}}%
+        {{hash=f21a3409601ea2cbe9acb5109d1eece3}{%
+           family={Vesely},
+           familyi={V\bibinitperiod},
+           given={Noah},
+           giveni={N\bibinitperiod}}}%
+        {{hash=0994d5d46f72d63ad29956d030637392}{%
+           family={Ward},
+           familyi={W\bibinitperiod},
+           given={Nicholas},
+           giveni={N\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{9f514cced1fbad68c050ddbdaa0731a3}
+      \strng{fullhash}{0a26499b004c95062eb60a9218bc5413}
+      \strng{bibnamehash}{9f514cced1fbad68c050ddbdaa0731a3}
+      \strng{authorbibnamehash}{9f514cced1fbad68c050ddbdaa0731a3}
+      \strng{authornamehash}{9f514cced1fbad68c050ddbdaa0731a3}
+      \strng{authorfullhash}{0a26499b004c95062eb60a9218bc5413}
+      \field{labelalpha}{CHM+20}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Advances in Cryptology--EUROCRYPT 2020: 39th Annual International Conference on the Theory and Applications of Cryptographic Techniques, Zagreb, Croatia, May 10--14, 2020, Proceedings, Part I 39}
+      \field{title}{Marlin: Preprocessing zkSNARKs with universal and updatable SRS}
+      \field{year}{2020}
+      \field{pages}{738\bibrangedash 768}
+      \range{pages}{31}
+    \endentry
+    \entry{Plonk}{article}{}
+      \name{author}{3}{}{%
+        {{hash=015d26e4871eab7050331efee381386a}{%
+           family={Gabizon},
+           familyi={G\bibinitperiod},
+           given={Ariel},
+           giveni={A\bibinitperiod}}}%
+        {{hash=ee32012e8ccee0959aa165d16e1e86a1}{%
+           family={Williamson},
+           familyi={W\bibinitperiod},
+           given={Zachary\bibnamedelima J},
+           giveni={Z\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=67f6e0cc6db7b4f51e98c611072b8dea}{%
+           family={Ciobotaru},
+           familyi={C\bibinitperiod},
+           given={Oana},
+           giveni={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{52399b8d2c31d90c8460b7a102baffb4}
+      \strng{fullhash}{52399b8d2c31d90c8460b7a102baffb4}
+      \strng{bibnamehash}{52399b8d2c31d90c8460b7a102baffb4}
+      \strng{authorbibnamehash}{52399b8d2c31d90c8460b7a102baffb4}
+      \strng{authornamehash}{52399b8d2c31d90c8460b7a102baffb4}
+      \strng{authorfullhash}{52399b8d2c31d90c8460b7a102baffb4}
+      \field{labelalpha}{GWC19}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Cryptology ePrint Archive}
+      \field{title}{Plonk: Permutations over lagrange-bases for oecumenical noninteractive arguments of knowledge}
+      \field{year}{2019}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
