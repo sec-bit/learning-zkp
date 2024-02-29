@@ -329,21 +329,21 @@
 
   原文链接：
 
-  1. STARKs, Part I: Proofs with Polynomials：https://vitalik.ca/general/2017/11/09/starks_part_1.html
+  1. STARKs, Part I: Proofs with Polynomials：https://vitalik.eth.limo/general/2017/11/09/starks_part_1.html
 
      中文翻译版本：https://ethfans.org/posts/starks_part_1
 
-  2. STARKs, Part II: Thank Goodness It's FRI-day：https://vitalik.ca/general/2017/11/22/starks_part_2.html
+  2. STARKs, Part II: Thank Goodness It's FRI-day：https://vitalik.eth.limo/general/2017/11/22/starks_part_2.html
 
      中文翻译版本：https://ethfans.org/posts/starks_part_2
 
-  3. STARKs, Part 3: Into the Weeds：https://vitalik.ca/general/2018/07/21/starks_part_3.html)
+  3. STARKs, Part 3: Into the Weeds：https://vitalik.eth.limo/general/2018/07/21/starks_part_3.html)
 
      中文翻译版本：https://ethfans.org/posts/starks_part_3_1
 
      中文翻译版本：https://ethfans.org/posts/starks_part_3_2
 
-* **「推荐文章二十」 [Understanding PLONK](https://vitalik.ca/general/2019/09/22/plonk.html)**
+* **「推荐文章二十」 [Understanding PLONK](https://vitalik.eth.limo/general/2019/09/22/plonk.html)**
 
   推荐值：❤️❤️❤️❤️
 
@@ -351,7 +351,7 @@
 
   这篇文章同样来自 V 神的博客，介绍了 PLONK 的工作原理。PLONK 是一种全新的零知识证明系统，支持通用或可更新的可信设置（trusted setup），作者是 Filecoin 母公司 Protocol Labs 的研究员 Ariel Gabizon 和以太坊隐私交易协议 Aztec Protocol 的两名研究人员 Zachary J. Williamson、Oana Ciobotaru。
 
-  原文链接：https://vitalik.ca/general/2019/09/22/plonk.html
+  原文链接：https://vitalik.eth.limo/general/2019/09/22/plonk.html
 
   中文翻译版本：https://www.8btc.com/article/486086
 
