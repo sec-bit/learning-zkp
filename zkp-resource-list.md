@@ -89,7 +89,7 @@
 
   作者是 Zerocash 协议的创建者之一，密码学大神 Matthew Green[1]。这两篇文章几乎涵盖了学习零知识证明原理所有的基本概念，文章思路很清晰。
 
-  * [零知识证明: 抛砖引玉](https://ethfans.org/posts/zero-knowledge-proofs-illustrated-primerhttps://blog.cryptographyengineering.com/2014/11/27/zero-knowledge-proofs-illustrated-primer/)
+  * [零知识证明: 抛砖引玉](https://blog.cryptographyengineering.com/2014/11/27/zero-knowledge-proofs-illustrated-primer/)
 
     第一篇文章主要从零知识证明的起源开始讲起，然后同样借助了地图三染色和 “时光机”来对零知识证明进行介绍。
 
