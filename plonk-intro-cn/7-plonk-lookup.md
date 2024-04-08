@@ -360,13 +360,13 @@ $$
 通过向 Verifier 要一个随机挑战数 $\eta$，我们可以把计算表格横向折叠起来：
 
 $$
-\vec{t} = \vec{t}_1+\eta\cdot\vec{t}_2+\eta^2\cdot\vec{t}_2
+\vec{t} = \vec{t}_1+\eta\cdot\vec{t}_2+\eta^2\cdot\vec{t}_3
 $$
 
 同样，Prover 在证明过程中，也将查询记录横向折叠起来：
 
 $$
-\vec{f} = \vec{f}_1+\eta\cdot\vec{f}_2+\eta^2\cdot\vec{f}_2
+\vec{f} = \vec{f}_1+\eta\cdot\vec{f}_2+\eta^2\cdot\vec{f}_3
 $$
 
 接下来，Prover 和 Verifier 可以利用单列表格查询协议（ Plookup 协议或 Halo2-lookup 协议）完成证明过程。
