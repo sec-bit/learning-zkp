@@ -70,7 +70,7 @@ $$
 
 这样承诺 $C_{f(X)}$ 巧好等于 $f(\chi) G$。
 
-对于双线性群，我们下面使用 Groth 发明的符号 $[1]_1\triangleq G$， $[1]_2\triangleq H$ 表示两个群上的生成元，这样 KZG10 的系统参数（也被称为 SRS, Structured Reference String）可以表示如下：
+对于双线性群，我们下面使用 Groth 发明的符号 $[1]_1\triangleq G$， $[1]_2\triangleq H$ 表示两个群上的单位元，这样 KZG10 的系统参数（也被称为 SRS, Structured Reference String）可以表示如下：
 
 $$
 \mathsf{srs}=([1]_1,[\chi]_1,[\chi^2]_1,[\chi^3]_1,\ldots,[\chi^{n-1}]_1,[1]_2,[\chi]_2)
