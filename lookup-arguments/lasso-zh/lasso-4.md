@@ -110,6 +110,7 @@ $$
 其中 $S_u$ 定义为 $\vec{u}$ 中非零项的索引集合。因此 $h^{(j)}(X)$ 求和式可以进一步简化为 $m$ 项的求和：
 
 $$
+\small
 \begin{split}
 h^{(j)}(X) &= \sum_{(b_{j+1}, b_{j+2},\ldots, b_{\log{N}})\in\{0,1\}^{\log{N}-j-1}} \tilde{u}(r_0,r_1,\ldots, r_{j-1}, X, b_{j+1}, b_{j+2},\ldots, b_{\log{N}-1})\cdot \tilde{t}(r_0,r_1,\ldots, r_{j-1}, X, b_{j+1}, b_{j+2},\ldots, b_{\log{N}-1}) \\
  &= \sum_{i\in S_u} u_i\cdot \sum_{(b_{j+1}, b_{j+2},\ldots, b_{\log{N}})\in\{0,1\}^{\log{N}-j-1}} \tilde{eq}_i(r_0,r_1,\ldots, r_{j-1}, X, b_{j+1}, b_{j+2},\ldots, b_{\log{N}-1})\cdot \tilde{t}(r_0,r_1,\ldots, r_{j-1}, X, b_{j+1}, b_{j+2},\ldots, b_{\log{N}-1}) \\
@@ -144,7 +145,7 @@ $$
 &= \tilde{eq}_i(r_0,r_1,\ldots, r_{j-1}, {\color{blue}i_j}, i_{j+1}, i_{j+2},\ldots, i_{\log{N}-1})
 \cdot\Big((1-{\color{red}r_j})\cdot(1-i_j)+{\color{red}r_j}\cdot i_j\Big)
 \end{split}
-$$ 
+$$
 
 因此，根据 $i_j$ 是 $0$ 还是 $1$，Prover 可以仅用一个乘法即可递推地计算出第 $j+1$ 轮所需要的 $\tilde{eq}_i$。又因为总共有 $m$ 个 $\tilde{eq}_i$ 需要计算，所以 Prover 要付出 $O(m)$ 的计算量。
 
