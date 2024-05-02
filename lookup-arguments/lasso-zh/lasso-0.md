@@ -62,7 +62,7 @@ $$
 基于单列有序的表格，Lasso 论文定义了一类新的 Lookup Argument，称之为 Indexed Lookup Argument：
 
 $$
-\forall i\in [m], f_i = t_{a_i}
+\forall i\in [0,m), f_i = t_{a_i}
 $$
 
 其中 $\vec{a}=(a_0,a_1,\ldots, a_{m-1})$ 为一组索引值，表示每一个查询 $f_i$ 在表格 $\vec{t}$ 中出现的位置。
@@ -87,7 +87,7 @@ $$
 \vec{t}_I' = (t_0, t_1+\eta,t_2+2\eta,\ldots,t_{N-1}+\eta\cdot(N-1))
 $$
 
-比如 Plookup，Caulk/Caulk+，Baloo，与 cq 都支持表格承诺的加法同态。但是对于 fLookup 等不支持加法同态的 Lookup Arguments，我们可以找到一个值，$\kappa>\mathsf{max}\{t_i, i\in[0,N-1)\}$ ，然后通过 $\kappa$ 把索引列合并到原表格列：
+比如 Plookup，Caulk/Caulk+，Baloo，与 cq 都支持表格承诺的加法同态。但是对于 fLookup 等不支持加法同态的 Lookup Arguments，我们可以找到一个值，$\kappa>\mathsf{max}\{t_i, i\in[0,N-1]\}$ ，然后通过 $\kappa$ 把索引列合并到原表格列：
 
 $$
 \vec{t}_I'' = (t_0, t_1+\kappa,t_2+2\kappa,\ldots,t_{N-1}+\kappa\cdot(N-1))
@@ -114,9 +114,9 @@ $$
 M\vec{t} = \vec{f}
 $$
 
-其中 $\vec{t}$ 为表格，长度为 $m$，$\vec{f}$ 为 lookup 记录，长度为 $n$。这个核心公式来自 [Baloo] 论文。
+其中 $\vec{t}$ 为表格，长度为 $n$，$\vec{f}$ 为 lookup 记录，长度为 $m$。这个核心公式来自 [Baloo] 论文。
 
-矩阵 $M\in\mathbb{F}^{N\times m}$ 充当了选择器的角色。它的每一行都是一个 Unit Vector，即每一个行向量中，只有一个元素为 $1$，其余元素均为零。显然矩阵 $M$ 中包含大量的零，如果我们直接用多项式对 $M$ 全部元素进行粗暴地编码，那么这相当于对于一个长度为 $O(m\cdot N)$的稀疏向量编码，浪费严重。
+矩阵 $M\in\mathbb{F}^{m \times N}$ 充当了选择器的角色。它的每一行都是一个 Unit Vector，即每一个行向量中，只有一个元素为 $1$，其余元素均为零。显然矩阵 $M$ 中包含大量的零，如果我们直接用多项式对 $M$ 中的全部元素进行粗暴地编码，那么这相当于对于一个长度为 $O(m\cdot N)$的稀疏向量编码，浪费严重。
 
 举个例子，比如 $n=8, m=4$，查询向量 $\vec{f}$ 定义为：
 
@@ -153,7 +153,7 @@ $$
 
 如果我们可以利用 $M$ 矩阵的稀疏性，即 $M$ 中仅包含有 $m$ 个非零元素，那么我们可以构造更有效率的 Lookup Argument 方案。[Spartan] 论文提出了针对稀疏矩阵的多项式承诺方案，使得其 Evaluation Argument 的证明时间仅与 $m$ 有关。
 
-Spark 协议的另一个特点是利用了 $\tilde{eq}(\vec{X},\vec{Y})$ 的 Tensor 结构。如果表格也具有类似的结构，那么意味着被查询的表格可以拆解成多个维度上的短向量，那么也就意味着 Prover 和 Verifier 不再需要处理一个很大的表格（如果表格长度 $N>2^{64}$）而只需要承诺和证明多个短向量（作为子表格）即可。第三个协议 Surge 正是这样一个可以证明某一类支持子表格拆解的 Lookup Argument。
+Spark 协议的另一个特点是利用了 $\tilde{eq}(\vec{X},\vec{Y})$ 的 Tensor 结构。如果表格也具有类似的结构，那么意味着被查询的表格可以拆解成多个维度上的短向量，那么也就意味着 Prover 和 Verifier 不再需要处理一个很大的表格（如果表格长度 $N>2^{64}$），而只需要承诺和证明多个短向量（作为子表格）即可。第三个协议 Surge 正是这样一个可以证明某一类支持子表格拆解的 Lookup Argument。
 
 支持巨大的表格，比如 $N=2^{128}$，并不是只有拆解子表格这一种办法，如果表格满足另外一种特性 MLE-Structured，即表格多项式 $\tilde{t}(\vec{X})$ 的求值运算时间复杂度为 $O(\log{N})$，那么我们可以不需要拆分表格，也不需要让 Prover 承诺表格（表格太大，承诺的计算也无法完成），而是在协议中以「惰性计算」的方式（Lazy On-demand）来临时计算表格的每一项（以表格项的 Index 作为输入，计算表格项 $\tilde{t}(i)$）。这是最后一个 Lookup Argument 的核心思想，被称为 Generalized Lasso。
 
