@@ -1,81 +1,155 @@
-# 理解 Lasso (三)：可分解表格的 Lookup 证明
+# 理解 Lasso (三)：大表格的稀疏查询证明
 
-基于稀疏多项式承诺 Spark 的 Lookup Argument 实际上是在证明一个 Inner product $\langle \vec{u}, \vec{t}\rangle$，其中 $\vec{u}$ 为一个稀疏向量，而 $\vec{t}$ 则是一个稠密的向量，代表被查找的表格。
+Lasso 这个名字是 **L**ookup **A**rguments via **S**parse-polynomial-commitments and the **S**umcheck-check protocol, including for **O**versized-tables 的缩写。这里面有三个关键词，
 
-Lasso 论文把可以处理的表格分为三类。
+- Sparse Polynomial Commitment
+- Sumcheck protocol
+- Oversized table
 
-- Unstructured but small
-- Decomposable
-- Non-decomposable but structured
+本文继续讨论如何利用 Sparse Polynomial Commitment 来构造 Indexed Lookup Argument。但为了能处理 Oversized Table（比如 $2^{128}$ 这样的表格），需要充分利用表格的内部结构。
 
-前文介绍的证明系统都是针对 Unstructured-but-small 这类表格，并利用了查找向量 $\vec{f}$ 本身具有一定的稀疏性和特殊的内在结构。设想如果表格也具有可利用的内在结构，那么我们可以继续沿用类似的思路，把表格分解成若干个小表格，然后把大表格上的 Lookup 关系降维到对小表格的 Lookup 关系。这就是本文要描述的表格分解，也是 Lasso 可以处理的第二类表格。
 
-先用一个简单的例子来理解下什么是表格的分解。比如这里有一个 1-bit XOR 表格，记为 $\vec{t}_{\mathsf{XOR}^1}$，这个表格的计算定义如下：
+## 1. 构造简易 Indexed Lookup Argument
+
+前文介绍了 Sparse Polynomial Commitment，现在回到正题 Lookup Argument。下面是一种 Lookup 关系的表示：
 
 $$
-\begin{array}{c|c|c}
-A & B & A\oplus B \\
+M\vec{t}=\vec{f}
+$$
+
+这里 $\vec{t}$ 为表格向量，长度为 $N$，$\vec{f}$ 为查找向量，长度为 $m$，选择矩阵 $M$ 大小为 $m\times N$。
+
+我们引入三个 MLE 多项式 $\tilde{M}(\vec{X},\vec{Y}), \tilde{t}(\vec{Y}), \tilde{f}(\vec{X})$ 来分别编码矩阵 $M$，表格向量 $\vec{t}$，与查找向量 $\vec{f}$， 那么它们满足下面的关系：
+
+$$
+\sum_{\vec{y}\in\{0,1\}^{\log{N}}}\tilde{M}(\vec{X}, \vec{y})\cdot \tilde{t}(\vec{y}) = \tilde{f}(\vec{X})
+$$
+
+Verifier 可以发送一个挑战向量 $\vec{r}$，把上面的等式可以归约到：
+
+$$
+\sum_{\vec{y}\in\{0,1\}^{\log{N}}}\tilde{M}(\vec{r}, \vec{y})\cdot \tilde{t}(\vec{y}) = \tilde{f}(\vec{r})
+$$
+
+现在， Prover 要向 Verifier 证明上面的求和等式成立，我们会立即想到使用 $\log{N}$ 轮的 Sumcheck 协议，把上面的等式归约到一个新的等式：
+
+$$
+\tilde{M}(\vec{r}, \vec{\rho})\cdot \tilde{t}(\vec{\rho}) = v'
+$$
+
+其中 $v'$ 为 $\log{N}$ 个求和项折叠之后的值，$\vec{\rho}$ 为 Verifier 在 Sumcheck 协议过程中发送的挑战值。这时 Verifier 要验证上面的等式，就需要 Prover 提供三个 MLE 的求值证明。因为 $M$ 矩阵是一个稀疏矩阵，因此 Prover 可以在协议最开头采用 Spark 协议来承诺 $\tilde{M}$，然后在 Sumcheck 协议的末尾， Prover 可以花费 $O(m + \sqrt{m\cdot N})$ 的计算量来产生 $\tilde{M}(\vec{r}, \vec{\rho})$ 的 Evaluation 证明。这远好于 Prover 直接采用普通多项式承诺的开销，$O(m\cdot N)$。
+
+### 协议细节
+
+公共输入：
+
+1. $C_t = \mathsf{PCS.Commit}(\vec{t})$ ，$|\vec{t}| = n$
+2. $C_f = \mathsf{PCS.Commit}(\vec{f})$， $|\vec{f}| = m$
+3. $C^{\mathsf{(spark)}}_M = \mathsf{Spark.Commit}({M})$， $|M| = m\times N$
+
+第一轮：Verifier 发送挑战向量 $\vec{r}$
+
+$$
+\sum_{y\in\{0,1\}^{\log{N}}}\tilde{M}(\vec{r}, \vec{y})\cdot \tilde{t}(\vec{y}) = \tilde{f}(\vec{r})
+$$
+
+第二轮：Prover 和 Verifier 执行 Sumcheck 协议，把上式归约到
+
+$$
+\tilde{M}(\vec{r}, \vec{\rho})\cdot \tilde{t}(\vec{\rho}) = v'
+$$
+
+第三轮：Prover 发送 $(v_M, v_t, \pi^{\mathsf{(spark)}}_M, \pi_t)$
+
+1. $(v_M, \pi^{\mathsf{(spark)}}_M)=\mathsf{Spark.Eval}(C_M^{\mathsf{(spark)}}, (\vec{r}, \vec{\rho}), v_M; M)$
+2. $(v_t, \pi_t)=\mathsf{PCS.Eval}(C_t, \vec{\rho}, v_t; \vec{t})$
+
+当然，我们可以通过把 $M$ 整个向量排成一排，得到长度为 $m\times N$ 长的一维向量 $\vec{\mathcal{h}}$，然后把这个向量在一个 $c$ 维的空间中
+进行拆分: 
+
+$$
+\tilde{M}(\vec{X}^{(D_1)},\ldots, \vec{X}^{(D_c)}) = \sum_{i=0}^{m-1}\mathsf{val}(\mathsf{bits}(i)) \cdot \tilde{eq}(\mathsf{bits}(i), \vec{X}^{(D_1)})\cdot \ldots \cdot \tilde{eq}(\mathsf{bits}(i), \vec{X}^{(D_c)})
+$$
+
+然后利用 Spark 协议来达到 $O(m + c\sqrt[c]{m\cdot N})$ 的 Proving Time 复杂度。但是 Prover 在产生 $\pi_t$ 时则需要 $O(N)$ 的计算量。那么总体上，Spark 虽然可以有效降低 Prover 的工作量，但是如果表格尺寸 $N$ 非常大，那么 Prover 仍然需要花费大量的时间来计算表格。那么还能不能更进一步呢？像 Caulk/Caulk+, cq 那样让 Prover 的性能开销变为关于 $N$ 的亚线性复杂度。
+
+Lasso 协议正是朝着这个方向迈出了一大步，它甚至不需要像 cq 那样要实现对完整的大表格做预处理。尽管它不通用，只能针对几类特殊的表格，但不少常见的运算都可以证明。
+
+Lasso 的核心思想是，我们能否把表格向量 $\vec{t}$ 像稀疏向量一样按照多个维度去拆解？如果能像 Tensor Structure 那样，一个巨大的表格可以表示为若干个小表格的运算。这样 Prover 和 Verifier 就可以对多个小表格做 Lookup 证明，那么最终得到的效果就是：看起来我们可以实现一个虚拟的大表格的查询证明。
+
+顺着这个思路往下想，一般情况下表格不可能是稀疏的，不过非稀疏的表格在某些情况下是可以分解的。比如我们在前文提到的异或运算的表格，
+
+$$
+\begin{array}{c|c}
+i & A \parallel B \\
 \hline
-0 & 0 & 0 \\
-0 & 1 & 1 \\
-1 & 0 & 1 \\
-1 & 1 & 0 \\
+0 & 00 \parallel 00 \\
+1 & 00 \parallel  01 \\
+\vdots & \vdots  \\
+15 & 11 \parallel  11 \\
+\end{array}
+\quad
+\begin{array}{|c|}
+\hline
+A\oplus B \\
+\hline
+ 00 \\
+ 01 \\
+\vdots \\
+ 00 \\
+\hline
 \end{array}
 $$
 
-我们可以利用这个 1-bit XOR 表格，构造出一个 4-bit XOR 表格，基本思路是，我们可以把两个 4bit 数，依次按照每个 bit 进行 XOR 运算（通过查找 1-bit XOR 表格），然后把四个运算结果再拼接在一起，得到一个 4bit 的结果。
+直觉上，一个2-bit XOR 表格是可以分解为两个 1-bit XOR 表格的运算。因为 XOR 运算是按位进行，操作数的高位和低位的 XOR 运算互不干扰。进而我们可以推广到 AND 运算，OR 运算等等。具体怎么做到呢？接下去，我们深入到表格的内部结构中。
+
+## 2. 分解表格
+
+稀疏的选择矩阵 $M$ 还有一个特点是，其中的所有非零元素都为 $1$。那么我们可以换一种方式来表达 Lookup 等式：
 
 $$
-(a_4\parallel a_3\parallel  a_2\parallel a_1)_{(2)} \oplus (b_4\parallel b_3\parallel b_2\parallel b_1)_{(2)} = (c_4\parallel c_3\parallel c_2\parallel c_1)_{(2)}
+\tilde{f}(\vec{X}) = \sum_{i=0}^{m-1}T[{\mathsf{col}(i)}] \cdot \tilde{eq}_i(\vec{X})
 $$
 
-这里每一个 $(a_i,b_i,c_i)\in \vec{t}_{\mathsf{XOR}^1}$。这相当于把一个 4-bit XOR 表格分解成了四个 1-bit XOR 表格，类似还有一些属于 Lasso 支持的第二类「Decomposable」表格。我们下面逐步分析表格的分解，以及 Lasso 如何利用可分解表格从而实现大表格（这些表格的长度可以高达 $2^{128}$ ）的 Lookup 证明。
-
-## 1. 表格分解
-
-回顾下 Indexed Lookup Argument 的基本等式：
-$$
-M\vec{t} \overset{?}{=} \vec{f}
-$$
-
-其中 $M\in\mathbb{F}^{m\times N}$，其中 $m=|\vec{f}|$ 为 Lookup 的数量，$N=|\vec{t}|$ 为表格的长度。
-
-考虑到 $M$ 是一个比较特殊的选择矩阵，其每一行都是一个 Unit Vector，即有且仅有一个 $1$，其余均为 $0$。
-那么我们可以用稠密的方法来编码矩阵，只关注那些非零元素：
+为了排版清晰，这里我们换用大写的 $T$ 表示未被分解的大表格，分解出的子表格用小写字母 $t$ 表示，并且用 $T[i]$ 和 $t[i]$ 符号来表示表格中第 $i$ 个元素 $t_i$。其中 $\mathsf{col}(i)$ 表示第 $i$ 行的 $1$ 所在的列坐标，可以看成是 $M$ 矩阵的一种稠密表示。容易验证对任意的 $i\in[0, m)$，$T[\mathsf{col}(i)] = f_i$，相当于列出表格中的被 $M$ 非零元素筛选出来的元素。因此这个等式可以看成 $\tilde{f}(\vec{X})$ 的另一种定义，等价于
 
 $$
-t_{\mathsf{col}(i)}  \overset{?}{=} f_i, \quad \forall i \in [m]
+ \tilde{f}(\vec{X}) = \sum_{\vec{y}\in\{0,1\}^{\log{N}}}\tilde{M}(\vec{X}, \vec{y})\cdot \tilde{t}(\vec{y})
 $$
 
-其中 $\mathsf{col}(i)$ 表示第 $i$ 行的 $1$ 所在的列坐标。那么 $\{\mathsf{col}(i)\}_{i\in[m]}$ 就是 $M$ 的一种稠密表示。
-
-我们把 $t_{\mathsf{col}(i)}$ 编码成 MLE 多项式，记为 $\tilde{h}(X)$，$\vec{f}$ 编码为 $\tilde{f}(X)$。那么通过一个随机挑战向量 $\vec{r}$， Lookup 的关系就归约到下面的等式:
+我们把 $T[{\mathsf{col}(i)}]$ 单独排成一个向量 $\vec{h}$，然后把向量编码成 MLE 多项式，记为 $\tilde{h}(\vec{X})$。那么通过一个随机挑战向量 $\vec{r}$， Lookup 的关系就归约到下面的等式:
 
 $$
-\tilde{h}(\vec{r})=\sum_{i\in[0,m)}t_{\mathsf{col}(i)} \cdot \tilde{eq}_i(\vec{r}) \overset{?}{=} \tilde{f}(\vec{r})
+\tilde{f}(\vec{r}) \overset{?}{=}  \sum_{i\in[0,m)}h_i\cdot \tilde{eq}_i(\vec{r}) 
 $$
 
-假设表格 $\vec{t}$ 可以被分解为两个子表格，比如我们考虑下 4-bit RangeCheck 表格，包含了所有 4bit 自然数，
+根据 Offline Memory Checking 的思路，我们可以证明 $h_i$ 都读取自表格 $T$。这样相当于原地踏步，我们为了证明一个 Lookup关系，我们归约到了另一个 Lookup 关系。不过我们是否可以 $h_i$ 分解到一个二维（或者多维）的子表格上呢？就像 Spark 协议中的 $\vec{e}$ 向量一样，我们是把 $\vec{e}$ 所读取的内存 $\vec{\lambda}$ 分解成了 $\vec{\lambda}^{(x)}$ 和 $\vec{\lambda}^{(y)}$，然后把 $\vec{e}$ 分解为 $\vec{e}^{(x)}$ 和 $\vec{e}^{(y)}$。然而并不是所有的表格都能像 $\vec{\lambda}$ 一样满足 Tensor Structure 的。事实上，绝大部分的表格不满足这个条件。不过幸运地是，尽管他们不满足 Tensor Structure，但是一大类的有用表格可以按照类似的思路处理。
+
+我们先看一个简单但很实用的表格，RangeCheck 表格。当需要证明 $0\leq x \lt 2^k$，我们可以构造一个表格 $T_\mathsf{{range, k}}=(0,1,\ldots,2^k-1)$，如果 $x\in T_\mathsf{{range, k}}$，那么说明 $x$ 在 $0$ 到 $2^k-1$ 之间。
+
+这个表格 $T_\mathsf{{range, k}}$ 可以被分解成两个 $2^{k/2}$ 的 RangeCheck 表格之间的运算:
 
 $$
-\mathsf{T_{range,4}} = (0,1,2,3, \ldots, 15)
+T_\mathsf{{range, k}}[i\cdot 2^{k/2}+j] = t_\mathsf{{range, {k/2}}}[i]\cdot 2^{k/2} + t_\mathsf{{range, k/2}}[j]
 $$
 
-而一个分解后的 2-bit RangeCheck 表格为：
+比如我们假设 $k=4$，$T_\mathsf{{range, 4}}$ 定义如下：
 
 $$
-\mathsf{T_{range, 2}} = (0,1,2,3)
+T_\mathsf{{range,4}} = (0,1,2,3, \ldots, 15)
 $$
 
-表格的分解关系定义如下：
+另一个 2-bit RangeCheck 表格 $t_\mathsf{{range, 2}}$ 定义如下：
 
-<!-- $$
-\mathsf{T_{range,4}} = \Big(2^2\mathsf{T^T_{range,2}}\Big) \times (1,1,1,1)+ \mathsf{T_{range,2}}
-$$ -->
+$$
+t_\mathsf{{range, 2}} = (0,1,2,3)
+$$
+
+那么我们可以用下面的矩阵来展示 $T_\mathsf{{range,4}}$ 和子表格 $t_\mathsf{{range,2}}$ 之间的关系：
 
 $$
 \begin{array}{c|cccc}
- & 0 & 1 & 2 & 3\\
+ & 0 & 1 & 2 & 3\\ 
 \hline
 0\cdot 2^2=0 & 0 & 1 & 2 & 3 \\
 1\cdot 2^2 = 4 & 4 & 5 & 6 & 7 \\
@@ -84,403 +158,240 @@ $$
 \end{array}
 $$
 
-
-我们用 $\tilde{t}_{\mathsf{range2}}(\vec{X})$ 和 $\tilde{t}_{\mathsf{range4}}(\vec{X})$ 表示 2bit 和 4bit-RangeCheck 表格的 MLE 多项式，那么它们满足下面的等式：
+矩阵的第一行为 $t^{(x)}=t_\mathsf{{range, 2}}$，第一列也为 $t^{(y)}=t_\mathsf{{range, 2}}$，矩阵中的每个单元可以表示为 
 
 $$
-\tilde{t}_{\mathsf{range4}}(X_0,X_1,X_2,X_3) = 4\cdot \tilde{t}_{\mathsf{range2}}(X_0,X_1) + \tilde{t}_{\mathsf{range2}}(X_2,X_3)
+T_\mathsf{{range,4}}[i,j]=  2^2 \cdot t^{(x)}[i] + t^{(y)}[j]
+$$
+
+于是矩阵的所有单元构成了 $T_\mathsf{{range,4}}$ 的所有元素。
+
+针对 Rangecheck 表格这个特例，我们可以构造一个高效的 Lookup Argument。
+
+## 3. RangeCheck 表格的 Lookup Argument
+
+我们用 $\tilde{t}_{\mathsf{range2}}(\vec{X})$ 和 $\tilde{T}_{\mathsf{range4}}(\vec{X})$ 表示 2bit 和 4bit-RangeCheck 表格的 MLE 多项式，那么它们满足下面的等式：
+
+$$
+\tilde{T}_{\mathsf{range4}}(X_0,X_1,X_2,X_3) = 4\cdot \tilde{t}_{\mathsf{range2}}(X_0,X_1) + \tilde{t}_{\mathsf{range2}}(X_2,X_3)
 $$
 
 那么 Lookup 关系可以写成下面的形式：
 
 $$
 \begin{split}
- \tilde{f}(r_0,r_1,r_2,r_3) &= \sum_{i\in[0,m)}\tilde{t}_{\mathsf{range4}}(\mathsf{bits}({\mathsf{col}(i)})) \cdot \tilde{eq}_i(r_0,r_1,r_2,r_3)  \\
+ \tilde{f}(r_0,r_1,r_2,r_3) &= \sum_{i\in[0,m)}\tilde{T}_{\mathsf{range4}}(\mathsf{bits}({\mathsf{col}(i)})) \cdot \tilde{eq}_i(r_0,r_1,r_2,r_3)  \\
+ & = \sum_{i\in[0,m)}\Big(4\cdot \tilde{t}_{\mathsf{range2}}(\mathsf{bits}^{(hi)}({\mathsf{col}(i)})) + \tilde{t}_{\mathsf{range2}}(\mathsf{bits}^{(lo)}({\mathsf{col}(i)}))\Big) \cdot \tilde{eq}_i(r_0,r_1,r_2,r_3)  \\
 \end{split}
 $$
 
-类似的，我们可以把 32bit RangeCheck 表格分解成四个 8bit RangeCheck 表格， 或者两个 16bit RangeCheck 表格。
+这里 $\mathsf{bits}^{(hi)}(\mathsf{col}(i))$ 和 $\mathsf{bits}^{(lo)}(\mathsf{col}(i))$ 分别表示 $\mathsf{col}(i)$ 的高 2bits 和低 2bits。
 
-我们引入一个长度为 $m$ 的辅助向量 $\vec{e}$，其中向量元素 $e_i$ 表示 $\tilde{t}_{\mathsf{range4}}$ 在 $\mathsf{bits}(\mathsf{col}(i)), i\in[0,m)$ 处的取值，因此上面的等式可以转化为：
+同样，我们需要借助向量 $\vec{e}$，其中向量元素 $e_i$ 表示 $\tilde{T}_{\mathsf{range4}}$ 在 $\mathsf{bits}(\mathsf{col}(i)), i\in[0,m)$ 处的取值，因此上面的等式可以转化为：
 
 $$
- \tilde{f}(\vec{r}) = \sum_{i\in[0,m)} e_i \cdot \tilde{eq}_i(\vec{r})  \\
+ \tilde{f}(r_0,r_1,r_2,r_3) = \sum_{i\in[0,m)} e_i \cdot \tilde{eq}_i(r_0,r_1,r_2,r_3)  \\
 $$
 
-由于 $t_{\mathsf{range4}}$ 的可分解性，我们可以把 $e_i$ 的高 2bits 和低 2bits 分别抽取出来，它们构成两个向量 $\vec{e}^{(hi)}$ 与 $\vec{e}^{(lo)}$，分别对应 $t_{\mathsf{range2}}$ 中的第 $i_0$ 项和 第 $i_1$ 项， $i=4\cdot i_0 + i_1$。
+由于 $\tilde{T}_{\mathsf{range4}}$ 的可分解性，我们可以把 $e_i$ 的高 2bits 和低 2bits 分别抽取出来，它们构成两个向量 $\vec{e}^{(x)}$ 与 $\vec{e}^{(y)}$，分别对应 $t_{\mathsf{range2}}$ 中的第 $i_0$ 项和 第 $i_1$ 项，满足 $i=4\cdot i_0 + i_1$。
 
-构造 $\tilde{e}^{(hi)}$ 与 $\tilde{e}^{(lo)}$ 两个 MLE，分别编码 $\vec{e}$ 中元素的高 2bits 和低 2bits，那么上面的等式可以转化为：
+接下来构造 $\tilde{e}^{(x)}$ 与 $\tilde{e}^{(y)}$ 两个 MLE 多项式，分别编码 $\vec{e}^{(x)}$ 与 $\vec{e}^{(y)}$，那么上面的等式可以转化为：
 
 $$
 \begin{split}
- \tilde{f}(\vec{r}) & = \sum_{\vec{b}\in\{0,1\}^{\log{m}}} \Big(4\cdot \tilde{e}^{(hi)}(\vec{b})+ \tilde{e}^{(lo)}(\vec{b})\Big)\cdot\tilde{eq}(\vec{b}, \vec{r})
+ \tilde{f}(r_0,r_1,r_2,r_3) & = \sum_{\vec{b}\in\{0,1\}^{\log{m}}} \Big(4\cdot \tilde{e}^{(x)}(\vec{b})+ \tilde{e}^{(y)}(\vec{b})\Big)\cdot\tilde{eq}(\vec{b}, (r_0,r_1,r_2,r_3))
 \end{split}
 $$
 
-由于这个等式是一个求和，因此我们可以利用 Sumcheck 协议来把上面的等式归约到：
+由于这个等式是一个求和式，因此我们可以利用 Sumcheck 协议来把上面的等式归约到：
 
 $$
-v' =  \Big(4\cdot \tilde{e}^{(hi)}(\vec{\rho})+ \tilde{e}^{(lo)}(\vec{\rho})\Big)\cdot\tilde{eq}(\vec{\rho}, \vec{r})
+v' =  \Big(4\cdot \tilde{e}^{(x)}(\vec{\rho})+ \tilde{e}^{(y)}(\vec{\rho})\Big)\cdot\tilde{eq}(\vec{\rho}, (r_0,r_1,r_2,r_3))
 $$
 
-其中 $\vec{\rho}$ 为 Verifier 在 Sumcheck 过程中产生的挑战数。辅助向量 $\vec{e}^{(hi)}$ 与 $\vec{e}^{(lo)}$ 的正确性可以由 Memory-checking 来证明。
+其中 $\vec{\rho}$ 为 Verifier 在 Sumcheck 过程中产生的长度为 $\log{m}$ 的挑战向量。辅助向量 $\vec{e}^{(x)}$ 与 $\vec{e}^{(y)}$ 的正确性可以由 Offline Memory Checking 来证明。
 
-我们用这个思路可以构造一个 Lookup Argument，与之前的 Lookup Argument 不同的地方在于，我们利用了表格向量的内部结构。
+类似的，我们可以把 32-bit RangeCheck 表格分解成四个 8-bit RangeCheck 表格， 或者两个 16-bit RangeCheck 表格。
 
-除了 RangeCheck 表格之外，还有 AND, OR,  XOR 这类按位计算表格。例如对于 4-bit AND 表格可以分解为两个 2-bit AND 表格的运算：
+我们用这个可分解表格，构造一个 Lookup Argument，与之前的方案的差异在于，它利用了表格向量的内部结构，可以处理超大的表格。
 
-$$
-\begin{array}{c|cccc}
- & 00 & 01 & 10 & 11 \\
-\hline
-00 & 00 & 00 & 00 & 00 \\
-01 & 00 & 01 & 00 & 01 \\
-10 & 00 & 00 & 10 & 10 \\
-11 & 00 & 01 & 10 & 11 \\
-\end{array}
-$$
+## 4. Lasso 协议框架
 
-我们把 $t_{\mathsf{AND}4}(\vec{x}, \vec{y})$ 拆分为
-
-$$
-t_{\mathsf{AND}4}(\vec{x}_0\parallel\vec{x}_1, \vec{y}_0\parallel\vec{y}_1) = 
-2^2 \cdot t_{\mathsf{AND}2}(\vec{x}_0, \vec{y}_0) + t_{\mathsf{AND}2}(\vec{x}_1, \vec{y}_1)
-$$
-
-对于上面这类位运算表格，我们可以把 Lookup 关系等式写成下面的**通用形式**：
-
-$$
- \tilde{f}(\vec{r}) \overset{?}{=} \sum_{\vec{b}\in\{0,1\}^{\log{m}}}
-G(t_0[\mathsf{dim}_0(\vec{b})], t_1[\mathsf{dim}_1(\vec{b})], \ldots,  t_{c-1}[\mathsf{dim}_{c-1}(\vec{b})])
-\cdot \tilde{eq}(\vec{b},\vec{r}) 
-$$
-
-这里表格 $\vec{t}$ 被拆分成了 $c$ 个子表格，分别为 $(t_0, t_1,\ldots, t_{c-1})$。而 $G(\cdots)$ 是一个参数化的多项式，可以根据不同的位运算表格来定义。
-
-假设主表格表示两个长度为 $W$ 的二进制数的位运算，那么第 $i$ 个子表格对应主表索引的第 $i\cdot W/c$ 位
-到 $i\cdot (W/c+1)$ 之间的位运算。$\mathsf{dim}_i(\vec{b})$ 表示第 $\vec{b}$ 个查询表项，在主表格第 $i$ 个维度上的位置坐标。
-
-## 2. Lasso 协议框架
-
-至此，我们可以定义出完整的 Lasso 协议框架。Lasso 的核心协议是一个类似 Spark 的稀疏多项式承诺。其中的稀疏向量是查找记录在各个维度的子表格中的索引。对于任意一个查找记录 $f_i$，假如 $f_i$ 在主表格 $T$ 中的索引值为 $a_i$。因为主表格可被分解，比如 $T$ 可以被分解为 $k\cdot c$ 个子表格，其中共有 $c$ 个维度，其中每个维度上有 $k$ 个子表格。维度数量 $c$ 等价于我们把索引值 $a_i$ 先按照二进制位拆分为两段，代表两个位运算操作数，然后再把高位低位两段再分解为 $c$ 段：
+Lasso 的核心协议是一个类似 Spark 的稀疏多项式承诺，被称为 Surge。对于任意一个查找记录 $f_i$，假如 $f_i$ 在主表格 $T$ 中的索引值为 $a_i$。因为主表格 $\vec{T}$ 可被分解，比如 $\vec{T}$ 可以被分解为 $c$ 个子表格。分解维度的数量 $c$ 对应于主表的索引值 $i$ 按照二进制位的拆分。例如：
 
 $$
 \begin{split}
-a_i &= X_i\parallel Y_i \\
-& = \Big(\mathsf{dim}^{(0)}(i), \mathsf{dim}^{(1)}(i), \ldots, \mathsf{dim}^{(c-1)}(i)\Big)
-\parallel
-\Big(\mathsf{dim}^{(0)}(i), \mathsf{dim}^{(1)}(i), \ldots, \mathsf{dim}^{(c-1)}(i)\Big)
+\mathsf{bits}(i) &= \mathsf{dim}^{(0)}(i)\parallel \mathsf{dim}^{(1)}(i) \parallel \cdots \parallel\mathsf{dim}^{(c-1)}(i)
 \end{split}
 $$
 
- $t^{(0)}, t^{(1)}, \ldots, t^{(c-1)}$，那么 $f_i$ 在第 $i$
-
- 个维度上的索引为 $b_i$，那么 $f_i$ 在主表格中的索引为 $\mathsf{dim}_i(\vec{b})$。
+即每一个主表元素 $T_i$ 都可以写成关于 $c$ 个子表格 $(t^{(0)}, t^{(1)}, \ldots, t^{(c-1)})$ 中的元素的运算：
 
 $$
- \tilde{f}(\vec{r}) \overset{?}{=} \sum_{\vec{b}\in\{0,1\}^{\log{m}}}
-G(t^{(0)}[\mathsf{dim}^{(0)}(\vec{b})], t^{(1)}[\mathsf{dim}^{(1)}(\vec{b})], \ldots,  t^{\alpha-1}[\mathsf{dim}^{(c-1)}(\vec{b})])
-\cdot \tilde{eq}(\vec{b},\vec{r}) 
+T_i = \mathcal{G}\Big(
+\ t^{(0)}[\mathsf{dim}^{(0)}(i)],
+\ t^{(1)}[\mathsf{dim}^{(1)}(i)],
+\ldots,
+\ t^{(c-1)}[\mathsf{dim}^{(c-1)}(i)]
+\ 
+\Big)
 $$
 
-请注意，我们这里仅给出 Unindexed 
+我们可以写下对于可分解表格的 Lookup Argument 的等式：
+
+$$
+ \tilde{f}(\vec{X}) \overset{?}{=} \sum_{\vec{b}\in\{0,1\}^{\log{m}}}
+\mathcal{G}\Big(t^{(0)}[\mathsf{dim}^{(0)}(\vec{b})], t^{(1)}[\mathsf{dim}^{(1)}(\vec{b})], \ldots,  t^{(c-1)}[\mathsf{dim}^{(c-1)}(\vec{b})]\Big)
+\cdot \tilde{eq}(\vec{b},\vec{X}) 
+$$
+
+以 32-bit 的 Rangcheck 表格为例，假如我们需要把它分解为四个子表格，这四个子表格完全一摸一样，都是一个 8-bit 的 Rangecheck 表格。那么我们可以写下下面的等式：
+
+$$
+T_{\mathsf{range, 32}}[(i_0,i_1,i_2,i_3)_{(2)}] = 2^{24} \cdot t_{\mathsf{range,8}}[i_0]
++ 2^{16} \cdot t_{\mathsf{range,8}}[i_1] 
++ 2^{8} \cdot t_{\mathsf{range,8}}[i_2]
++ t_{\mathsf{range,8}}[i_3]
+$$
+
+这里 $\mathcal{G}(\cdot)$ 的定义如下
+
+$$
+\mathcal{G}(y_0, y_1, y_2, y_3) = 2^{24} \cdot y_0
++ 2^{16} \cdot y_1
++ 2^{8} \cdot y_2
++ y_3
+$$
+
+### 协议细节
 
 公共输入：
 
-1. 子表格的承诺：$\{\mathsf{PCS.Commit}(\tilde{t}_i(\vec{X}))\}_{i\in[c]}$
-2. 查询向量的承诺：$\mathsf{PCS.Commit}(\tilde{f}(\vec{X}))$
+1. 子表格的承诺：$\{\mathsf{cm}(\tilde{t}^{(i)}(\vec{X}))\}_{i\in[c]}$
+2. 查询向量的承诺：$\mathsf{cm}(\tilde{f}(\vec{X}))$
 
-第一轮：Prover 计算并承诺 $\{\tilde{dim}_i(\vec{X})\}_{i\in[c]}$
+第一轮：Prover 计算并承诺 $\{\tilde{\mathsf{dim}}^{(i)}(\vec{X})\}_{i\in[c]}$
 
 第二轮：Verifier 发送随机向量 $\vec{r}\in\mathbb{F}^{\log{m}}$
 
-第三轮：Prover 计算向量 $\vec{e}^{(0)}, \vec{e}^{(1)}, \ldots, \vec{e}^{(\alpha-1)}$
+第三轮：Prover 计算向量 $\vec{e}^{(0)}, \vec{e}^{(1)}, \ldots, \vec{e}^{(c-1)}$
 
 $$
-e^{(i)}_j = t_i[\mathsf{dim}_i(\vec{r})], \quad \forall j\in[m], \forall i\in[0, \alpha)
+e^{(i)}_j = t^{(i)}[{\mathsf{dim}}^{(i)}(\mathsf{bits}(j))], \quad \forall j\in[0, m), \forall i\in[0, c)
 $$
 
-Prover 计算向量（长度为 $\log{m}$） $\vec{\mathsf{c}}^{(0)}, \vec{\mathsf{c}}^{(1)}, \ldots, \vec{\mathsf{c}}^{(\alpha-1)}$，
+Prover 计算计数器向量（长度为 $\log{m}$） $\vec{\mathsf{c}}^{(0)}, \vec{\mathsf{c}}^{(1)}, \ldots, \vec{\mathsf{c}}^{(c-1)}$，
 
-Prover 计算向量（长度为 $\log{N}/c$） $\vec{\mathsf{s}}^{(0)}, \vec{\mathsf{s}}^{(1)}, \ldots, \vec{\mathsf{s}}^{(\alpha-1)}$
+Prover 计算终状态中的计数器向量（长度为 $\log{N}/c$） $\vec{\mathsf{s}}^{(0)}, \vec{\mathsf{s}}^{(1)}, \ldots, \vec{\mathsf{s}}^{(c-1)}$
 
-Prover 发送向量的承诺 $E^{(0)}, E^{(1)}, \ldots, E^{(\alpha-1)}$
+Prover 发送向量的承诺 $\mathsf{cm}(\vec{e}^{(0)}), \mathsf{cm}(\vec{e}^{(1)}), \ldots, \mathsf{cm}(\vec{e}^{(c-1)})$
 
 第四轮：Prover 和 Verifier 运行 Sumcheck 协议，证明下面的等式：
 
 $$
-v \overset{?}{=} \sum_{\vec{b}\in\{0,1\}^{\log{m}}} G\Big(\tilde{e}^{(0)}(\vec{b}), \tilde{e}^{(1)}(\vec{b}),\ldots, \tilde{e}^{(\alpha-1)}(\vec{b})\Big)\cdot \tilde{eq}(\vec{b}, \vec{r})
+v \overset{?}{=} \sum_{\vec{b}\in\{0,1\}^{\log{m}}} \mathcal{G}\Big(\tilde{e}^{(0)}(\vec{b}), \tilde{e}^{(1)}(\vec{b}),\ldots, \tilde{e}^{(c-1)}(\vec{b})\Big)\cdot \tilde{eq}(\vec{b}, \vec{r})
 $$
 
-最后，Prover 和 Verifier 把等式归约到：
+Prover 和 Verifier 把等式归约到：
 
 $$
-v' = G\Big(\tilde{e}^{(0)}(\vec{\rho}), \tilde{e}^{(1)}(\vec{\rho}),\ldots, \tilde{e}^{(\alpha-1)}(\vec{\rho})\Big)\cdot \tilde{eq}(\vec{\rho}, \vec{r})
+v' = \mathcal{G}\Big(\tilde{e}^{(0)}(\vec{\rho}), \tilde{e}^{(1)}(\vec{\rho}),\ldots, \tilde{e}^{(c-1)}(\vec{\rho})\Big)\cdot \tilde{eq}(\vec{\rho}, \vec{r})
 $$
 
-第五轮：Prover 发送 $(v_{e,0}, v_{e,1}, \ldots, v_{e,\alpha-1})$，以及 $(\pi_{e,0}, \pi_{e,1}, \ldots, \pi_{e,\alpha-1})$
+第五轮：Prover 发送 $(v_{e,0}, v_{e,1}, \ldots, v_{e,c-1})$，以及 $(\pi_{e,0}, \pi_{e,1}, \ldots, \pi_{e,c-1})$
 
-1. $v_{e,i} = \tilde{e}^{(i)}(\vec{\rho}), \quad \forall i\in [0, \alpha)$
-2. $\pi_{e,i} = \mathsf{PCS.Eval}(E^{(i)}, \vec{\rho}, v_{e,i}; \vec{e}^{(i)}), \quad \forall i\in [0, \alpha)$
+1. $v_{e,i} = \tilde{e}^{(i)}(\vec{\rho}), \quad \forall i\in [0, c)$
+2. $\pi_{e,i} = \mathsf{PCS.Eval}(E^{(i)}, \vec{\rho}, v_{e,i}; \vec{e}^{(i)}), \quad \forall i\in [0, c)$
 
 第六轮：Verifier 验证 
 
 $$
-\mathsf{PCS.Verify}(E^{(i)}, \vec{\rho}, v_{e,i}, \pi_{e, i}) = 1, \quad \forall i\in [0, \alpha)
+\mathsf{PCS.Verify}(\mathsf{cm}(\vec{e}^{(i)}), \vec{\rho}, v_{e,i}, \pi_{e, i}) = 1, \quad \forall i\in [0, c)
 $$
 
 $$
-v' \overset{?}{=} G(v_{e,0}, v_{e,1}, \ldots, v_{e,\alpha-1})\cdot \tilde{eq}(\vec{\rho}, \vec{r})
+v' \overset{?}{=} \mathcal{G}(v_{e,0}, v_{e,1}, \ldots, v_{e,c-1})\cdot \tilde{eq}(\vec{\rho}, \vec{r})
 $$
 
-第七轮：Prover 和 Verifier 调用 Offline-memory-checking 证明每个 $\vec{e}^{(i)}$ 的正确性，即每个向量元素 $e_j\in \vec{e}^{(i)}$ 都是从表格 $t^{(i)}$ 中读取，读取的位置为 $\mathsf{dim}^{(i)}(\mathsf{bits}(j))$：
+第七轮：Prover 和 Verifier 调用 Offline Memory Checking 证明每个 $\vec{e}^{(i)}$ 的正确性，即每个向量元素 $e_j\in \vec{e}^{(i)}$ 都是从表格 $t^{(i)}$ 中读取，读取的位置为 $\mathsf{dim}^{(i)}(\mathsf{bits}(j))$：
 
 $$
-\vec{e}^{(i)} = (t^{(i)}[\mathsf{dim}^{(k)}(\mathsf{bits}(0))], t^{(i)}[\mathsf{dim}^{(k)}(\mathsf{bits}(1))], \ldots, t^{(i)}[\mathsf{dim}^{(k)}(\mathsf{bits}(m-1))]), \quad \forall i\in[0, \alpha), k = \alpha/c
+\vec{e}^{(i)} = (t^{(i)}[\mathsf{dim}^{(i)}(\mathsf{bits}(0))], t^{(i)}[\mathsf{dim}^{(i)}(\mathsf{bits}(1))], \ldots, t^{(i)}[\mathsf{dim}^{(i)}(\mathsf{bits}(m-1))]), \quad \forall i\in[0, c)
 $$
 
-## 更多的表格拆分案例
 
-Jolt 论文给出了更多的可分解表格，用于表达 RISC-V 指令的计算过程。
+## 5. 二元操作表格的分解
 
-我们首先看一个简单的可分解表格 $T_{\mathsf{EQ}}$，这个表格用来判断 $A\overset{?}{=} B$，如果 A 和 B 相等，那么这个计算返回 $1$，否则返回 $0$。下面是一个 2-bit 表格示例：
+除了 RangeCheck 表格之外，还有 AND, OR,  XOR 这类按位计算表格也可以按照同样的思路进行分解。例如下面是一个 1-bit AND 表，记为 $\mathsf{AND}^{(1)}$：
 
 $$
-\small
-\begin{array}{c|c|c}
-A & B & A\overset{?}{=} B \\
+\begin{array}{c|c}
+i & A \parallel B \\
 \hline
-00 & 00 & 1\\
-00 & 01 & 0\\
-00 & 10 & 0\\
-00 & 11 & 0\\
-01 & 00 & 0\\
-01 & 01 & 1\\
-01 & 10 & 0\\
-01 & 11 & 0\\
-10 & 00 & 0\\
-10 & 01 & 0\\
-10 & 10 & 1\\
-10 & 11 & 0\\
-11 & 00 & 0\\
-11 & 01 & 0\\
-11 & 10 & 0\\
-11 & 11 & 1\\
+0 & 0 \parallel 0 \\
+1 & 0 \parallel  1 \\
+2 & 1 \parallel  0 \\
+3 & 1 \parallel  1 \\
+\end{array}
+\quad
+\begin{array}{|c|}
+\hline
+A\& B \\
+\hline
+ 0 \\
+ 0 \\
+0 \\
+1 \\
+\hline
 \end{array}
 $$
 
-然后我们分析一个 W-bit 长的表格如何分解。对于判等表格来说，我们可以把 $W$ 位的表格拆分成 $c$ 个 $W/c$-bit 子表格，这些子表格完全相等，因为高位低位运算互不干扰。我们先看子表格的定义：
-
-$$
-T_{\mathsf{EQ}}^{(W/c)}(\vec{x}, \vec{y}) = \prod_{i=0}^{(W/c)-1} \Big(x_i\cdot y_i + (1-x_i)\cdot (1-y_i)\Big)
-$$
-
-这个定义是说，如果 $x_i$ 和 $y_i$ 相等，那么 $x_i\cdot y_i + (1-x_i)\cdot (1-y_i)=1$，否则为 $0$。那么 $T_{\mathsf{EQ}}^{(W/c)}$ 表格的定义就是把 $W$ 位的表格拆分成 $c$ 个 $W/c$ 位的子表格，然后把这些子表格的结果相乘：
-
-$$
-T_{\mathsf{EQ}}^{(W)}(\vec{X}, \vec{Y})=\prod_{i=0}^{c-1}T_{\mathsf{EQ}}^{(W/c)}(\vec{X}_i, \vec{Y}_i)
-$$
-
-这里，
-
-$$
-\quad \vec{X}=\vec{X}_0\parallel\vec{X}_1\parallel\ldots\parallel\vec{X}_{c-1}, \qquad \vec{Y}=\vec{Y}_0\parallel\vec{Y}_1\parallel\ldots\parallel\vec{Y}_{c-1}
-$$
-
-### LTU 表格
-
-接下来我们看一个稍微复杂点的表格，用来计算 $X \overset{?}{<} Y$，表格的索引值为 $X\parallel Y$，如果关系成立，那么表格项为 $1$，否则表格项为 $0$。
-
-比较两个整数的一般算法是并行扫描两个整数 $X$, $Y$ 的每一个二进制位。从最高位开始，当遇到第一个不同的位时，停下来比较，并输出结果。
-
-我们引入一个辅助的表格 $\mathsf{LTU}_i$，它表示 $X$ 与 $Y$ 第一个不同的 bit 位于第 $i$ 个位置（按照从低位到高位的顺序）
-
-$$
-\mathsf{LTU}^{(W)}_i(\vec{x}, \vec{y}) = (1-x_i)\cdot y_i\cdot \mathsf{EQ}^{(W-i-1)}(\vec{x}_{>i}, \vec{y}_{>i})
-$$
-
-例如，$\mathsf{LTU}^{(4)}_1(1101, 1110)=1$，因为 $x_1=0, y_1=1$，并且 $\mathsf{EQ}^{(2)}(11, 11)=1$。而 $\mathsf{LTU}^{(4)}_2(1101, 1110)=0$，因为 $x_2=1$，所以 $(1-x_2)=0$。下面是所有 $\mathsf{LTU}_i^{(4)}(1101,1110)$ 的计算过程：
+可以看出，这个表格有 4 行，第 $i$ 行的表格元素为 $A\& B$，而表格的索引值的高位为 $A$，低位为 $B$。比如 $i=2$ 这一行，$i=(10)_{(2)}$ 二进制位的高位为 $1$，低位为 $0$，那么这一行的表格元素为 $0$，表示 $1 \& 0 = 0$。假设我们要分解一个 2-bit AND 表格，$\mathsf{AND}^{(2)}$, 那么我们可以用下面的矩阵来表示：
 
 $$
 \begin{array}{c|cccc}
-i=   & 3 & 2 & 1 & 0\\
+ & 0 & 0 & 0 & 1 \\
 \hline
-x_i & 1 & 1 & {\color{red}0} & 1\\
-y_i & 1 & 1 & {\color{red}1} & 0\\
-\hline
-EQ(x_{>i},x_{>i})   & 1 & 1 & 1 & 0\\
-(1-x_i)y_i          & 0 & 0 & {\color{red}1}  & 0  \\
-\hline
-\mathsf{LTU}_i               & 0 & 0 & {\color{blue}1} & 0  \\
+0 & 00 & 00 & 00 & 01 \\
+0 & 00 & 00 & 00 & 01 \\
+0 & 00 & 00 & 00 & 01 \\
+1 & 10 & 10 & 10 & 11 \\
 \end{array}
-$$
+$$ 
 
-利用多个辅助表格的求和，我们可以定义出 $\mathsf{LTU}^{(W)}$ 表格：
-
-$$
-\mathsf{LTU}^{(W)}(\vec{x}, \vec{y})=\sum_{i=0}^{W-1}\mathsf{LTU}^{(W)}_i(\vec{x}, \vec{y})
-$$
-
-对上面的例子，我们可以计算 LTU 表格中位于 $11011110$ 这个位置的项，$\mathsf{LTU}^{(4)}(1101,1110)$
+矩阵中的每个单元格表示 $(A_0, A_1)\&(B_0,B_1)$，其中 $A_0\& B_0=\mathsf{T_{and,1}}[(A_0,B_0)]$，$A_1\& B_1=\mathsf{T_{and,1}}[(A_1,B_1)]$
+满足下面的等式：
 
 $$
-\mathsf{LTU}^{(4)}(1101,1110)=\sum_{j\geq i} \mathsf{LTU}_j(1101, 1110)= 0 + 0 + {\color{blue}1} +  0  = 1\\
+\mathsf{AND}^{(2)}[(A_0,A_1, B_0, B_1)_{(2)}] = 2\cdot \mathsf{AND^{(1)}}[(A_0,B_0)] + \mathsf{AND^{(1)}}[(A_1,B_1)]
 $$
 
-假如 $W=64$，那么 $\mathsf{LTU}^{(W)}$ 的尺寸将是 $2^{128}$，理论上我们无法存储这么大的表格。我们需要把大表格拆分成若干小表格关于一个多项式 $G(\cdot)$ 的运算。
-
-接下来，我们分析如何拆分这个表格。假设我们把 $W$ 宽的 bits 拆分为 $c$ 段，每一段为 $W/c$。操作数 $\vec{x}$ 和 $\vec{y}$ 按 $c$ 段拆分后，表示如下：
+因此，我们可以推而广之，对于任意的 $W$-bit AND 表格，我们可以把操作数 $A$ 和 $B$ 按位拆分成 $c$ 段，每一段查子表格 $\mathsf{AND}^{(W/c)}$ 确定 $A_i\& B_i$，然后将 $c$ 个运算结果再按位拼装起来。下面写出这个关系等式：
 
 $$
-\vec{x}^{(W)} = \vec{x}^{(W/c)}_{c-1}\parallel \vec{x}^{(W/c)}_{c-2}\parallel \ldots \parallel \vec{x}^{(W/c)}_{0}, \quad \vec{y}^{(W)} = \vec{y}^{(W/c)}_{c-1}\parallel \vec{y}^{(W/c)}_{c-2}\parallel \ldots \parallel \vec{y}^{(W/c)}_{0}
+\mathsf{\widetilde{AND}}^{(W)}(\vec{X}_0\parallel\vec{X}_1\parallel\cdots \parallel \vec{X}_{c-1},\  \vec{Y}_0\parallel\vec{Y}_1\parallel\cdots\parallel \vec{Y}_{c-1}) = 
+2^{c-1} \cdot \mathsf{\widetilde{AND}}^{(W/c)}(\vec{X}_0, \vec{Y}_0) 
++ 2^{c-2} \cdot \mathsf{\widetilde{AND}}^{(W/c)}(\vec{X}_1, \vec{Y}_1) 
++ \ldots
++ \mathsf{\widetilde{AND}}^{(W/c)}(\vec{X}_{c-1}, \vec{Y}_{c-1})
 $$
 
-一个初步的想法是将这 $c$ 组操作数分别输入到 $c$ 个 $\mathsf{LTU}^{(W/c)}$ 表格中，然后把这些表格的结果相加。但是这样的计算结果并不是我们想要的，因为这样的计算结果会有多个 $1$，而我们只需要其中一组出现 $1$，其余为零，这样我们最后求和的结果才是 $1$。因此，我们可以考虑从高位开始，当某一段的 $\mathsf{LTU}^{(W/c)}$ 计算输出 $1$ 时，我们要求从高位开始的比较过的 $W/c$ 段都应该相等，否则就输出 $0$。
+代入到 Lookup 关系等式中，我们可以得到：
 
 $$
-\mathsf{LTU}^{(W)}(\vec{x}, \vec{y})=\sum_{j=0}^{c-1}
-\Big(
-    \mathsf{LTU}^{(W/c)}(\vec{x}_j, \vec{y}_j)\cdot 
-    \prod_{k=j+1}^{c-1}\mathsf{EQ}^{(W/c)}(\vec{x}_k, \vec{y}_k)
-\Big)
+ \tilde{f}(\vec{X},\vec{Y}) \overset{?}{=} \sum_{\vec{a},\vec{b}\in\{0,1\}^{\log{m}}}
+\mathcal{G}_{\mathsf{AND}}({\mathsf{{AND}}^{(W/c)}}[\mathsf{dim}_0(\vec{a}), \mathsf{dim}_0(\vec{b})], \ldots,  {\mathsf{{AND}}^{(W/c)}}[\mathsf{dim}_{c-1}(\vec{a}), \mathsf{dim}_{c-1}(\vec{b})])
+\cdot \tilde{eq}((\vec{a},\vec{b}),(\vec{X},\vec{Y})) 
 $$
 
-如果要采用 Lasso 框架来证明关于 $\mathsf{LTU}^{(W)}(\vec{x}, \vec{y})$ 表格的 Lookup，我们需要定义下给出参数化的多项式 $G(\cdot)$：
+代入上面的 Lasso 协议，我们可以构造出对 $\mathsf{\widetilde{AND}}^{(W)}$ 表格的 Lookup Arugment 方案。
 
-$$
-G\Big(
-    \mathsf{LTU}^{(W/c)}[X_0\parallel Y_0], \mathsf{EQ}^{(W/c)}[X_0\parallel Y_0], 
-    \mathsf{LTU}^{(W/c)}[X_1\parallel Y_1], \mathsf{EQ}^{(W/c)}[X_1\parallel Y_1], 
-    \ldots,
-    \mathsf{LTU}^{(W/c)}[X_{c-1}\parallel Y_{c-1}], \mathsf{EQ}^{(W/c)}[X_{c-1}\parallel Y_{c-1}] 
-\Big)
-$$
+同样我们可以把其它的二元位操作同样按照这样的思路去分解，如 $\mathsf{OR}$ 与 $\mathsf{XOR}$。把主表格拆分成 $c$ 段，假设主表格表示两个长度为 $W$ 的二进制数的位运算，那么第 $i$ 个子表格对应主表索引的第 $i\cdot (W/c)$ 位到 $(i+1)\cdot (W/c)$ 之间的位运算。$(\mathsf{dim}_i(\vec{a}), \mathsf{dim}_i(\vec{b}))$ 表示两个操作数 $\vec{X}$ 和 $\vec{Y}$ 的二进制位在主表格第 $i$ 个维度上的位置索引。
 
-总共有 $c$ 段，每一段需要两个表格，$\mathsf{LTU}^{(W/c)}$ 和 $\mathsf{EQ}^{(W/c)}$
+##  References
 
-### SLL 表格
-
-下面是一个不容易切分 bits 的表格，那就是移位运算，比如向左移位（Shift Left Logical, SLL），`0011 << 02 = 1100`。移位运算会给表格的切分带来些麻烦，因为移位运算会将低位分段的部分 bits 
-移动到高位分段。
-
-我们先考虑单个表格的 SLL 运算。下面的 $\mathsf{SLL}_k(\vec{X})$ 表示把长度为 $W$ 的位向量 $\vec{X}$ 向左移 $k$ 位的运算：
-
-$$
-\mathsf{SLL}^{(W)}_k(\vec{X}) = \sum_{j=0}^{W-k-1}2^{j+k}\cdot X_j
-$$
-
-这个定义比较容易理解，对于 $W$ 个 bits，我们只需要把低 $k$ 位中的每一个 $X_i, i\in[0,k)$，乘上 $2^{k+i}$，然后对这个 $k$ 个数进行求和。然后高位的 $W-k$ 位会溢出，因此被直接抛弃。这个表格比较容易定义是，因为我们将移位的位数作为一个常数。
-
-接下来，我们考虑左移的位数是一个变量 $Y$。这时候，我们可以利用一个选择子，来根据 $Y$ 值来选择不同的 $\mathsf{SLL}_k$。
-
-$$
-\mathsf{SLL}^{(W)}(\vec{X}, \vec{Y}) = \sum_{k=0}^{W-1} \mathsf{EQ}^{(W)}(\mathsf{bits}(k), \vec{Y})\cdot \mathsf{SLL}_k(\vec{X})
-$$
-
-其中 $|\vec{Y}|=\log{W}$，因为 $Y$ 的取值范围是 $[0, W-1]$（在 RISC-V 的规范中，移位操作的位移为 $\log{W}$）。
-
-例如我们要计算 $\mathsf{SLL}^{(4)}(1101, 10)$，
-
-$$
-\begin{array}{|c|c|c|}
- & \mathsf{EQ}^{(4)}(k, \vec{Y}) & \mathsf{SLL}_k(\vec{X})\\
-\hline
-k=0 & \mathsf{EQ}^{(4)}(00, 10) = 0  & \mathsf{SLL}_0(1101) = 1101  \\
-k=1 & \mathsf{EQ}^{(4)}(01, 10) = 0  & \mathsf{SLL}_1(1101) = 1010  \\
-k=2 & \mathsf{EQ}^{(4)}(10, 10) = {\color{red}1}  & \mathsf{SLL}_2(1101) = {\color{red}0100}  \\
-k=3 & \mathsf{EQ}^{(4)}(11, 10) = 0  &  \mathsf{SLL}_3(1101) = 1010 \\
-\end{array}
-$$
-
-等式可以展开为：
-
-$$
-\begin{split}
-\mathsf{SLL}^{(4)}(1101, 10) & = \mathsf{EQ}^{(4)}(00, 10)\cdot \mathsf{SLL}_0(1101)  \\
-& + \mathsf{EQ}^{(4)}(01, 10)\cdot \mathsf{SLL}_1(1101)   \\
-& + \mathsf{EQ}^{(4)}(10, 10)\cdot \mathsf{SLL}_2(1101)   \\
-& + \mathsf{EQ}^{(4)}(11, 10)\cdot \mathsf{SLL}_3(1101)   \\
-& =  \mathsf{EQ}^{(4)}(10, 10)\cdot \mathsf{SLL}_2(1101) \\
-& = 1\cdot 0100 \\
-& = 0100
-\end{split}
-$$
-
-如果 $W=64$，我们需要把表格拆分为 $c$ 个 $W/c$-bit 子表格。我们用一个例子（$W=16, c=4, \log{W}=4$）来说明，`0101 1100 1001 1010 << 0110`，这个移位操作是向左移 6 位，假如我们需要将这个表格拆分为 $c=4$ 个子表格，每个子表格计算的位数为 $W/c=4$。
-这样，每个子表格 $\mathsf{SLL}^{(4)}(\vec{x}, \vec{y})$ 长度为 $2^{W/c+log{W}}=2^{4+4} = 2^8$，每个表格项的位长为 $W$。那么这个移位操作相当于是 $c=4$ 个移位运算结果的**求和**：例如我们给出这个子表格的表项示例：
-
-$$
-\begin{array}{|c|c|c|}
-\vec{x} & \vec{y} & \mathsf{SLL}^{(4)}(\vec{x}, \vec{y}) \\
-\hline
-0000 & 0000 & 0000\ 0000\ 0000\ 0000\\
-\vdots & \vdots & \vdots\\
-0001 & 0001 & 0000\ 0000\ 0000\ 0010\\
-\vdots & \vdots & \vdots\\
-0001 & 0101 & 0000\ 0000\ 0010\ 0000\\
-\vdots & \vdots & \vdots\\
-1001 & 0011 & 0000\ 0000\ 0100\ 1000\\
-\end{array}
-$$
-
-$\mathsf{SLL}^{(16)}({(0101 1100 1001 1010)}_{2}, {0110}_{2})$ 的计算过程看下表：
-
-$$
-\begin{array}{llrr|rr}
- 0101 << 6 &= & {\color{red}01} & {\color{red}0100} & 0000 & &\\
- 1100 << 6 &= &    & {\color{red}11} &0000 &0000 \\
- 1001 << 6 &= && & 10 &0100 &0000 & & \\
- 1010 << 6 &= &&&&10 & 1000 &0000\\
- \mathsf{SLL}^{(16)}(\vec{x}, 0110) & = & {\color{red}01} & {\color{red}0111} & 0010 & 0110 & 1000 & 0000 \\
-\end{array}
-$$
-
-这里红色标记的部分为溢出 $(W=16)$ 部分。根据 SLL 的语义，我们要抛弃这部分的 bits。剩下的部分，我们把它们错位（乘上 2 的次幂 ）相加。由于不同的分段溢出的 bits 数量不等，我们需要先给出一个定义，$m_{i, k}$ 来标记每一个分段中溢出的 bits 数量：
-
-$$
-m_{i, k} = \mathsf{min}\Big(W/c, \mathsf{max}\big(0, k+(W/c)\cdot (i+1) - W\big)\Big), \qquad \forall i\in[0, c), k\in[0, \log{W})
-$$
-
-这里 $k$ 为移位的位数，$i$ 为分段的索引。然后 $\mathsf{SLL}_i^{(W/c)}$ 子表格的定义如下：
-
-$$
-\mathsf{SLL}_i^{(W/c)}(\vec{X}, \vec{Y}) = \sum_{k=0}^{W-1}\mathsf{EQ}^{(W)}(\mathsf{bits}(k), \vec{Y})
-\cdot \left(\sum_{j=0}^{W/c-m_{i,k}-1}2^{j+k}\cdot X_j\right)
-$$
-
-最后我们给出 $\mathsf{SLL}^{(W/c)}$ 的分解定义：
-
-$$
-\mathsf{SLL}^{(W/c)}(\vec{X}_{c-1}\parallel\cdots\parallel\vec{X}_0,\ \vec{Y}) = \sum_{i=0}^{c-1}2^{i\cdot W/c}\cdot\mathsf{SLL}^{W/c}_i(\vec{X}_i,\vec{Y})
-$$
- 
-应用 Lasso 框架来实现移位运算，参数化的多项式 $G(\cdot)$ 可以依据上面的等式来定义。
-
-----
-
-
-### 表格的拆分
-
-Lasso 协议之所以可以支持一个巨大表格的 Lookup，核心原理是将巨大表格拆解成若干个小表格，例如把一个 $2^{128}$ 大小的 XOR 表格可以拆分为 8 个并列的长度为 $2^{16}$ 的 XOR 表格。因为两个 64bit 整数的 XOR运算可以拆解成 8对 8bit 整数的 XOR 运算。
-
-Lasso 支持两类巨大的表格，一是可以拆分的，另一类表格被称为  MLE-structured 表格。我们将在后续文章里面讨论后者这类表格的证明。
-
-假如一个巨大表格可以拆分成 $k$ 个子表格：$T_1, T_2, \ldots, T_k$
-
-$$
-T(\vec{X}_0, \vec{X}_1, \ldots, \vec{X}_{c-1}) = g\left(
-    \begin{array}{lll}
-    T_0[\vec{X}_0], &T_1[\vec{X}_0], &\ldots, & T_{k-1}[\vec{X}_{0}], \\ 
-    T_0[\vec{X}_1], &T_1[\vec{X}_1], &\ldots, & T_{k-1}[\vec{X}_{1}], \\ 
-    \vdots & \vdots & \ddots & \vdots \\
-    T_0[\vec{X}_{c-1}], &T_1[\vec{X}_{c-1}], &\ldots, &T_{k-1}[\vec{X}_{c-1}]\\
-\end{array}\right)
-$$
-
-表格 $T$ 的索引也可以拆分成 $c$ 段，并且表格 $T$ 的每一项都可以通过 $k$ 个子表格来计算。那么
-我们把这类表格称为 SOS(Spark-Only-Structured) 结构的表格，或者被称为「可被分解表格」(Decomposable Table)。
-
-于是，Prover 需要计算 $k\cdot c$ 个子表格读取日志，编码成 $\log(m)$-variate-MLE 多项式 $e_0(\vec{X}), e_1(\vec{X}),\ldots, e_{kc}(\vec{X})$，并且产生承诺，$E_0, E_1, \ldots, E_{kc}$。
-
-### 协议
-
+- [Spartan] [Spartan: Efficient and general-purpose zkSNARKs without trusted setup
+](https://eprint.iacr.org/2019/550) by Srinath Setty.
+- [Lasso] [Unlocking the lookup singularity with Lasso](https://eprint.iacr.org/2023/1216) by Srinath Setty, Justin Thaler and Riad Wahby.
+- [Jolt] [Jolt: SNARKs for Virtual Machines via Lookups](https://eprint.iacr.org/2023/1217) by Arasu Arun, Srinath Setty and Justin Thaler.
+- [Baloo] [Baloo: Nearly Optimal Lookup Arguments](https://eprint.iacr.org/2022/1565) by Arantxa Zapico, Ariel Gabizon, Dmitry Khovratovich, Mary Maller and Carla Ràfols.

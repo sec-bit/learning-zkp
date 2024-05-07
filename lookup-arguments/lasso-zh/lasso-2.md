@@ -1,28 +1,28 @@
 # 理解 Lasso (二)：稀疏向量与 Tensor 结构
 
-本文我们介绍一个基于 Sumcheck 的「稀疏多项式承诺方案」 Spark，这个方案出自 Spartan 证明系统。Spark 协议的一个特点是利用了稀疏向量的结构，可以大幅提升 Prover 的效率。这个技术也是 Lasso 协议的核心之一。
+本文我们介绍一个基于 Sumcheck 的「稀疏多项式承诺方案」 Spark，这个方案最早出自 [Spartan] 证明系统。Spark 利用了稀疏向量的结构，可以大幅提升 Prover 的效率。Lasso 是在 Spark 的基础上的进一步拓展了对稀疏向量的处理。理解 Spark 是理解 Lasso 的关键。
 
-普通的多项式承诺方案包括两个阶段，一个是承诺（Commitment）阶段，另一个是求值证明（Evaluation Argument）阶段。对于一个 MLE 多项式 $\tilde{g}\in\mathbb{F}^{\lt 1}[X_0,X_1,\ldots, X_{n-1}]$，求值点 $\vec{u}\in\mathbb{F}^{n}$，以及运算结果 $v=\tilde{g}(\vec{u})$，那么我们可以先产生多项式的承诺：
+普通的多项式承诺方案包括两个阶段，一个是承诺（Commitment）阶段，另一个是求值证明（Evaluation Argument）阶段。对于一个 MLE 多项式 $\tilde{g}\in\mathbb{F}[X_0,X_1,\ldots, X_{n-1}]^{\preceq 1}$，求值点 $\vec{u}\in\mathbb{F}^{n}$，以及运算结果 $v=\tilde{g}(\vec{u})$，那么多项式承诺计算如下：
 
 $$
 \mathsf{cm}(g) \leftarrow \mathsf{PCS.Commit}(\tilde{g})
 $$
 
-然后在求值证明阶段，Prover 可以向 Verifier 证明，多项式 $\tilde{g}$ 在某一个指定点 $\vec{u}$ 的运算结果为 $v$：
+在求值证明阶段，Prover 可以向 Verifier 证明多项式 $\tilde{g}$ 在某一个指定点 $\vec{u}$ 的运算结果为 $v$：
 
 $$
-\pi_{v} \leftarrow \mathsf{PCS.Eval}(\mathsf{cm}(g), \vec{u}, v; \tilde{g})
+\pi_{g,v} \leftarrow \mathsf{PCS.Eval}(\mathsf{cm}(g), \vec{u}, v; \tilde{g})
 $$
 
-最后 Verifier 可以验证求值证明：
+Verifier 可以验证求值证明 $\pi_{g,v}$ ：
 
 $$
 \mathsf{Accept}/\mathsf{Reject} \leftarrow \mathsf{PCS.Verify}(\mathsf{cm}(g), \vec{u}, v, \pi_v)
 $$
 
-如果 $\tilde{g}$ 是一个稀疏的多项式，意味着它在 Boolean HyperCube 上的运算结果中大多数的值都为零，那么我们能否利用这个特点，来设计一个更高效的多项式承诺方案？
+如果 $\tilde{g}$ 是一个稀疏的多项式，意味着它在 Boolean HyperCube 上的运算结果中多数的值都为零，那么我们能否利用这个特点，来设计一个针对稀疏多项式更高效的多项式承诺方案？
 
-下面我们演示如何一步步构造这样一个多项式承诺，Spark。不过请记住，Spark 仍然需要基于一个普通的多项式承诺方案。换句话说，Spark 协议是将一个稀疏的 MLE 多项式的求值证明「归约」到多个普通的 MLE 多项式的求值证明，但后者这些 MLE 多项式的大小被大幅减少。
+下面我们演示如何构造 Spark 多项式承诺。不过请记住，Spark 仍然需要基于一个普通的多项式承诺方案。换句话说，Spark 协议是将一个稀疏的 MLE 多项式的求值证明「归约」到多个普通的 MLE 多项式的求值证明，但后者这些 MLE 多项式的大小被大幅减少。
 
 ## 1. 稀疏向量的编码
 
@@ -40,21 +40,21 @@ $$
 \tilde{eq}(\vec{X}, \vec{Y})=\prod_{i=0}^{n-1}(X_iY_i+(1-X_i)(1-Y_i))
 $$
 
-如果直接使用一个普通的 MLE 多项式承诺方案来证明一个多项式求值， $\tilde{g}(\vec{u})=v$，由于 $\tilde{g}(\vec{X})$ 是一个关于 $N$ 项的求和公式，那么很显然 Prover 要至少花费 $O(N)$ 的计算量来计算 $\tilde{g}(\vec{X})$ 在某一点的求值。
+如果直接使用一个普通的 MLE 多项式承诺方案来证明多项式求值， $\tilde{g}(\vec{u})=v$，由于 $\tilde{g}(\vec{X})$ 是一个关于 $N$ 项的求和公式，那么很显然 Prover 要至少花费 $O(N)$ 的计算量来遍历每一个求和项。
 
-如果给定一个求值点 $\vec{X}=\vec{u}=(u_0, u_1, \ldots, u_{n-1})$，那么根据 $i \in [0, N)$ 的不同， $\tilde{eq}_i(\vec{u})$ 就构成了一个长度为 $N$ 的向量，记为 $\vec{\lambda}$：
+如果给定一个求值点 $\vec{X}=\vec{u}=(u_0, u_1, \ldots, u_{n-1})$，那么所有的 $\tilde{eq}_i(\vec{u}), i\in[0, N)$ 就构成了一个长度为 $N$ 的向量，记为 $\vec{\lambda}$：
 
 $$
 \vec{\lambda} = \big(\tilde{eq}_0(\vec{u}), \tilde{eq}_1(\vec{u}), \tilde{eq}_2(\vec{u}), \ldots, \tilde{eq}_{N-1}(\vec{u})\big)
 $$
 
-别忘记稀疏向量 $\vec{g}$ 中仅有 $m$ 个非零元素。举个例子，比如 $N=16, n=4, m=4$，$\vec{g}$ 向量中仅有四个非零值：
+别忘记稀疏向量 $\vec{g}$ 中仅有 $m$ 个非零元素。举个例子，比如 $N=16, n=4, m=4$，即 $\vec{g}$ 向量中仅有四个非零值：
 
 $$
 \vec{g} = (0,0, g_2, 0, 0, 0, 0, g_7, 0, g_9, 0,0,0,0, g_{14},0)
 $$
 
-那么我们可以用一种紧密的方式来表示 $\vec{g}$：
+那么我们可以换用一种稠密的方式来表示 $\vec{g}$：
 
 $$
 \mathsf{DenseRepr}(\vec{g}) = \big((2, g_2), (7, g_7), (9, g_9), (14, g_{14})\big)
@@ -69,34 +69,34 @@ $$
 \end{split}
 $$
 
-那么 $\vec{g}$ 的紧密表示可以写成：
+那么 $\vec{g}$ 的稠密表示可以写成：
 
 $$
 \mathsf{DenseRepr}(\vec{g}) = \big((k_0, h_0), (k_1, h_1), \ldots, (k_{m-1}, h_{m-1}) \big)
 $$
 
-那么 MLE 多项式 $\tilde{g}(\vec{X})$ 在 $\vec{u}$ 点的求值等式可以改写为：
+然后 MLE 多项式 $\tilde{g}(\vec{X})$ 在 $\vec{u}$ 点的求值等式可以改写为：
 
 $$
 \tilde{g}(\vec{u}) = \sum_{i=0}^{m-1}h_i\cdot
  \tilde{eq}_{k_i}(\vec{u}) = \sum_{i=0}^{m-1}h_i\cdot\lambda_{k_i}
 $$
 
-注意上面这个求和项的个数仅为 $m$。这样，我们成功地把 $\tilde{g}(\vec{X})$ 的求值运算从 $O(N)$ 降到了 $O(m)$，但是 Prover 如何向 Prover 证明求值的正确性呢？
+注意上面这个等式中的求和项的个数仅为 $m$。这意味着在给定 $\vec{h}$ 和 $\vec{\lambda}$ 的情况下，我们成功地把 $\tilde{g}(\vec{X})$ 的求值运算从 $O(N)$ 降到了 $O(m)$。接下来的问题是 Prover 如何向 Verifier 证明求值过程用到了正确的 $h_i$ 和 $\lambda_{k_i}$？
 
 对于一个多项式承诺方案，求值证明的公开输入里面包括了 $\vec{g}$ 向量的承诺，但是上面的求和式需要用到辅助向量 $\vec{h}$，$\vec{k}$ 和 $\vec{\lambda}$。其中 $\vec{\lambda}$ 向量可以通过求值点 $\vec{u}$ 计算得到，其中每个元素为 $\lambda_i=\tilde{eq}_i(\vec{u})$，而求值点 $\vec{u}$ 为公开输入，因此 Verifier 可以公开计算 $\vec{\lambda}$ 向量或者公开验证。但 Verifier 并不能由 $\vec{g}$ 向量的承诺 来直接得到 $\vec{h}$ 和 $\vec{k}$ 这两个向量的信息。因此，我们需要把 $\vec{h}$ 和 $\vec{k}$ 的承诺来替代公开输入中的 $\vec{g}$ 向量的承诺。
 
-换句话说，我们采用 $\vec{h}$ 和 $\vec{k}$ 来作为稀疏向量的 $\vec{g}$ 的编码，并利用一个普通的多项式承诺方案来计算 $\mathsf{cm}(\vec{h})$ 和 $\mathsf{cm}(\vec{k})$ 并把它们作为多项式求值证明的公开输入。
+换句话说，我们采用 $\vec{h}$ 和 $\vec{k}$ 来作为稀疏向量的 $\vec{g}$ 的编码，并利用一个普通的多项式承诺方案来计算 $\mathsf{cm}(\vec{h})$ 和 $\mathsf{cm}(\vec{k})$ ，并把它们作为多项式求值证明的承诺（做为公开输入）。
 
 ## 2. 借助 $\vec{e}$ 的 Sumcheck
 
-我们再引入一个长度为 $m$ 的辅助向量 $\vec{e}=(e_0, e_1, \ldots, e_{m-1})$，它的每一个元素 $e_i=\lambda_{k_i}$：
+我们需要引入一个长度为 $m$ 的辅助向量 $\vec{e}=(e_0, e_1, \ldots, e_{m-1})$，它的每一个元素 $e_i=\lambda_{k_i}$：
 
 $$
 \vec{e} = \Big(\tilde{eq}_{k_0}(\vec{u}), \tilde{eq}_{k_1}(\vec{u}),\ldots, \tilde{eq}_{k_{m-1}}(\vec{u})\Big)
 $$
 
-这样 $\tilde{g}(\vec{X})$ 在 $\vec{u}$ 点的求值等式等价于下面的 Inner product 等式:
+这样 $\tilde{g}(\vec{X})$ 在 $\vec{u}$ 点的求值等式等价于下面的求和等式:
 
 $$
 \tilde{g}(\vec{u}) = \sum_{i=0}^{m-1}\tilde{h}(\mathsf{bits}(i))\cdot \tilde{e}(\mathsf{bits}(i))
@@ -110,19 +110,21 @@ $$
 \tilde{h}(\vec{X}) = \sum_{i=0}^{m-1}h_i\cdot \tilde{eq}_i(\vec{X})
 $$
 
-如果 Prover 要证明上面的求和式，首先提供 $\vec{e}$ 的承诺 $\mathsf{cm}(\vec{e})$ 给 Verifier， 然后接下来的证明可以分为两部分。
+如果 Prover 要证明上面的求和式，首先提供 $\vec{e}$ 的承诺 $\mathsf{cm}(\vec{e})$ 给 Verifier， 然后通过接下来的两部分来完成证明。
 
-第一部分证明是 Prover 和 Verifier 采用 Sumcheck 协议，把 $\tilde{g}(\vec{u})$ 的求值证明规约到下面的等式
+第一部分证明是 Prover 利用 Sumcheck 协议，把 $\tilde{g}(\vec{u})$ 的求值证明规约到下面的等式
 
 $$
 v' \overset{?}{=} \tilde{h}(\vec{\rho})\cdot \tilde{e}(\vec{\rho})
 $$
 
-其中 $v'$ 为 Sumcheck 协议对 $m$ 个求和项进行折叠运算后的结果，而 $\vec{\rho}$ 为 Sumcheck 运行过程中 Verifier 产生的随机的折叠因子。因为 Sumcheck 过程需要 $\log{m}$ 轮，因此 $\vec{\rho}$ 的长度为 $\log{m}$。接下来 Prover 怎么证明上面的等式呢？ 在求值证明之前，Verifier 已经从公开输入中得到了 $\vec{h}$, $\vec{e}$ 两个向量的承诺，分别为 $\mathsf{cm}(\vec{h})$ 与 $\mathsf{cm}(\vec{e})$，那么到这一步，Prover 和 Verifier 可以再利用普通的 MLE 多项式承诺方案来完成两个 Evaluation Argument，分别证明： $\tilde{h}(\vec{\rho})=v_h$ 与 $\tilde{e}(\vec{\rho})=v_e$ 的正确性，因为这两个向量长度均为 $m$，因此 Prover 产生这两个 Evaluation Argument 的计算量为 $O(m)$。最后 Verifier 验证 $v \overset{?}{=} v_h\cdot v_e$ 完成第一部分的证明。
+其中 $v'$ 为 Sumcheck 协议对 $m$ 个求和项进行折叠运算后的结果，而 $\vec{\rho}$ 为 Sumcheck 运行过程中 Verifier 产生的随机折叠因子。因为 Sumcheck 过程需要 $\log{m}$ 轮，所以 $\vec{\rho}$ 的长度为 $\log{m}$。
 
-另外一部分证明是 Prover 需要证明 $\vec{e}$ 向量关于 $\vec{\lambda}$, $\vec{u}$ 与 $\vec{k}$ 的正确性，这就需要用到前文介绍过的 Offline Memory Checking 方法：Prover 只要证明 $\vec{e}$ 向量中的每一个元素都是从 $\vec{\lambda}$ 向量（看成是内存）中读取出来的即可。这样 Prover 总的计算量为 $O(m+N)$。
+接下来 Prover 怎么证明上面的等式呢？ 在求值证明之前，Verifier 已经从公开输入中得到了 $\vec{h}$, $\vec{e}$ 两个向量的承诺，分别为 $\mathsf{cm}(\vec{h})$ 与 $\mathsf{cm}(\vec{e})$，那么到这一步，Prover 和 Verifier 可以再利用普通的 MLE 多项式承诺方案来完成两个 Evaluation Argument，即分别证明： $\tilde{h}(\vec{\rho})=v_h$ 与 $\tilde{e}(\vec{\rho})=v_e$ 的正确性，因为这两个向量长度均为 $m$，因此 Prover 产生这两个 Evaluation Argument 的计算量为 $O(m)$。最后 Verifier 验证 $v \overset{?}{=} v_h\cdot v_e$ 完成第一部分的证明。
 
-## 3. 使用 Memory Checking 证明 $\vec{e}$ 正确性
+第二部分证明是 Prover 证明 $\vec{e}$ 向量关于 $\vec{\lambda}$, $\vec{u}$ 与 $\vec{k}$ 的正确性，这就需要用到前文介绍过的 Offline Memory Checking 方法：Prover 只要证明 $\vec{e}$ 向量中的每一个元素都是从 $\vec{\lambda}$ 向量（看成是内存）中读取出来的即可。这样 Prover 总的计算量为 $O(m+N)$。
+
+## 3. 使用 Memory Checking 证明 $\vec{e}$ 的正确性
 
 辅助向量 $\vec{e}$ 的正确性证明正是 Indexed Lookup Argument：
 
@@ -130,7 +132,7 @@ $$
 \forall i\in [0, m), e_i=\lambda_{k_i}
 $$
 
-借助 Memory Checking 协议，我们把整个 $\vec{\lambda}$ 向量看成是一段内存，Prover 证明 $\vec{e}$ 向量依次读取自内存 $\vec{\lambda}$，读取的位置为 $\vec{k}$。Prover 可以在 $O(m+N)$ 的计算量内完成上面的证明。
+借助 Memory Checking 协议，我们把整个 $\vec{\lambda}$ 向量（公开向量）看成是一段内存，Prover 证明 $\vec{e}$ 向量依次读取自内存 $\vec{\lambda}$，读取的位置为 $\vec{k}$。Prover 可以在 $O(m+N)$ 的计算量内完成上面的证明。
 
 $$
 \mathsf{MemChecking}(\mathsf{cm}(\vec{e}), \mathsf{cm}(\vec{\lambda}), \mathsf{cm}(\vec{k}); \vec{e}, \vec{\lambda}, \vec{k_i})
@@ -138,9 +140,9 @@ $$
 
 结合前文的定义，这里 $\vec{e}$ 为查询向量 $\vec{f}$，$\lambda$ 为表格向量 $\vec{t}$，而 $\vec{k}$ 为位置向量 $\vec{a}$。
 
-但还有一个问题，$\vec{\lambda}$ 的承诺 $\mathsf{cm}(\vec{\lambda})$ 怎么产生？其中每一个元素 $\lambda_{i}=\tilde{eq}_i(\vec{u})$，其定义中含有 $\vec{u}$，因此不能在 $\tilde{g}$ 的承诺中出现，也无法出现在 $\tilde{g}(\vec{X})$ 求值证明的公开输入中，一般情况多项式承诺方案的公开输入为 $(\mathsf{cm}(\vec{g}), \vec{u}, \tilde{g}(\vec{u}))$。如果由 Prover 计算 $\mathsf{cm}(\vec{\lambda})$ 的话，那么 Prover 需要额外证明承诺的正确性。
+但还有一个问题，$\vec{\lambda}$ 的承诺 $\mathsf{cm}(\vec{\lambda})$ 怎么产生？向量元素 $\lambda_{i}=\tilde{eq}_i(\vec{u})$，其定义中含有一个求值阶段才出现的公开输入 $\vec{u}$，因此不能在 $\tilde{g}$ 的承诺阶段中出现，也无法出现在 $\tilde{g}(\vec{X})$ 求值证明的公开输入中，一般情况多项式承诺方案的公开输入为 $(\mathsf{cm}(\vec{g}), \vec{u}, \tilde{g}(\vec{u}))$。如果由 Prover 计算 $\mathsf{cm}(\vec{\lambda})$ 的话，那么 Prover 需要额外证明承诺的正确性。
 
-幸运的是，$\vec{\lambda}$ 向量具有一定内部的结构，虽然它的长度为 $N$，但在给定 $\vec{u}$ 的情况下，它的插值多项式 $\tilde{\lambda}(\vec{X})$ 可以在 $O(\log{N})$ 的时间内进行求值计算，因此 Prover 并不需要提供 $\mathsf{cm}(\vec{\lambda})$，而是让 Verifier 自行计算 $\tilde{\lambda}(\vec{X})$ 在某一点的取值。我们观察下 $\tilde{\lambda}(\vec{X})$ 的定义：
+幸运的是，$\vec{\lambda}$ 向量具有一定内部的结构，虽然它的长度为 $N$，但在给定 $\vec{u}$ 的情况下，它的插值多项式 $\tilde{\lambda}(\vec{X})$ 可以在 $O(\log{N})$ 的时间内进行求值计算，于是这样一来 Prover 可以不需要提供 $\mathsf{cm}(\vec{\lambda})$，而是让 Verifier 在验证过程中自行计算 $\tilde{\lambda}(\vec{X})$ 在某一点的取值。我们观察下 $\tilde{\lambda}(\vec{X})$ 的定义：
 
 $$
 \tilde{\lambda}(\vec{X})= \tilde{eq}(\vec{X}, \vec{u})
@@ -152,7 +154,7 @@ $$
 \lambda_i = \tilde{\lambda}(\mathsf{bits}(i)) = \tilde{eq}(\mathsf{bits}(i), \vec{u}) = \prod_{j=0}^{\log{N}-1}(i_ju_j+(1-i_j)(1-u_j))
 $$
 
-这样，我们修改前文的 Memory Checking 协议，把公开输入中的 $\mathsf{cm}(\vec{\lambda})$ 替换为 $\vec{u}$，并且让 Verifier 自行计算 $\tilde{\lambda}(\vec{X})$ 的值。
+上面等式最右边是一个 $\log{N}$ 项的乘积，其中每一个因子只需要常数次的加法和乘法。接下来我们稍微修改下前文中的 Offline Memory Checking 协议，把公开输入中的 $\mathsf{cm}(\vec{\lambda})$ 替换为 $\vec{u}$，并且让 Verifier 自行计算 $\tilde{\lambda}(\vec{X})$ 的值。
 
 
 ### Memory Checking 协议描述
@@ -204,9 +206,9 @@ $$
 (\prod_{i=0}^{N-1} S^{\mathsf{init}}_i)\cdot (\prod_{j=0}^{m-1} R_j) = (\prod_{i=0}^{N-1} S^{\mathsf{final}}_i)\cdot (\prod_{j=0}^{m-1} W_j)
 $$
 
-Grand Product Argument 证明最后会归约到对多个 MLE 多项式的求值证明 $\tilde{S}^{\mathsf{init}}(\vec{X})$，$\tilde{S}^{\mathsf{final}}(\vec{X})$，$\tilde{R}(\vec{X})$，$\tilde{W}(\vec{X})$ 的求值证明，这些证明由可以归结到 $\tilde{I}(\vec{X}), \tilde{k}(\vec{X}), \tilde{e}(\vec{X}), \tilde{c}(\vec{X}), \tilde{c}^{\mathsf{final}}(\vec{X})$ 与 $\tilde{\lambda}(\vec{X})$ 的求值证明。不过，Verifier 其实并不需要 $\tilde{\lambda}(\vec{X})$ 的承诺求值证明，因为 Verifier 可以自行计算 $\tilde{\lambda}(\vec{X})$ 在任意点的求值。因为我们上面提到过，它可以被公开计算，并且求值计算量仅为 $O(\log{N})$。
+Grand Product Argument 证明最后会归约到对多个 MLE 多项式的求值证明，也就是对 $\tilde{S}^{\mathsf{init}}(\vec{X})$，$\tilde{S}^{\mathsf{final}}(\vec{X})$，$\tilde{R}(\vec{X})$，$\tilde{W}(\vec{X})$ 的求值证明。这些证明可以归约到 $\tilde{I}(\vec{X}), \tilde{k}(\vec{X}), \tilde{e}(\vec{X}), \tilde{c}(\vec{X}), \tilde{c}^{\mathsf{final}}(\vec{X})$ 与 $\tilde{\lambda}(\vec{X})$ 的求值证明。注意我们前面提到过， Verifier 不需要 $\tilde{\lambda}(\vec{X})$ 的承诺求值证明，他可以自行计算 $\tilde{\lambda}(\vec{X})$ 在任意点的求值。因为该多项式的求值计算量仅为 $O(\log{N})$，不影响 Verifier 的简洁性（Succinctness）。
 
-同样，只要任何一个公开向量，它的 MLE 多项式的计算过程仅为 $O(\log{N})$，那么 Prover 就完全没有必要对它计算承诺，而把计算任务交给 Verifier。这样 Verifier 仍然保持 SNARK 的特性，同时也提高了 Prover 的效率，省去了计算承诺和产生求值证明的工作量。这一类的向量需要具有一种特殊的内部结构，我们后文会把它们归到一个特殊的分类：MLE-Structured Vector。
+进一步，任何计算过程仅为 $O(\log{N})$ 的 MLE 多项式，Prover 也不必要一定计算它们的承诺，只要把计算任务交给 Verifier 就好。这样 Verifier 仍然保持 SNARK 的特性，同时也提高了 Prover 的效率，省去了计算承诺和产生求值证明的工作量。前提是，这一类 MLE 多项式需要具有一种特殊的内部结构，我们后文会把它们归到一个特殊的分类：MLE-Structured Vector。
 
 对于 Prover 而言，仍然需要在证明过程中构造 $\vec\lambda$，通过动态规划算法，这需要 $O(N)$ 的计算量。
 
@@ -235,7 +237,7 @@ Prover 要计算下面两个承诺：
 1. Prover 计算 $\vec{\lambda}$，作为内存模拟
 2. Prover 计算 $\vec{e}$， 并发送承诺 $\mathsf{cm}(\vec{e})$，作为 memory 顺序读取出的内容
 
-第二轮：Prover 与 Verifier 执行 Memory-in-the-head 协议，证明
+第二轮：Prover 与 Verifier 执行 Offline Memory Checking 协议，证明
 
 $$
 e_i = \vec{\lambda}_{k_i}, \quad \forall i\in [m]
@@ -307,7 +309,7 @@ $$
 \end{split}
 $$
 
-我们进而可以把这 16 个元素排成一个 $4\times 4$ 的矩阵，每一个单元格的值 $\lambda_i$ 都等于它对应的行和列的乘积。
+我们进而把这 16 个元素排成一个 $4\times 4$ 的矩阵，每一个单元格的值 $\lambda_i$ 都等于它对应的行向量元素和列向量元素的乘积。
 
 $$
 \begin{array}{c|cccc}
@@ -329,15 +331,15 @@ $$
 \end{split}
 $$
 
-那么 $\vec{\lambda}$ 向量可以分解成两个长度为 $\sqrt{N}$ 的向量的 Tensor Product：
+那么 $\vec{\lambda}$ 向量看成是两个长度为 $\sqrt{N}$ 的向量的 Tensor Product：
 
 $$
 \vec{\lambda} = \vec{\lambda}^{(x)} \otimes \vec{\lambda}^{(y)}
 $$
 
-回到向量 $\vec{e}$，其中每一个值 $e_i$ 也就可以看成是两个数值的乘积 $e_i=e_i^{(x)}\cdot e_i^{(y)}$，其中 $e_i^{(x)}$ 来自于 $\vec{\lambda}^{(x)}$，另一个数 $e_i^{(y)}$ 来自于 $\vec{\lambda}^{(y)}$。
+回到我们关注的向量 $\vec{e}$，其中每一个元素 $e_i$ 也就可以看成是两个数值的乘积 $e_i=e_i^{(x)}\cdot e_i^{(y)}$，其中 $e_i^{(x)}$ 来自于 $\vec{\lambda}^{(x)}$，另一个 $e_i^{(y)}$ 来自于 $\vec{\lambda}^{(y)}$。
 
-这相当于我们把整个 $\vec{e}$ 向量分解到了一个二维空间中，它的值等于横坐标和纵坐标值的乘积。那么我们可以继续采用 Memory Checking 的思路来证明 $\vec{e}$ 的正确性，这次我们需要采用二维的 Memory Checking 协议，更直白点说，我们需要采用两次 Memory Checking 协议来证明 $\vec{e}$ 的正确性，每一个 $e_i$ 对应到两个值的乘积，它们分别读取自 $\vec{\lambda}^{(x)}$ 和 $\vec{\lambda}^{(y)}$：
+这相当于我们把整个 $\vec{e}$ 向量分解到了一个二维空间中，它的值等于横坐标和纵坐标值的乘积。那么我们可以继续采用 Offline Memory Checking 的思路来证明 $\vec{e}$ 的正确性，这次我们需要采用二维的 Offline Memory Checking 协议。更直白点说，我们需要采用两次 Offline Memory Checking 协议来证明 $\vec{e}$ 的正确性，每一个 $e_i$ 对应到两个值的乘积，它们分别读取自 $\vec{\lambda}^{(x)}$ 和 $\vec{\lambda}^{(y)}$：
 
 $$
 \begin{split}
@@ -346,7 +348,7 @@ $$
 \end{split}
 $$
 
-稀疏多项式的求值等式可以改写为：
+于是稀疏多项式 $\tilde{g}(\vec{X})$ 的求值等式可以改写为：
 
 $$
 \tilde{g}(\vec{u})=\tilde{g}(\vec{u}_0, \vec{u}_1) = \sum_{i=0}^{m-1}\tilde{h}(\mathsf{bits}(i))\cdot
@@ -362,7 +364,7 @@ $$
 \end{split}
 $$
 
-其中 $k^{(x)}_i, k^{(y)}_i\in(0, 1, \ldots, \log{N}/2)$ 为非零元素 $h_i$ 在二维矩阵中的行列坐标。这样我们可以把 Evaluation Argument 协议中的 Memory-checking 子协议调用两次，但是内存的大小被大幅缩小到了 $\sqrt{N}=2^{n/2}$。看下前面的例子， $N=16, n=4, m=4$，$\vec{g}$ 向量中仅有四个非零值：
+其中 $k^{(x)}_i, k^{(y)}_i\in(0, 1, \ldots, \log{N}/2)$ 为非零元素 $h_i$ 在二维矩阵中的行列坐标。这样我们可以把求值协议中的 Offline Memory Checking 子协议调用两次，但是内存的大小被大幅缩小到了 $\sqrt{N}=2^{n/2}$。看下前面的例子， $N=16, n=4, m=4$，$\vec{g}$ 向量中仅有四个非零值：
 
 $$
 \vec{g} = (0,0, g_2, 0, 0, 0, 0, g_7, 0, g_9, 0,0,0,0,g_{14},0)
@@ -448,7 +450,7 @@ $\pi^{\mathsf{(spark)}}_g\leftarrow\mathsf{Spark.Eval}((C_h, C_x, C_y), \vec{u},
 2. Prover 计算 $\vec{\lambda}^{(y)}= \{eq_i(\vec{u}_y)\}_{i\in[0, l)}$，作为 $\mathsf{mem}_y$ 内存
 2. Prover 计算 $\vec{e}^{(x)}$ 与 $\vec{e}^{(y)}$， 作为分别从内存 $\mathsf{mem}_x$ 与 $\mathsf{mem}_y$ 读取出的内容，并发送承诺 $\mathsf{cm}(\vec{e}^{(x)})$ 与 $\mathsf{cm}(\vec{e}^{(y)})$
 
-第二轮：Prover 与 Verifier 执行两次 Memory-checking 协议，证明 $\mathsf{cm}(\vec{e}^{(x)})$ 与 $\mathsf{cm}(\vec{e}^{(y)})$ 的正确性：
+第二轮：Prover 与 Verifier 执行两次 Offline Memory Checking 协议，证明 $\mathsf{cm}(\vec{e}^{(x)})$ 与 $\mathsf{cm}(\vec{e}^{(y)})$ 的正确性：
 
 $$
 \begin{split}
@@ -486,12 +488,65 @@ $$
 ### 6.3. 性能分析
 
 
+
+## 8. Tensor 结构 (TODO)
+
+如果我们可以把 $\vec{e}$ 分解到二维空间，那么能否分解到更高维的空间？比如 $\vec{f}$ 的长度为 $2^{30}$，那么把它排成二维矩阵，比如 $2^{15}\times 2^{15}$，矩阵的长宽还是较大。如果把 $\vec{f}$ 重新排列成一个立方体，然后同样把 $\tilde{eq}_i(\vec{r})$ 拆分成三段，这样我们可以把 Offline Memory Checking 的 Prover 开销进一步降低到 $O(N^{1/3})$，也就是 $2^{10}$。这个分解的灵活性来源于 $\vec{\lambda}$ 的结构特性，即 一个具有 Tensor Structure 的向量可以用不同的 Tensor Product 分解方式。理论上，我们可以把 $\vec{f}$ 分解成 $\log{N}$ 个长度为 $2$ 的短向量的 Tensor Product。不过实践中，我们只需要将其分解到 $N^{1/c}$ 即可处理超长的向量。
+
+例如当 $N=16$ 时，$\vec{\lambda}$ 即可以排列成一个 $4\times 4$ 的二维矩阵，也可以排列成 $2\times 2\times 2\times 2$ 的四维矩阵：
+
+$$
+\small
+\begin{split}
+\vec{\lambda} &= (r_0,1-r_0)\otimes(r_1,1-r_1)\otimes(r_2,1-r_2) \otimes(r_3,1-r_3) \\
+&=\Big((r_0,1-r_0)\otimes(r_1,1-r_1)\Big)\otimes \Big((r_2,1-r_2)\otimes(r_3,1-r_3)\Big) \\
+&= \Big((r_0r_1,(1-r_0)r_1,r_0(1-r_1),(1-r_0)(1-r_1))\Big) \otimes 
+\Big((r_2r_3,(1-r_2)r_3,r_2(1-r_3),(1-r_2)(1-r_3))\Big) \\
+\end{split}
+$$
+
+
+我们可以根据 Tensor Product 逐步来推导下：
+
+$$
+(r_0, (1-r_0))\otimes(r_1, (1-r_1))= 
+\begin{array}{c|cc}
+ & r_0 & (1-r_0) \\
+ \hline
+ r_1 & r_0r_1 & (1-r_0)r_1\\
+(1-r_1) & r_0(1-r_1) & (1-r_0)(1-r_1) \\
+\end{array}
+$$ 
+
+再利用上面的计算结果来计算 $(r_0, (1-r_0))\otimes(r_1, (1-r_1)) \otimes (r_2, (1-r_2))$ 
+
+$$
+\small
+\begin{array}{c|cc}
+ & r_2 & (1-r_2) \\
+ \hline
+ r_0r_1 & r_0r_1r_2 & r_0r_1(1-r_2)\\
+(1-r_0)r_1 & (1-r_0)r_1r_2 & (1-r_0)r_1(1-r_2) \\
+r_0(1-r_1) &r_0(1-r_1)r_2& r_0(1-r_1)(1-r_2)\\
+(1-r_0)(1-r_1) &(1-r_0)(1-r_1)r_2& (1-r_0)(1-r_1)(1-r_2)\\
+\end{array}
+$$
+
+其实，许多常见的向量也具备 Tensor Structure，比如 $(1, \alpha, \alpha^2,\ldots, \alpha^{2^n-1})$：
+
+$$
+(1, \alpha, \alpha^2,\ldots, \alpha^{2^n-1})= (1,\alpha)\otimes (1,\alpha^2) \otimes (1,\alpha^4)\otimes \cdots\otimes (1, \alpha^{2^{(n-1)}})
+$$
+
+
 ## 7. 小结
 
 本文介绍了 Tensor Structure 的概念，利用这个结构，我们可以把稀疏向量映射到一个二维空间中进行编码，然后我们基于这个结构，可以构造一个稀疏向量的多项式承诺方案。
 
 ##  References
 
+- [Spartan] [Spartan: Efficient and general-purpose zkSNARKs without trusted setup
+](https://eprint.iacr.org/2019/550) by Srinath Setty.
 - [Lasso] [Unlocking the lookup singularity with Lasso](https://eprint.iacr.org/2023/1216) by Srinath Setty, Justin Thaler and Riad Wahby.
 - [Jolt] [Jolt: SNARKs for Virtual Machines via Lookups](https://eprint.iacr.org/2023/1217) by Arasu Arun, Srinath Setty and Justin Thaler.
 - [PLONK] [PLONK: Permutations over Lagrange-bases for Oecumenical Noninteractive arguments of Knowledge](https://eprint.iacr.org/2019/953.pdf) by Ariel Gabizon, Zachary J. Williamson and Oana Ciobotaru.

@@ -87,7 +87,7 @@ $$
 \vec{t}_I' = (t_0, t_1+\eta,t_2+2\eta,\ldots,t_{N-1}+\eta\cdot(N-1))
 $$
 
-比如 Plookup，Caulk/Caulk+，Baloo，与 cq 都支持表格承诺的加法同态。但是对于 fLookup 等不支持加法同态的 Lookup Arguments，我们可以找到一个值，$\kappa>\mathsf{max}\{t_i, i\in[0,N-1]\}$ ，然后通过 $\kappa$ 把索引列合并到原表格列：
+比如 Plookup，Caulk/Caulk+，Baloo，与 cq 都支持表格承诺的加法同态。但是对于 fLookup 等不支持加法同态的 Lookup Arguments，我们可以找到一个值，$\kappa>\mathsf{max}\{t_i, i\in[0,N)\}$ ，然后通过 $\kappa$ 把索引列合并到原表格列：
 
 $$
 \vec{t}_I'' = (t_0, t_1+\kappa,t_2+2\kappa,\ldots,t_{N-1}+\kappa\cdot(N-1))
