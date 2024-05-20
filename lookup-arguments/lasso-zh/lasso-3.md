@@ -123,7 +123,7 @@ $$
 \tilde{f}(\vec{r}) \overset{?}{=}  \sum_{i\in[0,m)}h_i\cdot \tilde{eq}_i(\vec{r}) 
 $$
 
-根据 Offline Memory Checking 的思路，我们可以证明 $h_i$ 都读取自表格 $T$。这样相当于原地踏步，我们为了证明一个 Lookup关系，我们归约到了另一个 Lookup 关系。不过我们是否可以 $h_i$ 分解到一个二维（或者多维）的子表格上呢？就像 Spark 协议中的 $\vec{e}$ 向量一样，我们是把 $\vec{e}$ 所读取的内存 $\vec{\lambda}$ 分解成了 $\vec{\lambda}^{(x)}$ 和 $\vec{\lambda}^{(y)}$，然后把 $\vec{e}$ 分解为 $\vec{e}^{(x)}$ 和 $\vec{e}^{(y)}$。然而并不是所有的表格都能像 $\vec{\lambda}$ 一样满足 Tensor Structure 的。事实上，绝大部分的表格不满足这个条件。不过幸运地是，尽管他们不满足 Tensor Structure，但是一大类的有用表格可以按照类似的思路处理。
+根据 Offline Memory Checking 的思路，我们可以证明 $h_i$ 都读取自表格 $T$。这样相当于原地踏步，我们为了证明一个 Lookup关系，我们归约到了另一个 Lookup 关系。不过我们是否可以将 $h_i$ 分解到一个二维（或者多维）的子表格上呢？就像 Spark 协议中的 $\vec{e}$ 向量一样，我们是把 $\vec{e}$ 所读取的内存 $\vec{\lambda}$ 分解成了 $\vec{\lambda}^{(x)}$ 和 $\vec{\lambda}^{(y)}$，然后把 $\vec{e}$ 分解为 $\vec{e}^{(x)}$ 和 $\vec{e}^{(y)}$。然而并不是所有的表格都能像 $\vec{\lambda}$ 一样满足 Tensor Structure 的。事实上，绝大部分的表格不满足这个条件。不过幸运地是，尽管他们不满足 Tensor Structure，但是一大类的有用表格可以按照类似的思路处理。
 
 我们先看一个简单但很实用的表格，RangeCheck 表格。当需要证明 $0\leq x \lt 2^k$，我们可以构造一个表格 $T_\mathsf{{range, k}}=(0,1,\ldots,2^k-1)$，如果 $x\in T_\mathsf{{range, k}}$，那么说明 $x$ 在 $0$ 到 $2^k-1$ 之间。
 
