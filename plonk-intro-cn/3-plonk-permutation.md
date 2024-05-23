@@ -113,9 +113,9 @@ $$
 \begin{array}{c|c|c}
 q_i & r_i & q_i\cdot r_i \\
 \hline
-q_0 & 1  & r_0\\
-q_1 & r_0 & r_1\\
-q_2 & r_1 & r_2\\
+q_0 & r_0=1  & r_1\\
+q_1 & r_1 & r_2\\
+q_2 & r_2 & r_3\\
 \vdots & \vdots & \vdots\\
 q_{n-2} & r_{n-2} & r_{n-1}\\
 q_{n-1}=\frac{1}{p} & r_{n-1} & 1 \\
