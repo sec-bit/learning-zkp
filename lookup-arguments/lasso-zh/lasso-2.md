@@ -455,7 +455,7 @@ $\pi^{\mathsf{(spark)}}_g\leftarrow\mathsf{Spark.Eval}((C_h, C_x, C_y), \vec{u},
 $$
 \begin{split}
 \mathsf{MemChecking}(\mathsf{cm}(\vec{e}^{(x)}), \vec{u}_x, \mathsf{cm}(\vec{k}^{(x)}); \vec{e}^{(x)}, \vec{k}^{(x)}) \\
-\mathsf{MemChecking}(\mathsf{cm}(\vec{e}^{(y)}), \vec{u}_y, \mathsf{cm}(\vec{k}^{(y)}); \vec{e}^{(x)}, \vec{k}^{(y)}) \\
+\mathsf{MemChecking}(\mathsf{cm}(\vec{e}^{(y)}), \vec{u}_y, \mathsf{cm}(\vec{k}^{(y)}); \vec{e}^{(y)}, \vec{k}^{(y)}) \\
 \end{split}
 $$
 
