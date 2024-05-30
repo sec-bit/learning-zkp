@@ -4,11 +4,7 @@
 
 ### 1. Run online
 
-- [1. Plonkish Arithmetization](https://colab.research.google.com/github/Antalpha-Labs/plonk-intro-notebook/blob/main/1-plonk-arithmetization.ipynb)
-- [2. Lagrange basics](https://colab.research.google.com/github/Antalpha-Labs/plonk-intro-notebook/blob/main/2-plonk-lagrange-basis.ipynb)
-- [3. Permutation](https://colab.research.google.com/github/Antalpha-Labs/plonk-intro-notebook/blob/main/3-plonk-permutation.ipynb)
-- [4. Constraints](https://colab.research.google.com/github/Antalpha-Labs/plonk-intro-notebook/blob/main/4-plonk-constraints.ipynb)
-- [5. Polynomial commitment](https://colab.research.google.com/github/Antalpha-Labs/plonk-intro-notebook/blob/main/5-plonk-polycom.ipynb)
+Use [Google colab](https://colab.research.google.com) to open the files and run them online.
 
 ### 2. Run locally
 
