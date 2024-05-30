@@ -227,10 +227,10 @@ $$
 还拿 $\mathbb{F}_{13}$ 为例，我们取 $H=(1,5,12,8)$，并且乘法群的生成元 $g=2$。于是我们可以得到下面两个 Coset：
 
 $$
-\begin{split}
-H_1 &= g\cdot H  = (g, g\omega, g\omega^2, g\omega^3) &= (2,10,11,3) \\
-H_2 &= g^2\cdot H = (g^2, g^2\omega, g^2\omega^2, g^2\omega^3) &= (4,7,9,6) \\
-\end{split}
+\begin{aligned}
+H_1 &= g\cdot H = (g, g\omega, g\omega^2, g\omega^3) = (2,10,11,3) \\
+H_2 &= g^2\cdot H = (g^2, g^2\omega, g^2\omega^2, g^2\omega^3) = (4,7,9,6) \\
+\end{aligned}
 $$
 
 可以看到 $\mathbb{F}^*_{13}=H\cup H_1 \cup H_2$，并且它们交集为空，没有任何重叠。并且它们的 Vanishing Polynomial 也可以快速计算：
