@@ -1,0 +1,47 @@
+\contentsline {chapter}{\numberline {1}Plonkish Arithmetization}{5}{chapter.1}%
+\hypertarget {chap-1}{}
+\contentsline {section}{\numberline {1.1}算术电路与 R1CS 算术化}{5}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}多个乘法门}{8}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}优缺点}{9}{subsection.1.1.2}%
+\contentsline {section}{\numberline {1.2}Plonkish 算术门}{9}{section.1.2}%
+\contentsline {section}{\numberline {1.3}复制约束}{11}{section.1.3}%
+\contentsline {section}{\numberline {1.4}再比较}{13}{section.1.4}%
+\contentsline {section}{\numberline {1.5}电路验证协议框架}{13}{section.1.5}%
+\contentsline {chapter}{\numberline {2}多项式编码}{17}{chapter.2}%
+\hypertarget {chap-2}{}
+\contentsline {section}{\numberline {2.1}多项式的概率检查}{17}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Lagrange 插值 与 Evaluation Form}{18}{section.2.2}%
+\contentsline {section}{\numberline {2.3}单位根 Roots of Unity}{19}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Lagrange Basis}{21}{section.2.4}%
+\contentsline {section}{\numberline {2.5}多项式的约束}{21}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Coset}{22}{section.2.6}%
+\contentsline {chapter}{\numberline {3}置换证明}{23}{chapter.3}%
+\hypertarget {chap-3}{}
+\contentsline {section}{\numberline {3.1}回顾拷贝关系}{23}{section.3.1}%
+\contentsline {section}{\numberline {3.2}冷启动：Grand Product}{24}{section.3.2}%
+\contentsline {section}{\numberline {3.3}从 Grand Product 到 Multiset 等价}{26}{section.3.3}%
+\contentsline {section}{\numberline {3.4}从 Multiset 等价到置换证明}{27}{section.3.4}%
+\contentsline {section}{\numberline {3.5}完整的置换协议}{29}{section.3.5}%
+\contentsline {chapter}{\numberline {4}算术约束与拷贝约束}{31}{chapter.4}%
+\hypertarget {chap-4}{}
+\contentsline {section}{\numberline {4.1}回顾置换证明}{31}{section.4.1}%
+\contentsline {section}{\numberline {4.2}向量的拷贝约束}{32}{section.4.2}%
+\contentsline {section}{\numberline {4.3}多个向量间的拷贝约束}{32}{section.4.3}%
+\contentsline {section}{\numberline {4.4}置换关系 \(\sigma \)}{35}{section.4.4}%
+\contentsline {section}{\numberline {4.5}处理 Public Inputs}{36}{section.4.5}%
+\contentsline {section}{\numberline {4.6}位置向量的优化}{36}{section.4.6}%
+\contentsline {section}{\numberline {4.7}协议框架}{37}{section.4.7}%
+\contentsline {chapter}{\numberline {5}多项式承诺}{39}{chapter.5}%
+\hypertarget {chap-5}{}
+\contentsline {section}{\numberline {5.1}什么是多项式承诺}{39}{section.5.1}%
+\contentsline {section}{\numberline {5.2}KZG10 构造}{40}{section.5.2}%
+\contentsline {section}{\numberline {5.3}同点 Open 的证明聚合}{42}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}协议：}{43}{subsection.5.3.1}%
+\contentsline {section}{\numberline {5.4}多项式约束与线性化}{43}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}协议：}{45}{subsection.5.4.1}%
+\contentsline {chapter}{\numberline {6}实现 Zero Knowledge}{47}{chapter.6}%
+\hypertarget {chap-6}{}
+\contentsline {section}{\numberline {6.1}方法一：Blinding 多项式}{48}{section.6.1}%
+\contentsline {section}{\numberline {6.2}方法二：随机因子对齐}{50}{section.6.2}%
+\contentsline {section}{\numberline {6.3}满足 Hiding 性质的 KZG10}{52}{section.6.3}%
+\contentsline {chapter}{Bibliography}{55}{chapter*.2}%
