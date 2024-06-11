@@ -32,7 +32,7 @@ $$
 z_0=1, \qquad z_{i+1}=z_i\cdot \frac{(a'_i+\gamma)}{(b'_i+\gamma)}
 $$
 
-由于 $z_N=\prod\frac{a'_i+\gamma}{b'_i+\gamma}=1$，而且 $\omega^N=1$，因此我们可以用 $z(X)$ 来编码 $\vec{z}$，从而把置换证明转换成关于 $z(X), a(X)$ 的关系证明。
+由于 $z_N=\prod\frac{a'_i+\gamma}{b'_i+\gamma}=1$，而且 $\omega^N=1$，因此我们可以用 $z(X)$ 来编码 $\vec{z}$，从而把置换证明转换成关于 $z(X), a(X), b(X)$ 的关系证明。
 
 最后 Verifier 发送挑战数 $\zeta$，得到 $z(\zeta), z(\omega\cdot\zeta), a(\zeta), b(\zeta)$  然后检查它们之间的关系。
 
@@ -311,7 +311,7 @@ $$
 
 Verifier 还要自行计算
 - $\bar{f}_{(\zeta)} =(\bar{w}_a+\beta\cdot \zeta + \gamma) (\bar{w}_b+\beta\cdot k_1\cdot \zeta +\gamma)(\bar{w}_c+\beta\cdot k_2 \cdot \zeta +\gamma)$
-- $\bar{g}_{(\zeta)}=(\bar{w}_a+\beta\cdot \bar{\sigma}_1 + \gamma) (\bar{w}_b+\beta\cdot\bar{\sigma}_2+\gamma)(\bar{w}_c+\beta\cdot\bar{\sigma}_3+\gamma)$
+- $\bar{g}_{(\zeta)}=(\bar{w}_a+\beta\cdot \bar{\sigma}_a + \gamma) (\bar{w}_b+\beta\cdot\bar{\sigma}_b+\gamma)(\bar{w}_c+\beta\cdot\bar{\sigma}_c+\gamma)$
 - $L_0(\zeta)$
 - $z_H(\zeta)$
 - $\phi(\zeta)$
