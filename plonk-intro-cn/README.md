@@ -26,3 +26,4 @@
 - [@Howard-Hu](https://github.com/Howard-Hu)
 - and many many other people, thank you!
 
+**[最后，欢迎参与合作组织的 Plonk 学习课程](https://github.com/Antalpha-Labs/zkp-academy/tree/main/Plonk)**：
