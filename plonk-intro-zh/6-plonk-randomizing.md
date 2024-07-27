@@ -1,4 +1,4 @@
-# 理解 Plonk（六）：实现  Zero Knowledge
+# 理解 Plonk（六）：实现 Zero Knowledge
 
 在前文的 Plonk 协议中，所有的多项式承诺都没有混入额外的随机数进行保护，因此当一个未被随机化的多
 项式承诺 $f(X)$ 经过一次或者多次 Open，会泄露 $f(X)$ 自身的信息，这会限制协议在需要隐私保护的
@@ -16,7 +16,7 @@ Plonk 协议的大致流程为：Prover 构造多项式，然后发送多项式�
 - 置换累乘多项式： $z(X)$
 - 商多项式： $t_{low}(X)$， $t_{mid}(X)$， $t_{high}(X)$
 
-其中三个 Witness 多项式要在 $X=\zeta$ 这一个点处打开，置换累乘多项式 $z(X)$ 要在 $X=\zeta$，  $X=\omega\cdot\zeta$ 两个点处打开，而三个商多项式则不需要被打开。
+其中三个 Witness 多项式要在 $X=\zeta$ 这一个点处打开，置换累乘多项式 $z(X)$ 要在 $X=\zeta$， $X=\omega\cdot\zeta$ 两个点处打开，而三个商多项式则不需要被打开。
 
 Prover 要混入两类随机因子，第一类是保护承诺本身，满足信息隐藏 Hiding，一个承诺一般只需要混入一个随机数即可； 第二类是保护多项式承诺在打开之后仍然保证原多项式信息不会泄漏。如果多项式打开的次数越多（假设每次打开的位置都不同）， Prover 就要混入越多的随机因子。
 
@@ -44,7 +44,7 @@ $$
 
 而且也无法满足置换约束。
 
-如果要让随机化后的多项式 $w'_a(X)$  满足「算术约束」和「置换约束」，那么我们可以考虑在乘法子群 $H$ 之外增加一些随机的点，这样可以让随机化后的多项式 $w'_a(X)$ 在 $H$ 整个乘法子群上的取值仍然与 $w_a(X)$ 完全相等，但是整个多项式却已经被随机化了。所谓的在 $H$ 上的取值相等，就是保证随机化后的多项式仍然可以被 $z_H(X)$ 整除。下面是随机化多项式的构造：
+如果要让随机化后的多项式 $w'_a(X)$ 满足「算术约束」和「置换约束」，那么我们可以考虑在乘法子群 $H$ 之外增加一些随机的点，这样可以让随机化后的多项式 $w'_a(X)$ 在 $H$ 整个乘法子群上的取值仍然与 $w_a(X)$ 完全相等，但是整个多项式却已经被随机化了。所谓的在 $H$ 上的取值相等，就是保证随机化后的多项式仍然可以被 $z_H(X)$ 整除。下面是随机化多项式的构造：
 
 $$
 w'_a(X) = (b_1 X + b_0)\cdot z_H(X) + w_a(X)
@@ -91,9 +91,9 @@ $$
 
 同理，如果 $t(X)$ 的次数达到了 $4N$，那么就需要三个随机数给四个 $t(X)$ 分段加上随机数，实现 Hiding。
 
-这个方法存在一个问题，就是 Blinding 多项式的次数会超过 $N$ ，这里 $N=|H|$。因为 $z_H(X)$ 的次数为 $N$，因此 $(b_1 X + b_0)\cdot z_H(X)$ 次数为 $N+1$。如果 Plonk 后端采用的是 Bulletproof-IPA 这类的多项式承诺，承诺会要求多项式的次数按 $2^k$ 对齐，这样盲化之后的多项式的次数刚刚超出 $N$，只能对齐到 $2N$。一些 Plonk 变种协议可能会把 Witness table 的列数增加，稍稍超出的多项式次数会使 $t(X)$ 的计算在一个更大的子群上完成。 
+这个方法存在一个问题，就是 Blinding 多项式的次数会超过 $N$ ，这里 $N=|H|$。因为 $z_H(X)$ 的次数为 $N$，因此 $(b_1 X + b_0)\cdot z_H(X)$ 次数为 $N+1$。如果 Plonk 后端采用的是 Bulletproof-IPA 这类的多项式承诺，承诺会要求多项式的次数按 $2^k$ 对齐，这样盲化之后的多项式的次数刚刚超出 $N$，只能对齐到 $2N$。一些 Plonk 变种协议可能会把 Witness table 的列数增加，稍稍超出的多项式次数会使 $t(X)$ 的计算在一个更大的子群上完成。
 
-##  方法二：随机因子对齐
+## 方法二：随机因子对齐
 
 下面介绍的第二种方法不会推高多项式的次数。考虑到 $H$ 子群的大小 $N$ 是按 $2^k$ 对齐，在实际电路中，一般情况下需要把 Witness Table 的长度对齐到 $N$，为了对齐，需要把空余的空间用零填满。
 
@@ -106,19 +106,19 @@ Daniel Lubarov 按照这个思路给出了第二种随机数填充实现 Zero-Kn
 - Witness 多项式： $w_a(X), w_b(X), w_c(X)$
 - 置换累乘多项式： $z(X)$
 
-先看第一类多项式，以 $w_a(X)$ 为例，它编码了 $w_{a,i}$  向量。如果本身向量长度不足 $N$，一般情况下是用零补齐，我们现在可以考虑让 Prover 额外用两个随机数补齐，这样做的效果和方法一的 Blinding 多项式完全一样。 如下所示：
+先看第一类多项式，以 $w_a(X)$ 为例，它编码了 $w_{a,i}$ 向量。如果本身向量长度不足 $N$，一般情况下是用零补齐，我们现在可以考虑让 Prover 额外用两个随机数补齐，这样做的效果和方法一的 Blinding 多项式完全一样。 如下所示：
 
 $$
 w'_a(X) = w_a(X) + (b_0\cdot L\_{N-2}(X) + b_1\cdot L\_{N-1}(X))
 $$
 
-其中 $b(X)=b_0\cdot L_{N-2}(X) + b_1\cdot L_{N-1}(X)$ 也可以看成是利用 Lagrange Basis 产生的 Blinding 多项式。这里假设 $\{w_{a,i}\}$ 的长度为 $N-2$， $(b_0, b_1)$ 为两个随机数。假设 $w_a(X)$ 的系数为固定值，那么当 $w'\_a(X)$ 被打开两次之后， 
+其中 $b(X)=b_0\cdot L_{N-2}(X) + b_1\cdot L_{N-1}(X)$ 也可以看成是利用 Lagrange Basis 产生的 Blinding 多项式。这里假设 $\{w_{a,i}\}$ 的长度为 $N-2$， $(b_0, b_1)$ 为两个随机数。假设 $w_a(X)$ 的系数为固定值，那么当 $w'\_a(X)$ 被打开两次之后，
 $b(X)=b_0\cdot L\_{N-2}(X) + b_1\cdot L\_{N-1}(X)$ 的系数即可被求解，从而失去随机化的能力。因此， $w'_a(X)$ 只能承受一次安全的打开操作（假设协议基于 Non-hiding 的多项式承诺）。
 
 对于置换累乘多项式 $z(X)$，则需要在累乘向量 $\vec{z}$ 的尾部引入随机值。考虑下 $\vec{z}$ 的计算方式：
 
 $$
-z_{i+1} = z_i\cdot \frac{(w_a(X) + \beta\cdot X+\gamma)(w_b(X) + \beta\cdot k_1X+\gamma)(w_a(X) + \beta\cdot k_2X+\gamma)}{(w_a(X) + \beta\cdot\sigma_a(X)+\gamma)(w_b(X) + \beta\cdot \sigma_b(X)+\gamma)(w_a(X) + \beta\cdot\sigma_c(X)+\gamma)}
+z_{i+1} = z_i\cdot \frac{(w_a(X) + \beta\cdot X+\gamma)(w_b(X) + \beta\cdot k_1X+\gamma)(w_c(X) + \beta\cdot k_2X+\gamma)}{(w_a(X) + \beta\cdot\sigma_a(X)+\gamma)(w_b(X) + \beta\cdot \sigma_b(X)+\gamma)(w_c(X) + \beta\cdot\sigma_c(X)+\gamma)}
 $$
 
 列出所有的 $z_i$ 的计算如下：
@@ -139,13 +139,13 @@ N & \omega^{N}=1 & \frac{f_0f_1\cdots f_{N-1}}{g_0g_1\cdots g_{N-1}}  = 1
 $$
 
 假如我们想设置 $z_{N-1}$ 为随机值，我们需要让 $w_{a,N-1}$ 和 $w_{a,N-2}$ 这两个元素设置一个
- Copy Constraint，并填上同一个随机数 $\rho_1$。如果 $w_{b,N-1}$ 和 $w_{b,N-2}$ 设置为零，那么
+Copy Constraint，并填上同一个随机数 $\rho_1$。如果 $w_{b,N-1}$ 和 $w_{b,N-2}$ 设置为零，那么
 
 $$
 \frac{f_{N-2}}{g_{N-2}} = \frac{(\rho_1 + \beta \cdot \omega^{N-2} + \gamma)}{(\rho_1 + \beta \cdot \omega^{N-1}+ \gamma)}
 $$
 
-又因为 
+又因为
 
 $$
 z_{N-1} = z_{N-2}\cdot \frac{f_{N-2}}{g_{N-2}}
@@ -273,4 +273,4 @@ $$
 
 - [1] Adding zero knowledge to Plonk-Halo https://mirprotocol.org/blog/Adding-zero-knowledge-to-Plonk-Halo
 - [2] Chiesa, Alessandro, Yuncong Hu, Mary Maller, Pratyush Mishra, Noah Vesely, and Nicholas Ward. "Marlin: Preprocessing zkSNARKs with universal and updatable SRS." In Advances in Cryptology–EUROCRYPT 2020: 39th Annual International Conference on the Theory and Applications of Cryptographic Techniques, Zagreb, Croatia, May 10–14, 2020, Proceedings, Part I 39, pp. 738-768. Springer International Publishing, 2020. https://eprint.iacr.org/2019/1047.
-- [3] Gabizon, Ariel, Zachary J. Williamson, and Oana Ciobotaru. "Plonk: Permutations over lagrange-bases for oecumenical noninteractive arguments of knowledge." *Cryptology ePrint Archive* (2019).
+- [3] Gabizon, Ariel, Zachary J. Williamson, and Oana Ciobotaru. "Plonk: Permutations over lagrange-bases for oecumenical noninteractive arguments of knowledge." _Cryptology ePrint Archive_ (2019).
