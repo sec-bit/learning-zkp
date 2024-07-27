@@ -393,7 +393,7 @@ $$
 
 ### 对比 Plookup 
 
-回忆下 Plookup 的方案，对于 $\vec{f}$ 和 $\vec{t}$，如果我们要证明 $\vec{f}\subset \vec{t}$，那么 Prover 需要引入一个中间向量 $\vec{s}$，长度为 $n+m$。它是 $\vec{f}\cup\vec{t}$ 的一个重新排序，按照 $\vec{t}$ 中原有项的顺利进行排列。然后 Prover 证明下面的 Multiset 等价关系：
+回忆下 Plookup 的方案，对于 $\vec{f}$ 和 $\vec{t}$，如果我们要证明 $\vec{f}\subset \vec{t}$，那么 Prover 需要引入一个中间向量 $\vec{s}$，长度为 $n+m$。它是 $\vec{f}\cup\vec{t}$ 的一个重新排序，按照 $\vec{t}$ 中原有项的顺序进行排列。然后 Prover 证明下面的 Multiset 等价关系：
 
 $$
 \{(s_i, s_{i+1})\}\overset{?}{=}\{(f_i, f_i)\}\cup\{(t_i, t_{i+1})\}
