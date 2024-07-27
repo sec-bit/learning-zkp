@@ -24,7 +24,15 @@
 - [@GopherJ](https://github.com/GopherJ)
 - [@dajuguan](https://github.com/dajuguan)
 - [@Howard-Hu](https://github.com/Howard-Hu)
-- and many many other people, thank you!
+- [@meloalright](https://github.com/meloalright)
+- [@ghostant-1017](https://github.com/ghostant-1017)
+- [@KyrinCode](https://github.com/KyrinCode)
+- [@ziyinlox-purple](https://github.com/ziyinlox-purple)
+- [@ret2basic](https://github.com/ret2basic)
+- [@wenjin1997](https://github.com/wenjin1997)
+- [@qijinzing](http://github.com/qijinzing) 
+- [@yanyanho](https://github.com/yanyanho)
+- and many many other people, thank you all!
 
 **最后**：
 - [欢迎参与合作组织的 Plonk 学习课程](https://github.com/Antalpha-Labs/zkp-academy/tree/main/Plonk)
