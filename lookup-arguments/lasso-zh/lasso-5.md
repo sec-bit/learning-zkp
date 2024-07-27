@@ -2,6 +2,8 @@
 
 本文介绍 Generalized Lasso，也是 [Lasso] 论文的关键部分之一。与 Lasso 相比，Generalized Lasso 不再对大表格进行拆分，而是把表格作为整体进行证明。为了处理超大尺寸表格，Generalized Lasso 需要要求表格中的每一项是可以通过其 Index 的二进制表示进行计算得到。对于尺寸为 $N$ 的超大表格而言，其 Index 的二进制位数量为 $\log{N}$，因此表格的表项的计算复杂度一定为 $O(\log{N})$。
 
+前文，Lasso 协议可以处理那些可以分解的表格，并且利用查询向量的稀疏性来降低 Prover 的计算量。而 Generalized Lasso 则采用了另一种策略来
+
 这样做的一个优势是，Prover 可以不必要对表格进行承诺计算，当 Verifier 挑战表格编码的多项式时，Verifier 可以自行计算挑战点的多项式求值，因为这个运算复杂度仅为 $O(\log{N})$。这样 Prover 可以节省大量的计算时间。
 
 
@@ -27,7 +29,7 @@ $$
 
 Prover 和 Verifier 需要证明每一个 $f_i$ 等于某个表项 $t_j$。他们共同拥有的 Public Inputs 为表格向量与查询向量的多项式承诺，因为我们现在只关注 Indexed Lookup Argument，因此他们还共同拥有 $M$ 的多项式承诺。
 
-协议的第一步是 Verifier 发送一个挑战向量 $\vec{r}\in\mathbb{F}^{m}$，使得上面的约束转化为：
+协议的第一步是 Verifier 发送一个挑战向量 $\vec{r}\in\mathbb{F}^{m}$，使得上面的约束转化为一个求和等式：
 
 $$
 \tilde{f}(\vec{r}) = \sum_{\vec{y}\in\{0,1\}^{\log{N}}} \tilde{M}(\vec{r}, \vec{y})\cdot \tilde{t}(\vec{y})
@@ -91,7 +93,7 @@ $$
 v = \sum_{\vec{b}\in\{0,1\}^{\log{N}}} \tilde{u}(\vec{b})\cdot \tilde{t}(\vec{b})
 $$
 
-这里我们用 $\tilde{u}(\vec{b})$ 代替 $\tilde{M}(\vec{r},\vec{b})$，它是一个稀疏的多项式，只有 $m$ 个非零项。而 $\tilde{t}(\vec{b})$ 是一个 MLE-structured 的多项式，它的计算复杂度为 $O(\log{N})$。
+这里我们用 $\tilde{u}(\vec{b})$ 代替 $\tilde{M}(\vec{r},\vec{b})$，它是一个稀疏的多项式，只有 $m$ 个非零项。而 $\tilde{t}(\vec{b})$ 是一个 MLE-structured 的多项式，它的求值计算的时间复杂度为 $O(\log{N})$。
 
 Sumcheck 协议总共 $\log{N}$ 轮，在每一轮，Prover 主要的计算量为计算一个一元多项式并发送给 Verifier：
 
@@ -99,7 +101,7 @@ $$
 h^{(j)}(X) = \sum_{(b_{j+1}, b_{j+2},\ldots, b_{\log{N}})\in\{0,1\}^{\log{N}-j-1}} \tilde{u}(r_0,r_1,\ldots, r_{j-1}, X, b_{j+1}, b_{j+2},\ldots, b_{\log{N}-1})\cdot \tilde{t}(r_0,r_1,\ldots, r_{j-1}, X, b_{j+1}, b_{j+2},\ldots, b_{\log{N}-1})
 $$
 
-注意到这个一元多项式 $h^{(j)}(X)$ 是 $O(N)$ 个项的求和，但是 $\tilde{u}(\vec{b})$ 是一个稀疏的 MLE 多项式。如果 $\tilde{u}(\vec{X})$ 在 $\vec{X}=\vec{y}$ 处的取值为零，那么 Prover 也就可以省去计算 $\tilde{t}(\vec{y})$ 的开销。因此，Prover 实际上只需要计算 $O(m)$ 个项的求和，而不是 $O(N)$ 个项。
+注意到这个一元多项式 $h^{(j)}(X)$ 是 $O(N)$ 个项的求和，而 $\tilde{u}(\vec{b})$ 是一个稀疏的 MLE 多项式。如果 $\tilde{u}(\vec{X})$ 在 $\vec{X}=\vec{b}$ 处的取值为零，那么 Prover 也就可以省去计算 $\tilde{t}(\vec{y})$ 的开销。又因为总共有 $m$ 个非零的 $\tilde{u}(\vec{b})$，所以 Prover 实际上只需要计算 $O(m)$ 个项的求和，而不是 $O(N)$ 个项。
 
 进一步展开 $\tilde{u}(\vec{b})$ 的定义，我们可以得到：
 
@@ -118,7 +120,7 @@ h^{(j)}(X) &= \sum_{(b_{j+1}, b_{j+2},\ldots, b_{\log{N}})\in\{0,1\}^{\log{N}-j-
 \end{split}
 $$
 
-每一轮，假设当前我们在第 $j$ 轮，Prover 要计算 $m$ 个项的求和，每一项包含两个乘法和两个 MLE 多项式的求值，分别为 $\tilde{eq}_i$ 和 $\tilde{t}$ 。接着 Verifier 都会提供一个随机数 $r_j$ 来求值 $h^{(j)}(X)$，然后 Sumcheck 进入下一轮，即第 $j+1$ 轮。
+假设当前我们在第 $j$ 轮，Prover 要计算 $m$ 个项的求和，每一项包含两个乘法和两个 MLE 多项式的求值，分别为 $\tilde{eq}_i$ 和 $\tilde{t}$ 。接着 Verifier 都会提供一个随机数 $r_j$ 来求值 $h^{(j)}(X)$，然后 Sumcheck 进入下一轮，即第 $j+1$ 轮。
 
 在第 $j$ 轮， Prover 的策略是根据上一轮（第 $j-1$ 轮）的 $\tilde{eq}_i(\ldots,r_{j-1},i_{j},\ldots)$ 和 $\tilde{t}(\ldots,r_{j-1},i_{j},\ldots)$ 的求值来增量式的递推计算  $\tilde{eq}_i(\ldots,r_{j-1},r_{j},\ldots)$ 和 $\tilde{t}(\ldots,r_{j-1},r_{j},\ldots)$，即用 $r_j$ 来代替 $i_j$。
 
@@ -147,7 +149,7 @@ $$
 \end{split}
 $$
 
-因此，根据 $i_j$ 是 $0$ 还是 $1$，Prover 可以仅用一个乘法即可递推地计算出第 $j+1$ 轮所需要的 $\tilde{eq}_i$。又因为总共有 $m$ 个 $\tilde{eq}_i$ 需要计算，所以 Prover 要付出 $O(m)$ 的计算量。
+因此，根据 $i_j$ 是 $0$ 还是 $1$，Prover 可以仅用一个乘法即可递推地计算出第 $j+1$ 轮所需要的 $\tilde{eq}_i$。又因为总共有 $m$ 个 $\tilde{eq}_i$ 需要计算，所以 Prover 只需要付出 $O(m)$ 的计算量。
 
 Prover 可以维护一个长度为 $m$ 的数组，里面保存 $\tilde{eq}_i$ 的值，每一轮过后就更新这个数组：
 
@@ -356,6 +358,8 @@ t(i_0, \ldots, c, \ldots, i_{s-1}) = t(i_0, \ldots, i_k, \ldots, i_{s-1}) + {\co
 $$
 
 上面这个等式想要表达的含义是：表格的每一项可以表达为该表项的索引（Index）的线性组合，并且是关于 Index 的二进制位的一次多项式。例如 RangeCheck 表格就满足这个特征。
+
+> TODO: RangeCheck 表格的定义
 
 回忆 Generalized Lasso 协议，其核心是证明下面的等式：
 
