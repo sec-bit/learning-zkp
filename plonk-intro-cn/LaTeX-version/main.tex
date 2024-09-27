@@ -1,0 +1,282 @@
+% !TEX root = ./notes_template.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% preamble %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[11pt,twoside]{book}
+
+
+\usepackage{luatex85}
+
+
+\usepackage{ctex}
+\renewcommand{\contentsname}{目录}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\setCJKmainfont{LXGW WenKai Mono}
+\linespread{1.5}
+
+
+\usepackage{xeCJKfntef}
+\xeCJKsetup{underdot/symbol={\normalfont^^b7}}
+\newcommand{\dotemph}[1]{\CJKunderdot{#1}}
+
+
+\usepackage[multiple]{footmisc}
+
+%\renewcommand{\baselinestretch}{1.05}
+\usepackage{amsmath,amsthm,amssymb,mathrsfs,amsfonts,dsfont}
+\usepackage{epsfig,graphicx}
+\usepackage{tabularx}
+\usepackage{blkarray}
+\usepackage{slashed}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{caption}
+% \usepackage{fullpage}
+\usepackage{lipsum} % provides dummy text for testing
+\usepackage[toc,title,titletoc,header]{appendix}
+\usepackage{minitoc}
+\usepackage{color}
+\usepackage{multicol} % two-col ToC
+\usepackage{bm}
+\usepackage{imakeidx} % before hyperref
+\usepackage{hyperref}
+% link colors settings
+\hypersetup{
+    colorlinks=true,
+    citecolor=magenta,
+    linkcolor=magenta,
+    filecolor=green,      
+    urlcolor=cyan,
+    % hypertexnames=false,
+}
+\usepackage[capitalise]{cleveref}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{physics}
+\usepackage[linesnumbered,ruled,vlined,algosection]{algorithm2e}
+\SetCommentSty{textsf}
+\usepackage{epigraph}
+\epigraphwidth=1.0\linewidth
+\epigraphrule=0pt
+
+% adjust margin
+\usepackage[margin=2.3cm]{geometry}
+\headheight13.6pt
+
+%%%%%%%%%%%%%%%% thmtools %%%%%%%%%%%%%%%%%%%%%
+\usepackage{thmtools}
+\declaretheorem[numberwithin=chapter]{theorem}
+\declaretheorem[numberwithin=chapter]{axiom}
+\declaretheorem[numberwithin=chapter]{lemma}
+\declaretheorem[numberwithin=chapter]{proposition}
+\declaretheorem[numberwithin=chapter]{claim}
+\declaretheorem[numberwithin=chapter]{conjecture}
+\declaretheorem[sibling=theorem]{corollary}
+\declaretheorem[numberwithin=chapter, style=definition]{definition}
+\declaretheorem[numberwithin=chapter, style=definition]{problem}
+\declaretheorem[numberwithin=chapter, style=definition]{example}
+\declaretheorem[numberwithin=chapter, style=definition]{exercise}
+\declaretheorem[numberwithin=chapter, style=definition]{observation}
+\declaretheorem[numberwithin=chapter, style=definition]{fact}
+\declaretheorem[numberwithin=chapter, style=definition]{construction}
+\declaretheorem[numberwithin=chapter, style=definition]{remark}
+\declaretheorem[numberwithin=chapter, style=remark]{question}
+%%%%%%%%%%%%%%%% thmtools %%%%%%%%%%%%%%%%%%%%%
+\usepackage{changepage}
+\newenvironment{solution}
+    {\renewcommand\qedsymbol{$\square$}\color{blue}\begin{adjustwidth}{0em}{2em}\begin{proof}[\textit Solution.~]}
+    {\end{proof}\end{adjustwidth}}
+
+%%%%%%%%%%%%%%%% index %%%%%%%%%%%%%%%%%%%%%
+\begin{filecontents}{index.ist}
+% https://tex.stackexchange.com/questions/65247/index-with-an-initial-letter-of-the-group
+headings_flag 1
+heading_prefix "{\\centering\\large \\textbf{"
+heading_suffix "}}\\nopagebreak\n"
+delim_0 "\\nobreak\\dotfill"
+\end{filecontents}
+\newcommand{\myindex}[1]{\index{#1} \emph{#1}}
+\makeindex[columns=3, intoc, title=Alphabetical Index, options= -s index.ist]
+%%%%%%%%%%%%%%%% index %%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% ToC %%%%%%%%%%%%%%%%%%%%%
+% Link Chapter title to ToC: https://tex.stackexchange.com/questions/32495/linking-the-section-text-to-the-toc
+\usepackage[explicit]{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}{\chaptertitlename\ {\thechapter}}{20pt}{\hyperlink{chap-\thechapter}{\Huge#1}
+\addtocontents{toc}{\protect\hypertarget{chap-\thechapter}{}}}
+\titleformat{name=\chapter,numberless}
+  {\normalfont\huge\bfseries}{}{-20pt}{\Huge#1}
+
+\titleformat{\subsubsection}[runin]
+  {\normalfont\large\bfseries}{}{}{#1}[]
+
+
+%%%%%%%%%%%%%%%%%%% fancyhdr %%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy} % enable fancy page style
+\renewcommand{\headrulewidth}{0.0pt} % comment if you want the rule
+\fancyhf{} % clear header and footer
+\fancyhead[lo,le]{\leftmark}
+\fancyhead[re,ro]{\rightmark}
+\fancyfoot[CE,CO]{\hyperref[toc-contents]{\thepage}}
+
+% https://tex.stackexchange.com/questions/550520/making-each-page-number-link-back-to-beginning-of-chapter-or-section
+\makeatletter
+\def\chaptermark#1{\markboth{\protect\hyper@linkstart{link}{\@currentHref}{Chapter \thechapter ~ #1}\protect\hyper@linkend}{}}
+\def\sectionmark#1{\markright{\protect\hyper@linkstart{link}{\@currentHref}{\thesection ~ #1}\protect\hyper@linkend}}
+\makeatother
+%%%%%%%%%%%%%%%%%%% fancyhdr %%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%% biblatex %%%%%%%%%%%%%%%%%
+\usepackage[doi=false,url=false,isbn=false,style=alphabetic,backend=biber,backref=true, minalphanames=3]{biblatex}
+
+\DefineBibliographyStrings{english}{
+  backrefpage={Cited on page},
+  backrefpages={Cited on pages}
+}
+
+\addbibresource{bib.bib}
+
+\newbibmacro{string+doiurlisbn}[1]{%
+  \iffieldundef{doi}{%
+    \iffieldundef{url}{%
+      \iffieldundef{isbn}{%
+        \iffieldundef{issn}{%
+          #1%
+        }{%
+          \href{http://books.google.com/books?vid=ISSN\thefield{issn}}{#1}%
+        }%
+      }{%
+        \href{http://books.google.com/books?vid=ISBN\thefield{isbn}}{#1}%
+      }%
+    }{%
+      \href{\thefield{url}}{#1}%
+    }%
+  }{%
+    \href{http://dx.doi.org/\thefield{doi}}{#1}%
+  }%
+}
+
+% https://tex.stackexchange.com/questions/94089/remove-quotes-from-inbook-reference-title-with-biblatex
+\DeclareFieldFormat[article,incollection,inproceedings,book,misc]{title}{\usebibmacro{string+doiurlisbn}{\mkbibemph{#1}}}
+% https://tex.stackexchange.com/questions/454672/biblatex-journal-name-non-italic
+\DeclareFieldFormat{journaltitle}{#1\isdot}
+\DeclareFieldFormat{booktitle}{#1\isdot}
+% https://tex.stackexchange.com/questions/10682/suppress-in-biblatex
+\renewbibmacro{in:}{}
+% add video field: https://tex.stackexchange.com/questions/111846/biblatex-2-custom-fields-only-one-is-working
+\DeclareSourcemap{
+    \maps[datatype=bibtex]{
+      \map{
+        \step[fieldsource=video]
+        \step[fieldset=usera,origfieldval]
+    }
+  }
+}
+\DeclareFieldFormat{usera}{\href{#1}{\textsc{Online video}}}
+\AtEveryBibitem{
+    \csappto{blx@bbx@\thefield{entrytype}}{% put at end of entry
+        \iffieldundef{usera}{}{\space \printfield{usera}}
+    }
+}
+%%%%%%%%%%%%%%%%%%% biblatex %%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%% glossaries %%%%%%%%%%%%%%%%%
+\input{./glossaries.tex}
+%%%%%%%%%%%%%%%%%%%%% glossaries %%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%% glossaries-extra %%%%%%%%%%%%%%%%%
+% \usepackage[record,abbreviations,symbols,stylemods={list,tree,mcols}]{glossaries-extra}
+%%%%%%%%%%%%%%%%%%%%% glossaries-extra %%%%%%%%%%%%%%%%%
+
+
+\input{./macros.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%% begin of document %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\title{\bf \huge 理解 PLONK}
+\author{安比实验室}
+\date{\today}
+\maketitle
+\setcounter{tocdepth}{2}
+\setcounter{minitocdepth}{1} 
+
+% \begin{multicols}{2}
+    \dominitoc% Initialization
+    \adjustmtc[2]% chp number shift for mini-toc
+    \tableofcontents
+    \label{toc-contents}
+% \end{multicols}
+
+% 	\listoffigures
+% 	% \listoftables
+% \begin{multicols}{2}
+% 	\listoftheorems[ignoreall,show={theorem}]
+% \end{multicols}
+
+% 	\renewcommand{\listtheoremname}{List of Definitions}
+% \begin{multicols}{2}
+% 	\listoftheorems[ignoreall,show={definition}]
+% \end{multicols}
+
+	% \printglossaries
+	% \printglossary[type=\acronymtype]
+	% \printglossary
+	% \printglossary[title=List of terms, toctitle=List of terms]
+
+	% bib2gls
+	% \printunsrtglossaries % print all types
+	% \printunsrtglossary[type={abbreviations},title=List of Abbreviations,style=listgroup]
+	% \printunsrtglossary[type={abbreviations},title=List of Abbreviations,style=listhypergroup] % doesn't work
+	% \printunsrtglossary[type={symbols},title=List of Symbols,style=listgroup]
+	% \printunsrtglossary % main entry
+
+%%%%%%%%%%%%%%%Content%%%%%%%%%%%%%%%
+% \mainmatter % separat the number of toc and mainmatter
+% 原始模版内容
+% \input{./chapter/preface.tex}
+
+% \part{Mathematics}
+% \input{./chapter/discrete_math.tex}
+
+% \part{Computer Science}
+% % \input{./chapter/complexity.tex}
+% \input{./chapter/machine_learning.tex}
+% % \input{./chapter/algorithms.tex}
+
+% \part{Physics}
+% \input{./chapter/quantum_mechanics.tex}
+% % \input{./chapter/quantum_field_theory.tex}
+
+% \begin{appendices}
+%   \input{./chapter/appendix_formula.tex}
+%   \end{appendices}
+
+\input{./chapter/01-plonk-arithmetization.tex}
+\input{./chapter/02-plonk-lagrange-basis.tex}
+\input{./chapter/03-plonk-permutation.tex}
+\input{./chapter/04-plonk-constraints.tex}
+\input{./chapter/05-plonk-polycom.tex}
+\input{./chapter/06-plonk-randomizing.tex}
+
+
+
+
+
+\backmatter
+
+%%%%%%%%%%%%%%% Reference %%%%%%%%%%%%%%%
+
+\printbibliography[heading=bibintoc]
+\printindex
+
+\end{document}
+
