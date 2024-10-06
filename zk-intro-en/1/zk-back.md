@@ -78,8 +78,6 @@ Interactive proofs are expressed as "dialogue scripts" between two (or more) Tur
 
 ## Interactive Proofs
 
-## 交互式证明
-
 
 Alice: I want to prove to you that I have a solution to an equation, `w^3 - (w + 1)^2 + 7 = 0` (the solution is `w = 3`).
 
