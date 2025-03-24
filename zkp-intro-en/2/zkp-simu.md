@@ -232,7 +232,7 @@ But here’s the problem: Alice’s lack of superpowers doesn’t directly prove
 + [8] Goldreich, Oded, Silvio Micali, and Avi Wigderson. *Proofs that Yield Nothing but Their Validity or All Languages in NP Have Zero-Knowledge Proof Systems*. Journal of the ACM (JACM) 38.3 (1991): 690-728.
 + [9] zkPoD: Blockchain, Zero-Knowledge Proofs, and Formal Verification for Fair Transactions Without Intermediaries. SECBIT Labs. 2019.
 + [10] Matthew Green. *Zero Knowledge Proofs: An Illustrated Primer*. 2014. https://blog.cryptographyengineering.com/2014/11/27/zero-knowledge-proofs-illustrated-primer/
-+ [11] Matthew Green. *Zero Knowledge Proofs: An Illustrated Primer, Part 2*. 2017. https://blog.cryptographyengineering.com/2017/01/21/zero-knowledge-proofs-illustrated-primer-part-2/
++ [11] Matthew Green. *Zero Knowledge Proofs: An Illustrated Primer, Part 2*. 2017. https://blog.cryptographyengineering.com/2017/01/21/zero-knowledge-proofs-an-illustrated-primer-part-2/
 
 
 
